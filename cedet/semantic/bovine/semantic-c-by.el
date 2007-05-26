@@ -3,7 +3,7 @@
 ;; Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007 Eric M. Ludlam
 
 ;; Author: Perry Smith <pedz@x20-laptop.easesoftware.com>
-;; Created: 2007-04-28 07:44:51-0500
+;; Created: 2007-05-25 21:26:33-0500
 ;; Keywords: syntax
 ;; X-RCS: $Id$
 
@@ -337,7 +337,7 @@
        ,(semantic-lambda
 	 (list nil))
        )
-      ) ;; end define
+      )	;; end define
 
     (unionparts
      (semantic-list

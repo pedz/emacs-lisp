@@ -3,7 +3,7 @@
 ;; Copyright (C) 2003, 2004 Eric M. Ludlam
 
 ;; Author: Perry Smith <pedz@x20-laptop.easesoftware.com>
-;; Created: 2007-04-28 07:44:54-0500
+;; Created: 2007-05-25 21:26:35-0500
 ;; Keywords: syntax
 ;; X-RCS: $Id$
 

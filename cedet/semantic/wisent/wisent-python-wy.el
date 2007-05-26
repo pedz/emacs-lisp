@@ -3,7 +3,7 @@
 ;; Copyright (C) 2002, 2003, 2004, 2007 Richard Kim
 
 ;; Author: Perry Smith <pedz@x20-laptop.easesoftware.com>
-;; Created: 2007-04-28 07:44:49-0500
+;; Created: 2007-05-25 21:26:32-0500
 ;; Keywords: syntax
 ;; X-RCS: $Id$
 

@@ -3,7 +3,7 @@
 ;; Copyright (C) 2002 David Ponce
 
 ;; Author: Perry Smith <pedz@x20-laptop.easesoftware.com>
-;; Created: 2007-04-28 07:44:44-0500
+;; Created: 2007-05-25 21:26:28-0500
 ;; Keywords: syntax
 ;; X-RCS: $Id$
 

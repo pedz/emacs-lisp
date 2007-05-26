@@ -4,7 +4,7 @@
 
 
 ;;;### (autoloads (cedet-update-autoloads) "cedet-autogen" "cedet-autogen.el"
-;;;;;;  (17213 39666))
+;;;;;;  (18007 39392))
 ;;; Generated autoloads from cedet-autogen.el
 
 (autoload (quote cedet-update-autoloads) "cedet-autogen" "\
@@ -19,7 +19,7 @@ exists." t nil)
 ;;;***
 
 ;;;### (autoloads (compare-strings) "cedet-compat" "cedet-compat.el"
-;;;;;;  (17213 39669))
+;;;;;;  (18007 39392))
 ;;; Generated autoloads from cedet-compat.el
 
 (autoload (quote compare-strings) "cedet-compat" "\
@@ -38,14 +38,14 @@ If string STR1 is greater, the value is a positive number N;
 
 ;;;***
 
-;;;### (autoloads nil "cedet-edebug" "cedet-edebug.el" (16426 56518))
+;;;### (autoloads nil "cedet-edebug" "cedet-edebug.el" (18007 39392))
 ;;; Generated autoloads from cedet-edebug.el
 
 (add-hook (quote edebug-setup-hook) (lambda nil (require (quote cedet-edebug)) (defalias (quote edebug-prin1-to-string) (quote cedet-edebug-prin1-to-string))))
 
 ;;;***
 
-;;;### (autoloads (define-fame-channel) "fame" "fame.el" (17213 39681))
+;;;### (autoloads (define-fame-channel) "fame" "fame.el" (18007 39392))
 ;;; Generated autoloads from fame.el
 
 (autoload (quote define-fame-channel) "fame" "\
@@ -66,7 +66,7 @@ messages to CHANNEL." nil (quote macro))
 
 ;;;### (autoloads (inversion-upgrade-package inversion-add-to-load-path
 ;;;;;;  inversion-find-version inversion-require) "inversion" "inversion.el"
-;;;;;;  (17881 43289))
+;;;;;;  (18007 39392))
 ;;; Generated autoloads from inversion.el
 
 (autoload (quote inversion-require) "inversion" "\
@@ -104,7 +104,7 @@ Try to upgrade PACKAGE in DIRECTORY is available." t nil)
 ;;;***
 
 ;;;### (autoloads (pprint-function pprint pprint-to-string) "pprint"
-;;;;;;  "pprint.el" (17213 39693))
+;;;;;;  "pprint.el" (18007 39392))
 ;;; Generated autoloads from pprint.el
 
 (autoload (quote pprint-to-string) "pprint" "\
