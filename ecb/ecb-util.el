@@ -45,7 +45,7 @@
 (eval-when-compile
   (require 'silentcomp))
 
-(eval-when-compile (require 'cl))
+(require 'cl)
 
 ;;; ----- Silentcomp-Defs ----------------------------------
 
@@ -357,14 +357,14 @@ implemented in another file!")
   (dolist (elem advice-list)
     (ad-enable-advice (car elem) (cdr elem) 'ecb)
     (ad-activate (car elem))))
-  
+
 (defun ecb-disable-advices (advice-list)
   "Disable all advices of ADVICE-LIST. ADVICE-LIST must have the format of
 `ecb-basic-adviced-functions'."
   (dolist (elem advice-list)
     (ad-disable-advice (car elem) (cdr elem) 'ecb)
     (ad-activate (car elem))))
-  
+
 
 (defmacro ecb-with-original-basic-functions (&rest body)
   "Evaluates BODY with all adviced basic-functions of ECB deactivated \(means
@@ -513,11 +513,11 @@ in exactly this sequence."
 If so, return the true (non-nil) value returned by PREDICATE."
   (if (or cl-rest (nlistp cl-seq))
       (catch 'cl-some
-	(apply 'map nil
-	       (function (lambda (&rest cl-x)
-			   (let ((cl-res (apply cl-pred cl-x)))
-			     (if cl-res (throw 'cl-some cl-res)))))
-	       cl-seq cl-rest) nil)
+        (apply 'map nil
+               (function (lambda (&rest cl-x)
+                           (let ((cl-res (apply cl-pred cl-x)))
+                             (if cl-res (throw 'cl-some cl-res)))))
+               cl-seq cl-rest) nil)
     (let ((cl-x nil))
       (while (and cl-seq (not (setq cl-x (funcall cl-pred (pop cl-seq))))))
       cl-x)))
@@ -617,7 +617,7 @@ This is desctructive function. LIST is returned."
   "Replace all occurences of ELEM from LIST. Comparison is done by `equal'.
 This is desctructive function. LIST is returned."
   (delq 'ecb-util-remove-marker
-        (progn          
+        (progn
           (while (ecb-position list elem)
             (setq list (ecb-replace-first-occurence list elem
                                                     'ecb-util-remove-marker)))
@@ -684,7 +684,7 @@ e f a b). If START-ELEM is not contained in SEQ then nil is returned."
     (if (> (length seq) 0)
         (aref seq 0)
       nil)))
-  
+
 
 (defun ecb-next-listelem (list elem &optional nth-next)
   "Return that element of LIST which follows directly ELEM when ELEM is an
@@ -924,7 +924,7 @@ item with KEY is cached or that no value has been put for SUBCACHE."
     (when subcache-conscell
       (setcdr subcache-conscell
               (funcall apply-fcn (cdr subcache-conscell))))))
-        
+
 (defun ecb-multicache-put-value (cache-var key subcache value)
   "Put VALUE as SUBCACHE-value of the cached item with key KEY. If there is
 already a value for this subcache and key then it will be replaced with VALUE.
@@ -1012,11 +1012,11 @@ excluded from the output."
         ;; Because XEmacs is not able to get a face-attributes-plist as value
         ;; for the special property 'face we have to create two temporary
         ;; faces here :-(
-	(key-face (copy-face 'default 'ecb-multicache-print-key-face))
-	(value-str-face (copy-face 'italic
+        (key-face (copy-face 'default 'ecb-multicache-print-key-face))
+        (value-str-face (copy-face 'italic
                                    'ecb-multicache-print-value-str-face)))
     (set-face-foreground key-face "blue")
-    (set-face-foreground value-str-face "forest green")    
+    (set-face-foreground value-str-face "forest green")
     (put-text-property 0 (length key-str) 'face 'bold key-str)
     (put-text-property 0 (length value-str) 'face value-str-face value-str)
     (save-selected-window
@@ -1046,7 +1046,7 @@ excluded from the output."
                      value))))
       (switch-to-buffer-other-window (get-buffer-create dump-buffer-name))
       (goto-char (point-min)))))
-  
+
 
 ;;; ----- User-interaction ---------------------------------
 
@@ -1292,7 +1292,7 @@ If `window-system' is nil then a simple message is displayed in the echo-area."
 ;;                                (error nil))
 ;;                              (kill-buffer ecb-user-information-msg-buffer)
 ;;                              (setq ecb-user-information-msg-buffer nil))
-                             
+
 ;;                    "OK")
 ;;     (widget-setup)
 ;;     ;; (setq buffer-read-only t)
@@ -1561,7 +1561,7 @@ is t to display the done string, or the number to display."
   (case number
     ((t)
      (ecb-working-frame-animation-display length [ "[" "]" ]
-					  ecb-working-celeron-strings))
+                                          ecb-working-celeron-strings))
     ;; All the % signs because it then gets passed to message.
     (otherwise
      (ecb-working-frame-animation-display length number
@@ -1616,12 +1616,12 @@ It returns the exit-status of the called PROGRAM."
                         program args)))
       (set-process-sentinel proc 'list)
       (while (eq (process-status proc) 'run)
-	(accept-process-output proc)
-	;; accept-process-output caused my Solaris Emacs 20.3 to crash.
-	;; If this is unreliable for you, use the below which will work
-	;; in that situation.
-	;; (if (not (sit-for timeout)) (read-event))
-	)
+        (accept-process-output proc)
+        ;; accept-process-output caused my Solaris Emacs 20.3 to crash.
+        ;; If this is unreliable for you, use the below which will work
+        ;; in that situation.
+        ;; (if (not (sit-for timeout)) (read-event))
+        )
       (process-exit-status proc))))
 
 ;;; ----- Buffers and files --------------------------------
@@ -1817,7 +1817,7 @@ height is that fraction of the frame."
                          (/ (1- (frame-height)) 2)))
              (enlargement (- norm-val (ecb-window-full-height window))))
         (save-selected-window
-          (select-window window)          
+          (select-window window)
           (if (> enlargement 0)
               (enlarge-window enlargement))))
     (error "Window is not alive!")))
@@ -1835,7 +1835,7 @@ the window-object. If that buffer is not displayed in the `ecb-frame' then
 nothing happens and nil is returned."
   (let ((window (get-buffer-window buffer-or-name ecb-frame)))
     (if window
-	(select-window window)
+        (select-window window)
       nil)))
 
 (defmacro ecb-exec-in-window (buffer-or-name &rest body)
@@ -1899,14 +1899,14 @@ the same ordering as `other-window' would walk through the frame."
 (defun ecb-seconds-to-time (seconds)
   "Convert SECONDS (a floating point number) to an Emacs time structure."
   (list (floor seconds 65536)
-	(floor (mod seconds 65536))
-	(floor (* (- seconds (ffloor seconds)) 1000000))))
+        (floor (mod seconds 65536))
+        (floor (* (- seconds (ffloor seconds)) 1000000))))
 
 (defun ecb-subtract-time (t1 t2)
   "Subtract two internal times and return the result as internal time."
   (let ((borrow (< (cadr t1) (cadr t2))))
     (list (- (car t1) (car t2) (if borrow 1 0))
-	  (- (+ (if borrow 65536 0) (cadr t1)) (cadr t2)))))
+          (- (+ (if borrow 65536 0) (cadr t1)) (cadr t2)))))
 
 (defun ecb-time-diff (t1 t2 &optional rounded)
   "Return the difference between time T1 and T2 in seconds \(can be a
@@ -1914,7 +1914,7 @@ floating-point number). If optional arg ROUNDED is not nil the result is a
 rounded integer."
   (funcall (if rounded 'round 'identity)
            (ecb-time-to-seconds (ecb-subtract-time t1 t2))))
-  
+
 ;; (let ((t1 nil)
 ;;       (t2 nil))
 ;;   (setq t1 (current-time))
@@ -1926,7 +1926,7 @@ rounded integer."
   "Say whether time T1 is less than time T2."
   (or (< (car t1) (car t2))
       (and (= (car t1) (car t2))
-	   (< (nth 1 t1) (nth 1 t2)))))
+           (< (nth 1 t1) (nth 1 t2)))))
 
 ;;; ----- Ringstuff ----------------------------------------
 
@@ -2013,14 +2013,14 @@ cons-cell \('test-inner-loop . \"test\")"
   (interactive)
   (ecb-throw-on-input 'done-die)
   (message "Exit Code: %s"
-	   (ecb-exit-on-input 'testing
-	     (let ((inhibit-quit nil)
-		   (message-log-max nil))
-	       (while t
-		 (message "Looping ...")
-		 (ecb-throw-on-input 'test-inner-loop "test")
+           (ecb-exit-on-input 'testing
+             (let ((inhibit-quit nil)
+                   (message-log-max nil))
+               (while t
+                 (message "Looping ...")
+                 (ecb-throw-on-input 'test-inner-loop "test")
                  )
-	       'exit))))
+               'exit))))
 
 
 ;;; ----- Provide ------------------------------------------

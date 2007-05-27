@@ -43,7 +43,7 @@
 ;;   the Semantic Bovinator, or Imenu, or etags, for getting this list so all
 ;;   languages supported by any of these tools are automatically supported by
 ;;   ECB too)
-;; - a history of recently visited files, 
+;; - a history of recently visited files,
 ;; - the Speedbar and
 ;; - output from compilation (the "*compilation*" window) and other modes like
 ;;   help, grep etc. or whatever a user defines to be displayed in this
@@ -137,7 +137,6 @@
 (eval-when-compile
   (require 'silentcomp))
 
-
 ;; We need this libraries already here if we miss some requirements and we
 ;; want to offer the user to download them.
 (require 'ecb-upgrade)
@@ -145,7 +144,7 @@
 
 ;; TODO: Klaus Berndl <klaus.berndl@sdm.de>: When the cedet 2.X library is
 ;; stable then we should handle here cedet instead of these three single
-;; libraries. 
+;; libraries.
 
 ;; if we miss some of the requirements we offer the user to download and
 ;; install them if Emacs is started interactive or - in batch mode - we
@@ -416,7 +415,7 @@ also be changed during running ECB."
                    (set sym val)
                    (ecb-activate-ecb-autocontrol-functions
                     val 'ecb-stealthy-updates))))
-                    
+
 
 
 (defcustom ecb-minor-mode-text " ECB"
@@ -620,7 +619,7 @@ Depending on the contents of current buffer this function performs several
 synchronizing tasks but only if ECB is active and point stays in an
 edit-window.
 
-Running the hooks in `ecb-current-buffer-sync-hook'."  
+Running the hooks in `ecb-current-buffer-sync-hook'."
   (when (and ecb-minor-mode
              (not ecb-windows-hidden)
              (ecb-point-in-edit-window))
@@ -641,7 +640,7 @@ Running the hooks in `ecb-current-buffer-sync-hook'."
     (ecb-current-buffer-sync))
   (ecb-debug-autocontrol-fcn-error 'ecb-window-sync-function
                                    "End: Cur-buf: %s" (current-buffer)))
-  
+
 
 
 (defun ecb-window-sync ()
@@ -1421,14 +1420,14 @@ always the ECB-frame if called from another frame."
 
   (if ecb-use-recursive-edit
       (if ecb-minor-mode
-	  (progn
-	    (message "ECB already activated. Drawing layout.")
-	    (ecb-redraw-layout))
-	(catch 'exit
-	  (progn
-	    (ecb-activate--impl)
-	    (recursive-edit))
-	  (ecb-deactivate-internal)))
+          (progn
+            (message "ECB already activated. Drawing layout.")
+            (ecb-redraw-layout))
+        (catch 'exit
+          (progn
+            (ecb-activate--impl)
+            (recursive-edit))
+          (ecb-deactivate-internal)))
     (ecb-activate--impl))
   ecb-minor-mode)
 
@@ -1482,7 +1481,7 @@ If ECB detects a problem it is reported and then an error is thrown."
   (when (boundp 'semantic-version)
     (let ((err-msg
            (cond (;; cedet not properly installed but semantic 2.X is loaded
-		  ;; into emacs
+                  ;; into emacs
                   (and (not (featurep 'cedet))
                        ecb-semantic-2-loaded)
                   (concat (format "Currently semantic %s is loaded but cedet is not correctly installed.\n"
@@ -1520,7 +1519,7 @@ If ECB detects a problem it is reported and then an error is thrown."
                           "If you use the Makefile check the variables CEDET, SEMANTIC, EIEIO and SPEEDBAR\n"
                           "before compiling!"))
                  (t ""))))
-      (unless (= 0 (length err-msg)) 
+      (unless (= 0 (length err-msg))
         (with-output-to-temp-buffer "*ECB semantic-load problems*"
           (princ "Currently ECB can not be activated cause of the following reason:\n\n")
           (princ err-msg)
@@ -1532,7 +1531,7 @@ If ECB detects a problem it is reported and then an error is thrown."
   "See `ecb-activate'.  This is the implementation of ECB activation."
   (when (or (null ecb-frame) (not (frame-live-p ecb-frame)))
     (setq ecb-frame (selected-frame)))
-  
+
   (if ecb-minor-mode
       (when (and (not (equal (selected-frame) ecb-frame))
                  (or (equal ecb-activation-selects-ecb-frame-if-already-active t)
@@ -1553,10 +1552,10 @@ If ECB detects a problem it is reported and then an error is thrown."
         (when (and ecb-running-xemacs
                    (boundp 'progress-feedback-use-echo-area))
           (ecb-modify-emacs-variable 'progress-feedback-use-echo-area 'store t))
-      
+
         ;; checking if there are semantic-load problems
         (ecb-check-semantic-load)
-              
+
         ;; checking the requirements
         (ecb-check-requirements)
 
@@ -1579,13 +1578,13 @@ If ECB detects a problem it is reported and then an error is thrown."
                 (ecb-upgrade-not-compatible-options)
                 (ecb-upgrade-renamed-options)
                 (setq ecb-upgrade-check-done t))
-      
+
               ;; first initialize the whole layout-engine
               (ecb-initialize-layout)
 
               ;; initialize internals
               (ecb-initialize-all-internals (not ecb-clear-caches-before-activate))
-    
+
               ;; enable permanent advices - these advices will never being
               ;; deactivated after first activation of ECB unless
               ;; `ecb-split-edit-window-after-start' is not 'before-activation
@@ -1597,7 +1596,7 @@ If ECB detects a problem it is reported and then an error is thrown."
 
               ;; enable advices for the compatibility with other packages
               (ecb-enable-advices ecb-compatibility-advices)
-            
+
               ;; set the ecb-frame
               (let ((old-ecb-frame ecb-frame))
                 (if ecb-new-ecb-frame
@@ -1616,23 +1615,23 @@ If ECB detects a problem it is reported and then an error is thrown."
               (select-frame ecb-frame)
 
               (ecb-enable-own-temp-buffer-show-function t)
-      
+
               ;; now we can activate ECB
 
               ;; first we run all tree-buffer-creators
               (ecb-tree-buffer-creators-run)
-    
+
               ;; activate the eshell-integration - does not load eshell but
               ;; prepares ECB to run eshell right - if loaded and activated
               (ecb-eshell-activate-integration)
-      
+
               ;; we need some hooks
               (add-hook (ecb--semantic-after-partial-cache-change-hook)
                         'ecb-update-after-partial-reparse t)
               (add-hook (ecb--semantic-after-toplevel-cache-change-hook)
                         'ecb-rebuild-methods-buffer-with-tagcache t)
 ;;               (add-hook (ecb--semantic--before-fetch-tags-hook)
-;;                         'ecb-prevent-from-parsing-if-exceeding-threshold)              
+;;                         'ecb-prevent-from-parsing-if-exceeding-threshold)
               (ecb-activate-ecb-autocontrol-functions ecb-highlight-tag-with-point-delay
                                                       'ecb-tag-sync)
               (ecb-activate-ecb-autocontrol-functions ecb-window-sync-delay
@@ -1658,10 +1657,10 @@ If ECB detects a problem it is reported and then an error is thrown."
               (ecb-stealthy-function-state-init)
               (ecb-activate-ecb-autocontrol-functions ecb-stealthy-tasks-delay
                                                       'ecb-stealthy-updates)
-            
+
               ;; running the compilation-buffer update first time
               (ecb-compilation-buffer-list-init)
-      
+
               ;; ediff-stuff; we operate here only with symbols to avoid bytecompiler
               ;; warnings
               (if (boundp 'ediff-quit-hook)
@@ -1677,7 +1676,7 @@ If ECB detects a problem it is reported and then an error is thrown."
 
               ;; enabling the VC-support
               (ecb-vc-enable-internals 1)
-            
+
               ;; menus - dealing with the menu for XEmacs is really a pain...
               (when ecb-running-xemacs
                 (let ((dummy-buf-name " *dummytogetglobalmap*"))
@@ -1709,7 +1708,7 @@ If ECB detects a problem it is reported and then an error is thrown."
            (ecb-clean-up-after-activation-failure
             "Errors during the hooks of ecb-activate-before-layout-draw-hook."
             err-obj)))
-         
+
         (setq ecb-minor-mode t)
 
         ;; now we draw the screen-layout of ECB.
@@ -1724,7 +1723,7 @@ If ECB detects a problem it is reported and then an error is thrown."
                                           (not (ecb-window-configuration-invalidp
                                                 ecb-last-window-config-before-deactivation)))))
               (ecb-enable-temp-buffer-shrink-to-fit ecb-compile-window-height)
-              (if use-last-win-conf                     
+              (if use-last-win-conf
                   (setq ecb-edit-area-creators
                         (nth 4 ecb-last-window-config-before-deactivation)))
               (ecb-redraw-layout-full 'no-buffer-sync
@@ -1747,10 +1746,10 @@ If ECB detects a problem it is reported and then an error is thrown."
                  (case ecb-split-edit-window-after-start
                    (horizontal (split-window-horizontally))
                    (vertical (split-window-vertically)))))
-            
+
               ;; now we synchronize all ECB-windows
               (ecb-window-sync)
-            
+
               ;; now update all the ECB-buffer-modelines
               (ecb-mode-line-format))
           (error
@@ -1884,7 +1883,7 @@ does all necessary after finishing ediff."
 
       (setq ecb-last-window-config-before-deactivation
             (ecb-current-window-configuration))
-      
+
       ;; deactivating the adviced functions
       (ecb-activate-adviced-functions nil)
       (ecb-disable-advices ecb-basic-adviced-functions)
@@ -1896,7 +1895,7 @@ does all necessary after finishing ediff."
       (ecb-enable-ecb-advice 'one-window-p 'around -1)
       ;; we disable the permanent advices later
 
-      (ecb-enable-own-temp-buffer-show-function nil)      
+      (ecb-enable-own-temp-buffer-show-function nil)
 
       (ecb-enable-temp-buffer-shrink-to-fit nil)
 
@@ -1904,7 +1903,7 @@ does all necessary after finishing ediff."
       (ignore-errors (ecb-speedbar-deactivate))
 
       ;; deactivates the eshell-integration; this disables also the
-      ;; eshell-advices! 
+      ;; eshell-advices!
       (ecb-eshell-deactivate-integration)
 
       ;; For XEmacs
@@ -1917,7 +1916,7 @@ does all necessary after finishing ediff."
       (remove-hook (ecb--semantic-after-toplevel-cache-change-hook)
                    'ecb-rebuild-methods-buffer-with-tagcache)
 ;;       (remove-hook (ecb--semantic--before-fetch-tags-hook)
-;;                 'ecb-prevent-from-parsing-if-exceeding-threshold)      
+;;                 'ecb-prevent-from-parsing-if-exceeding-threshold)
       (dolist (timer-elem ecb-idle-timer-alist)
         (ecb-cancel-timer (cdr timer-elem)))
       (setq ecb-idle-timer-alist nil)
@@ -1931,7 +1930,7 @@ does all necessary after finishing ediff."
       (remove-hook 'kill-buffer-hook 'ecb-kill-buffer-hook)
 
       (remove-hook 'find-file-hooks 'ecb-find-file-hook)
-      
+
       (if (get 'ediff-quit-hook 'ecb-ediff-quit-hook-value)
           (setq ediff-quit-hook (get 'ediff-quit-hook
                                      'ecb-ediff-quit-hook-value))
@@ -1951,7 +1950,7 @@ does all necessary after finishing ediff."
               (if (car (find-menu-item current-menubar
                                        (list ecb-menu-name)))
                   (delete-menu-item (list ecb-menu-name)))))))
-      
+
       (remove-hook (if ecb-running-xemacs
                        'activate-menubar-hook
                      'menu-bar-update-hook)
@@ -1960,7 +1959,7 @@ does all necessary after finishing ediff."
       ;; run any personal hooks
       (unless run-no-hooks
         (run-hooks 'ecb-deactivate-hook))
-    
+
       ;; clear the ecb-frame. Here we try to preserve the split-state after
       ;; deleting the ECB-screen-layout.
       (when (frame-live-p ecb-frame)
@@ -1978,10 +1977,10 @@ does all necessary after finishing ediff."
               (ecb-make-windows-not-dedicated ecb-frame)
 
               ;; deletion of all windows. (All other advices are already
-              ;; disabled!) 
+              ;; disabled!)
               (ecb-with-original-permanent-functions
                (delete-other-windows))
-              
+
               ;; some paranoia....
               (set-window-dedicated-p (selected-window) nil)
 
@@ -1992,7 +1991,7 @@ does all necessary after finishing ediff."
                   (ecb-with-original-permanent-functions
                    (ecb-restore-edit-area))
                 (ecb-edit-area-creators-init))
-              
+
               (setq edit-win-list-after-redraw (ecb-canonical-edit-windows-list))
 
               ;; a safety-check if we have now at least as many windows as
@@ -2013,7 +2012,7 @@ does all necessary after finishing ediff."
               ;; at the end we always stay in that window as before the
               ;; deactivation.
               (when (integerp window-before-redraw)
-                (ecb-select-edit-window window-before-redraw))       
+                (ecb-select-edit-window window-before-redraw))
               ;; if we were in an edit-window before deactivation let us go to
               ;; the old place
               (when pos-before-redraw
@@ -2025,10 +2024,10 @@ does all necessary after finishing ediff."
                         (car oops) (cdr oops))
            (ignore-errors (ecb-make-windows-not-dedicated ecb-frame))
            (ignore-errors (delete-other-windows))))
-        
+
         (if (get 'ecb-frame 'ecb-new-frame-created)
             (ignore-errors (delete-frame ecb-frame t))))
-        
+
       (ecb-initialize-layout)
 
       ;; we do NOT disable the permanent-advices of
@@ -2045,7 +2044,7 @@ does all necessary after finishing ediff."
       (dolist (tb-elem ecb-tree-buffers)
         (tree-buffer-destroy (car tb-elem)))
       (ecb-tree-buffers-init)
-      
+
       (setq ecb-activated-window-configuration nil)
 
       (setq ecb-minor-mode nil)
@@ -2056,8 +2055,8 @@ does all necessary after finishing ediff."
       (when (and ecb-running-xemacs
                  (boundp 'progress-feedback-use-echo-area))
         (ecb-modify-emacs-variable 'progress-feedback-use-echo-area 'restore))))
-      
-  
+
+
   (if (null ecb-minor-mode)
       (message "The ECB is now deactivated."))
   ecb-minor-mode)
@@ -2089,8 +2088,8 @@ if the minor mode is enabled.
 FILE.el is newer than FILE.elc or if FILE.elc doesn't exist."
   (let ((elc-file (concat (ecb-file-name-sans-extension file) ".elc")))
     (if (or force
-	    (not (ecb-file-exists-p elc-file))
-	    (file-newer-than-file-p file elc-file))
+            (not (ecb-file-exists-p elc-file))
+            (file-newer-than-file-p file elc-file))
         (byte-compile-file file))))
 
 ;;;###autoload
@@ -2105,22 +2104,22 @@ exist."
           (ecb-error "Incorrect requirements; check the versions of semantic, eieio and speedbar!"))
     (ecb-check-requirements))
   (let ((load-path
-	 (append (list (ecb-file-name-directory
-			(or (locate-library "semantic")
-			    (ecb-error "Semantic is not in the load-path!")))
+         (append (list (ecb-file-name-directory
+                        (or (locate-library "semantic")
+                            (ecb-error "Semantic is not in the load-path!")))
                        (ecb-file-name-directory
-			(or (locate-library "eieio")
-			    (ecb-error "Eieio is not in the load-path!")))
+                        (or (locate-library "eieio")
+                            (ecb-error "Eieio is not in the load-path!")))
                        (ecb-file-name-directory
-			(or (locate-library "speedbar")
-			    (ecb-error "Speedbar is not in the load-path!")))
-		       (ecb-file-name-directory (locate-library "ecb")))
-		 load-path))
-	(files (ecb-directory-files (ecb-file-name-directory (locate-library "ecb"))
+                        (or (locate-library "speedbar")
+                            (ecb-error "Speedbar is not in the load-path!")))
+                       (ecb-file-name-directory (locate-library "ecb")))
+                 load-path))
+        (files (ecb-directory-files (ecb-file-name-directory (locate-library "ecb"))
                                     t)))
     (save-excursion
       (dolist (file files)
-	(if (and (string-match "\\(silentcomp\\|tree-buffer\\|ecb.*\\)\\.el$" file)
+        (if (and (string-match "\\(silentcomp\\|tree-buffer\\|ecb.*\\)\\.el$" file)
                  (not (string-match "ecb-autoloads" file)))
             (ecb-compile-file-if-necessary file force-all))))))
 
@@ -2180,8 +2179,8 @@ performance-problem!"
                           (not ecb-windows-hidden)
                           (ecb-hide-ecb-windows))))))))))
   )
-  
-  
+
+
 (add-hook 'post-command-hook 'ecb-handle-major-mode-visibilty)
 
 (add-hook 'emacs-startup-hook 'ecb-auto-activate-hook)
@@ -2335,7 +2334,7 @@ performance-problem!"
   (error
    (ecb-warning "Not critical error during supporting fontifying the ecb-macros: (error-type: %S, error-data: %S)"
                 (car oops) (cdr oops))))
-  
+
 
 ;; Klaus Berndl <klaus.berndl@sdm.de>: Cause of the magic autostart stuff of
 ;; the advice-package we must disable at load-time all these advices!!
