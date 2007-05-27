@@ -3,7 +3,7 @@
 ;;; Code:
 
 
-;;;### (autoloads (call-tree) "call-tree" "call-tree.el" (18007 39396))
+;;;### (autoloads (call-tree) "call-tree" "call-tree.el" (18008 14847))
 ;;; Generated autoloads from call-tree.el
 
 (autoload (quote call-tree) "call-tree" "\
@@ -12,7 +12,7 @@ Build a call tree to show all functions called by FUNC." t nil)
 ;;;***
 
 ;;;### (autoloads (eieio-describe-generic eieio-describe-class eieio-browse)
-;;;;;;  "eieio-opt" "eieio-opt.el" (18007 39396))
+;;;;;;  "eieio-opt" "eieio-opt.el" (18008 14847))
 ;;; Generated autoloads from eieio-opt.el
 
 (autoload (quote eieio-browse) "eieio-opt" "\
@@ -39,7 +39,7 @@ Also extracts information about all methods specific to this generic." t nil)
 ;;;***
 
 ;;;### (autoloads (enable-visual-studio-bookmarks) "linemark" "linemark.el"
-;;;;;;  (18007 39396))
+;;;;;;  (18008 14847))
 ;;; Generated autoloads from linemark.el
 
 (autoload (quote enable-visual-studio-bookmarks) "linemark" "\
@@ -53,7 +53,7 @@ Bind the viss bookmark functions to F2 related keys.
 ;;;***
 
 ;;;### (autoloads (lmcompile-do-highlight) "lmcompile" "lmcompile.el"
-;;;;;;  (18007 39396))
+;;;;;;  (18008 14847))
 ;;; Generated autoloads from lmcompile.el
 
 (autoload (quote lmcompile-do-highlight) "lmcompile" "\
@@ -63,7 +63,7 @@ Works on grep, compile, or other type mode." t nil)
 ;;;***
 
 ;;;### (autoloads (directory-tree-thing eieio-class-tree tree-test-it-all)
-;;;;;;  "tree" "tree.el" (18007 39396))
+;;;;;;  "tree" "tree.el" (18008 14847))
 ;;; Generated autoloads from tree.el
 
 (autoload (quote tree-test-it-all) "tree" "\

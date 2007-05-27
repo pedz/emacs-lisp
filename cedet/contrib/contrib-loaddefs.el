@@ -4,7 +4,7 @@
 
 
 ;;;### (autoloads (semantic-default-matlab-setup) "semantic-matlab"
-;;;;;;  "semantic-matlab.el" (18007 39403))
+;;;;;;  "semantic-matlab.el" (18008 14854))
 ;;; Generated autoloads from semantic-matlab.el
 
 (autoload (quote semantic-default-matlab-setup) "semantic-matlab" "\
@@ -16,7 +16,7 @@ Set up a buffer for parsing of MATLAB files." nil nil)
 
 ;;;### (autoloads (semantic-tag-folding-mode global-semantic-tag-folding-mode
 ;;;;;;  global-semantic-tag-folding-mode) "semantic-tag-folding"
-;;;;;;  "semantic-tag-folding.el" (18007 39403))
+;;;;;;  "semantic-tag-folding.el" (18008 14854))
 ;;; Generated autoloads from semantic-tag-folding.el
 
 (defvar global-semantic-tag-folding-mode nil "\
@@ -45,7 +45,7 @@ minor mode is enabled." t nil)
 ;;;***
 
 ;;;### (autoloads (wisent-csharp-default-setup) "wisent-csharp" "wisent-csharp.el"
-;;;;;;  (18007 39403))
+;;;;;;  (18008 14854))
 ;;; Generated autoloads from wisent-csharp.el
 
 (autoload (quote wisent-csharp-default-setup) "wisent-csharp" nil nil nil)
@@ -55,7 +55,7 @@ minor mode is enabled." t nil)
 ;;;***
 
 ;;;### (autoloads (wisent-javascript-setup-parser) "wisent-javascript"
-;;;;;;  "wisent-javascript.el" (18007 39403))
+;;;;;;  "wisent-javascript.el" (18008 14854))
 ;;; Generated autoloads from wisent-javascript.el
 
 (autoload (quote wisent-javascript-setup-parser) "wisent-javascript" "\

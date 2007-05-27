@@ -3,8 +3,8 @@
 ;;; Code:
 
 
-;;;### (autoloads (cogre-load-graph cogre) "cogre" "cogre.el" (18007
-;;;;;;  39401))
+;;;### (autoloads (cogre-load-graph cogre) "cogre" "cogre.el" (18008
+;;;;;;  14853))
 ;;; Generated autoloads from cogre.el
 
 (autoload (quote cogre) "cogre" "\
@@ -17,8 +17,8 @@ Load a graph from FILE into a new graph buffer." t nil)
 
 ;;;***
 
-;;;### (autoloads (cogre-mode) "cogre-mode" "cogre-mode.el" (18007
-;;;;;;  39401))
+;;;### (autoloads (cogre-mode) "cogre-mode" "cogre-mode.el" (18008
+;;;;;;  14853))
 ;;; Generated autoloads from cogre-mode.el
 
 (autoload (quote cogre-mode) "cogre-mode" "\
@@ -28,7 +28,7 @@ Connected Graph Editor Mode.
 ;;;***
 
 ;;;### (autoloads (cogre-uml-create cogre-uml-quick-class) "uml-create"
-;;;;;;  "uml-create.el" (18007 39401))
+;;;;;;  "uml-create.el" (18008 14853))
 ;;; Generated autoloads from uml-create.el
 
 (autoload (quote cogre-uml-quick-class) "uml-create" "\
@@ -42,7 +42,7 @@ CLASS must be a type in the current project." t nil)
 ;;;***
 
 ;;;### (autoloads (wisent-dot-setup-parser) "wisent-dot" "wisent-dot.el"
-;;;;;;  (18007 39401))
+;;;;;;  (18008 14853))
 ;;; Generated autoloads from wisent-dot.el
 
 (autoload (quote wisent-dot-setup-parser) "wisent-dot" "\

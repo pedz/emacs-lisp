@@ -119,10 +119,12 @@
                (modes  . '(ruby-mode))))
 
 ;; Snippets
-(snippet-with-abbrev-table 'ruby-mode-abbrev-table
-  ("inj" . "$>inject($${[]}) do |$${memo}, $${item}|\n$>$.\nend$>")
-  ("def" . "$>def $${method}($${*args})\n$>$.\nend$>")
-  ("dt"  . "$>def test_$${method}\n$>$.\nend$>"))
+(eval-and-compile
+  (snippet-with-abbrev-table
+   'ruby-mode-abbrev-table
+   ("inj" . "$>inject($${[]}) do |$${memo}, $${item}|\n$>$.\nend$>")
+   ("def" . "$>def $${method}($${*args})\n$>$.\nend$>")
+   ("dt"  . "$>def test_$${method}\n$>$.\nend$>")))
 
 ;; Some ruby-specific key-bindings
 (add-hook 'ruby-mode-hook 'llasram/ruby-extra-keys)

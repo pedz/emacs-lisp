@@ -7,7 +7,7 @@
 ;;;;;;  ede-documentation-files ede-description ede-name project-make-dist
 ;;;;;;  project-compile-target project-compile-project project-edit-file-target
 ;;;;;;  ede-compile-target ede-remove-file ede-project ede-target)
-;;;;;;  "ede" "ede.el" (18007 39399))
+;;;;;;  "ede" "ede.el" (18008 14850))
 ;;; Generated autoloads from ede.el
 
 (autoload (quote ede-target) "ede" "\
@@ -71,7 +71,7 @@ could become slow in time." nil nil)
 ;;;***
 
 ;;;### (autoloads (ede-pmake-varname) "ede-pmake" "ede-pmake.el"
-;;;;;;  (18007 39399))
+;;;;;;  (18008 14850))
 ;;; Generated autoloads from ede-pmake.el
 
 (autoload (quote ede-pmake-varname) "ede-pmake" "\
@@ -79,15 +79,15 @@ Convert OBJ into a variable name name, which converts .  to _." nil nil)
 
 ;;;***
 
-;;;### (autoloads nil "ede-proj" "ede-proj.el" (18007 39399))
+;;;### (autoloads nil "ede-proj" "ede-proj.el" (18008 14850))
 ;;; Generated autoloads from ede-proj.el
 
 (add-to-list (quote auto-mode-alist) (quote ("Project\\.ede" . emacs-lisp-mode)))
 
 ;;;***
 
-;;;### (autoloads (ede-update-version) "ede-util" "ede-util.el" (18007
-;;;;;;  39399))
+;;;### (autoloads (ede-update-version) "ede-util" "ede-util.el" (18008
+;;;;;;  14850))
 ;;; Generated autoloads from ede-util.el
 
 (autoload (quote ede-update-version) "ede-util" "\

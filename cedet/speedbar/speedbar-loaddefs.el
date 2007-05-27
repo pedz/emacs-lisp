@@ -3,7 +3,7 @@
 ;;; Code:
 
 
-;;;### (autoloads (rpm) "rpm" "rpm.el" (18007 39388))
+;;;### (autoloads (rpm) "rpm" "rpm.el" (18008 14839))
 ;;; Generated autoloads from rpm.el
 
 (autoload (quote rpm) "rpm" "\
@@ -11,8 +11,8 @@ Red Hat Package Management in Emacs." t nil)
 
 ;;;***
 
-;;;### (autoloads (gud-speedbar-buttons) "sb-gud" "sb-gud.el" (18007
-;;;;;;  39388))
+;;;### (autoloads (gud-speedbar-buttons) "sb-gud" "sb-gud.el" (18008
+;;;;;;  14839))
 ;;; Generated autoloads from sb-gud.el
 
 (autoload (quote gud-speedbar-buttons) "sb-gud" "\
@@ -23,7 +23,7 @@ off the specialized speedbar mode." nil nil)
 ;;;***
 
 ;;;### (autoloads (Info-speedbar-buttons Info-speedbar-browser) "sb-info"
-;;;;;;  "sb-info.el" (18007 39388))
+;;;;;;  "sb-info.el" (18008 14839))
 ;;; Generated autoloads from sb-info.el
 
 (autoload (quote Info-speedbar-browser) "sb-info" "\
@@ -39,7 +39,7 @@ BUFFER is the buffer speedbar is requesting buttons for." nil nil)
 ;;;***
 
 ;;;### (autoloads (rmail-speedbar-buttons) "sb-rmail" "sb-rmail.el"
-;;;;;;  (18007 39388))
+;;;;;;  (18008 14839))
 ;;; Generated autoloads from sb-rmail.el
 
 (autoload (quote rmail-speedbar-buttons) "sb-rmail" "\
@@ -50,8 +50,8 @@ current message into that RMAIL folder." nil nil)
 
 ;;;***
 
-;;;### (autoloads (w3-speedbar-buttons) "sb-w3" "sb-w3.el" (18007
-;;;;;;  39388))
+;;;### (autoloads (w3-speedbar-buttons) "sb-w3" "sb-w3.el" (18008
+;;;;;;  14839))
 ;;; Generated autoloads from sb-w3.el
 
 (autoload (quote w3-speedbar-buttons) "sb-w3" "\
@@ -60,7 +60,7 @@ Create speedbar buttons for the current web BUFFER displayed in w3 mode." nil ni
 ;;;***
 
 ;;;### (autoloads (speedbar-get-focus speedbar-frame-mode) "speedbar"
-;;;;;;  "speedbar.el" (18007 39388))
+;;;;;;  "speedbar.el" (18008 14839))
 ;;; Generated autoloads from speedbar.el
 
 (defalias (quote speedbar) (quote speedbar-frame-mode))

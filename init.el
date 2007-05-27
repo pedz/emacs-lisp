@@ -2,6 +2,7 @@
 (setq old-load-path load-path
       inhibit-startup-message t)
 
+(add-to-list 'load-path "~/.emacs.d")
 (require 'add-paths)
 
 ;; Enable this if you develop in semantic, or develop grammars
