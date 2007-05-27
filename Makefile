@@ -13,6 +13,6 @@ LIST = \
 	wisent
 
 all :
-	$(EMACS) -batch -q --no-site-file -l ~/.emacs.d/add-paths \
+	-$(EMACS) -batch -q --no-site-file -l ~/.emacs.d/add-paths \
 		-f batch-byte-compile $$( ls *.el | egrep -v init.el )
 	for i in $(LIST) ; do ( cd $$i ; EMACS=$(EMACS) make ) ; done
