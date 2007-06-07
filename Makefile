@@ -13,6 +13,9 @@ LIST = \
 	wisent
 
 all :
+	# touch the Makefiles in cedet or it may complain
+	find cedet -name Makefile -print | xargs touch
+	# Compile local files
 	-$(EMACS) -batch -q --no-site-file -l ~/.emacs.d/add-paths \
 		-f batch-byte-compile $$( ls *.el | egrep -v init.el )
 	for i in $(LIST) ; do \
