@@ -15,4 +15,8 @@ LIST = \
 all :
 	-$(EMACS) -batch -q --no-site-file -l ~/.emacs.d/add-paths \
 		-f batch-byte-compile $$( ls *.el | egrep -v init.el )
-	for i in $(LIST) ; do ( cd $$i ; EMACS=$(EMACS) make ) ; done
+	for i in $(LIST) ; do \
+	    echo "Doing $$i"; \
+	    ( cd $$i ; EMACS=$(EMACS) make ) ; \
+	    echo "Done with $$i"; \
+	done

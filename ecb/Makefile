@@ -52,7 +52,7 @@ EMACS=emacs
 # variable to empty.
 
 #CEDET=
-CEDET=/Users/pedz/.emacs.d/cedet
+CEDET=$(HOME)/.emacs.d/cedet
 #CEDET=c:/Programme/emacs-21/site-lisp/multi-file-packages/cedet-1.0beta3b
 
 # -------- Compiling ECB with the semantic < 2.0 -------------------------
@@ -171,7 +171,7 @@ ecb: $(ecb_LISP_EL)
 	   fi; \
 	fi
 	@if test ! -z "${LOADPATH}"; then\
-	   for loadpath in ${LOADPATH}; do \
+	   for loadpath in "${LOADPATH}"; do \
 	      echo "(add-to-list 'load-path \"$$loadpath\")" >> ecb-compile-script; \
 	   done; \
 	fi
