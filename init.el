@@ -23,7 +23,8 @@
  '(shell-prompt-pattern ".+@.+<[0-9]+> on .*
 ")
  '(tool-bar-mode nil)
- '(user-full-name "Perry Smith"))
+ '(user-full-name "Perry Smith")
+ '(vc-ignore-dir-regexp "\\`\\([\\/][\\/]\\|/\\.\\.\\./\\|/net/\\|/afs/\\)\\'"))
 
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
