@@ -211,7 +211,7 @@ refresh the buffer so FORCE-ERASE is set to true"
       (setq number (concat (substring number 0 9) "," (substring number 11))))
   (if (string-match "^.....,...$" number)
       (setq number (concat number ",000")))
-  (retain-common (concat "PMR " number) pmrget (list number) number arg))
+  (retain-common (concat "PMR " number) pmrget (list "-Ai" number) number arg))
 
 ;;;###autoload
 (defun APAR ( number arg )
@@ -296,8 +296,10 @@ refresh the buffer so FORCE-ERASE is set to true"
   (if (string= queue "")
       (setq queue "pedz,165"))
   (let ((buf (retain-common (concat "cs " queue) "cs" (list queue) queue arg)))
-    (set-buffer buf)
-    (use-local-map cs-map)))
+    (if buf
+	(progn
+	  (set-buffer buf)
+	  (use-local-map cs-map)))))
 
 ;(defun get-pmrs (arg)
 ;  "Suck down all of the pmrs on my queue"
@@ -336,9 +338,11 @@ picked on."
   (interactive "sQueues: \nP")
   (let ((buf (retain-common (concat "pmrorder " queues)
 			     "pmrorder" (list "-a" queues) queues arg)))
-    (set-buffer buf)
-    (use-local-map pmrorder-map)
-    (modify-syntax-entry ?, "w")))
+    (if buf
+	(progn
+	  (set-buffer buf)
+	  (use-local-map pmrorder-map)
+	  (modify-syntax-entry ?, "w")))))
 
 ;;;###autoload
 (defun ppp ( )

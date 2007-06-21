@@ -7,16 +7,17 @@
 ;;;;;;  x-cscope-view-from-list x-cscope-goto-from-list-other-window
 ;;;;;;  x-cscope-goto-from-list cscope-find-goodies cscope-format
 ;;;;;;  cscope-wait cscope-init-process cscope-new-process cscope-bananas-are-fun
-;;;;;;  cscope-53A-process cscope-530-process cscope-52I-process
-;;;;;;  cscope-52H-process cscope-52F-process cscope-52B-process
-;;;;;;  cscope-520-process cscope-51G-process cscope-51F-process
-;;;;;;  cscope-510-process cscope-43X-process cscope-43V-process
-;;;;;;  cscope-43S-process cscope-43K-process cscope-42G-process
-;;;;;;  cscope-41M-process cscope-view-from-list cscope-goto-from-list
-;;;;;;  cscope-get-line-number cscope-find-file-include cscope-find-file
-;;;;;;  cscope-find-pattern cscope-find-string cscope-find-func-call
-;;;;;;  cscope-find-functions-called cscope-find-func cscope-find-symbol
-;;;;;;  cscope-mode) "cscope" "cscope.el" (18002 3400))
+;;;;;;  cscope-53H-process cscope-53A-process cscope-530-process
+;;;;;;  cscope-52Q-process cscope-52I-process cscope-52H-process
+;;;;;;  cscope-52F-process cscope-52B-process cscope-520-process
+;;;;;;  cscope-51G-process cscope-51F-process cscope-510-process
+;;;;;;  cscope-43X-process cscope-43V-process cscope-43S-process
+;;;;;;  cscope-43K-process cscope-42G-process cscope-41M-process
+;;;;;;  cscope-view-from-list cscope-goto-from-list cscope-get-line-number
+;;;;;;  cscope-find-file-include cscope-find-file cscope-find-pattern
+;;;;;;  cscope-find-string cscope-find-func-call cscope-find-functions-called
+;;;;;;  cscope-find-func cscope-find-symbol cscope-mode) "cscope"
+;;;;;;  "cscope.el" (18025 47815))
 ;;; Generated autoloads from cscope.el
 
 (autoload (quote cscope-mode) "cscope" "\
@@ -162,12 +163,22 @@ Not documented
 
 \(fn)" t nil)
 
+(autoload (quote cscope-52Q-process) "cscope" "\
+Not documented
+
+\(fn)" t nil)
+
 (autoload (quote cscope-530-process) "cscope" "\
 Not documented
 
 \(fn)" t nil)
 
 (autoload (quote cscope-53A-process) "cscope" "\
+Not documented
+
+\(fn)" t nil)
+
+(autoload (quote cscope-53H-process) "cscope" "\
 Not documented
 
 \(fn)" t nil)

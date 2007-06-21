@@ -276,12 +276,16 @@ spot"
   (interactive)
   (cscope-bananas-are-fun "/.../austin.ibm.com/fs/projects/aix/aix52H"
 			  "/52H_COMPLETE" ))
-
 ;;;###autoload
 (defun cscope-52I-process ( )
   (interactive)
   (cscope-bananas-are-fun "/.../austin.ibm.com/fs/projects/aix/aix52I"
 			  "/52I_COMPLETE" ))
+;;;###autoload
+(defun cscope-52Q-process ( )
+  (interactive)
+  (cscope-bananas-are-fun "/.../austin.ibm.com/fs/projects/aix/aix52Q"
+			  "/52Q_COMPLETE" ))
 
 ;;;###autoload
 (defun cscope-530-process ( )
@@ -294,6 +298,11 @@ spot"
   (interactive)
   (cscope-bananas-are-fun "/.../austin.ibm.com/fs/projects/aix/aix53A"
 			  "/53A_COMPLETE" ))
+;;;###autoload
+(defun cscope-53H-process ( )
+  (interactive)
+  (cscope-bananas-are-fun "/.../austin.ibm.com/fs/projects/aix/aix53H"
+			  "/53H_COMPLETE" ))
 
 ;;;###autoload
 (defun cscope-bananas-are-fun ( base build )
