@@ -15,6 +15,7 @@
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
+ '(case-fold-search nil)
  '(ecb-options-version "2.33beta1")
  '(ecb-primary-secondary-mouse-buttons (quote mouse-1--mouse-2))
  '(ecb-tip-of-the-day nil)
@@ -35,8 +36,8 @@
 
 (require 'flyspell)
 (require 'align)
-(require 'cedet-setup)
-(require 'ecb-setup)
+;; (require 'cedet-setup)
+;; (require 'ecb-setup)
 (require 'nxml-setup)
 (require 'mmm-setup)
 (require 'find-recursive)
