@@ -71,6 +71,9 @@
 (defvar ri-ruby-script "/home/kristof/.xemacs/ri-emacs.rb"
   "the ruby script to communicate with")
 
+(defvar ri-ruby-paths nil
+  "Documentation Search Paths")
+
 (defvar ri-ruby-process nil
   "The current ri process where emacs is interacting with")
 
@@ -85,7 +88,7 @@
 	 (setq ri-ruby-process
 	       (start-process "ri-ruby-process"
 			      nil
-			      ri-ruby-program ri-ruby-script))
+			      ri-ruby-program ri-ruby-script ri-ruby-paths))
 	 (process-kill-without-query ri-ruby-process) ;kill when ending emacs
 	 (ri-ruby-process-check-ready)))
   ri-ruby-process)
