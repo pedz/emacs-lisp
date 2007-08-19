@@ -7,7 +7,7 @@
 (require 'ruby-electric)
 (require 'inf-ruby)
 (require 'rubydb)
-(require 'rails-server)
+; (require 'rails-server)
 (load "ri-ruby")
 
 ;; Set those modes!
