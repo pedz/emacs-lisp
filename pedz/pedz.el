@@ -199,7 +199,8 @@
 
 (setq compilation-finish-function 'v4-build-compilation-finish)
 
-(if (eq window-system 'x)
+(if (or (eq window-system 'x)
+  (eq window-system 'mac))
     (progn
       (require 'x-stuff)
       (setup-x)))

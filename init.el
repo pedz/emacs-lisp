@@ -23,8 +23,9 @@
  '(ecb-tip-of-the-day nil)
  '(ecb-wget-setup (quote ("Please_add_wget_to_your_path_or_set_the_fullpath_to_wget" . other)))
  '(inhibit-splash-screen t)
+ '(mmm-submode-decoration-level 2)
  '(shell-prompt-pattern ".+@.+<[0-9]+> on .*
-" t)
+")
  '(tool-bar-mode nil)
  '(user-full-name "Perry Smith")
  '(vc-ignore-dir-regexp "\\`\\([\\/][\\/]\\|/\\.\\.\\./\\|/net/\\|/afs/\\)\\'"))
@@ -34,7 +35,9 @@
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
- )
+ '(mmm-code-submode-face ((t (:foreground "Plum"))))
+ '(mmm-comment-submode-face ((t (:foreground "Plum" :slant italic))))
+ '(mmm-output-submode-face ((t (:foreground "Plum" :underline t)))))
 
 (require 'flyspell)
 (require 'align)

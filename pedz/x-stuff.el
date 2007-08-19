@@ -17,7 +17,9 @@
 
 (defun pick-random-color ()
   "Picks a random color from favorite-colors"
-  (nth (random 15) favorite-colors))
+  ;; currently set to just black...
+  (or "black"
+      (nth (random (length favorite-colors) favorite-colors))))
 
 (defun x-alter-params ()
   "before-make-frame-hook is set to this so this is called before the
@@ -36,14 +38,20 @@ variable in make-frame) what ever things it wants to"
 	(append 
 	 '((minibuffer . t) (menu-bar-lines . 0))
 	 (if (x-display-color-p)
-	     (list (cons 'background-color (pick-random-color))
-		   (cons 'cursor-color "DarkSlateBlue")
-		   (cons 'foreground-color "black")
-		   (cons 'mouse-color "Blue"))
+	     (if nil
+		 (list (cons 'background-color (pick-random-color))
+		       (cons 'cursor-color "SlateBlue")
+		       (cons 'foreground-color "black")
+		       (cons 'mouse-color "Blue"))
+	       (list (cons 'background-color "black")
+		       (cons 'cursor-color "SlateBlue")
+		       (cons 'foreground-color "grey")
+		       (cons 'mouse-color "Blue")))
 	   (list (cons 'background-color "black")
 		 (cons 'cursor-color "white")
 		 (cons 'foreground-color "white")
-		 (cons 'mouse-color "grey")))))
+		 (cons 'mouse-color "grey"))))))
+	   
 
   ;;;
   ;;; We put the initial frame in the top left corner and make it the
@@ -56,6 +64,6 @@ variable in make-frame) what ever things it wants to"
 ;		    '((top . 5) (left . 5) (width . 83) (height . 1000))
 ;		  nil))
 ;		  )
-		  )
+;		  )
 
 (provide 'x-stuff)
