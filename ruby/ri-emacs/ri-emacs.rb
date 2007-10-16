@@ -70,7 +70,11 @@ class RiEmacs
          end
       end
 
-      paths = paths || RI::Paths::PATH
+      if paths && paths != ""
+         paths = paths.split(':').find_all {|p| p && File.directory?(p)} + RI::Paths::PATH
+      else
+         paths = RI::Paths::PATH
+      end
 
       @ri_reader = RI::RiReader.new(RI::RiCache.new(paths))
       @display = RiDisplay.new(options)
@@ -182,18 +186,37 @@ class RiEmacs
    end
 
    def display_info(keyw)
+     $debug.puts("in other display_info 1")
       desc, methods, namespaces = lookup_keyw(keyw)
+     $debug.puts("in other display_info 2")
       return false if desc.nil?
       
+     $debug.puts("debug #{__LINE__}")
       if desc.method_name
+     $debug.puts("debug #{__LINE__}")
          methods = methods.find_all { |m| m.name == desc.method_name }
+     $debug.puts("debug #{__LINE__}")
          return false if methods.empty?
+     $debug.puts("debug #{__LINE__}")
          meth = @ri_reader.get_method(methods[0])
-         @display.display_method_info(meth)
+     $debug.puts("debug #{__LINE__}")
+        begin
+          @display.display_method_info(meth)
+        rescue => detail
+          $debug.puts("detail is #{detail.class}")
+          $debug.print detail.message
+          $debug.print detail.backtrace.join('\n')
+          $debug.puts("debug #{__LINE__}"); $debug.flush
+        end
+     $debug.puts("debug #{__LINE__}")
       else
+     $debug.puts("debug #{__LINE__}")
          namespaces = namespaces.find_all { |n| n.full_name == desc.full_class_name }
+     $debug.puts("debug #{__LINE__}")
          return false if namespaces.empty?
+     $debug.puts("debug #{__LINE__}")
          klass = @ri_reader.get_class(namespaces[0])
+     $debug.puts("debug #{__LINE__}")
          @display.display_class_info(klass, @ri_reader)
       end
 
@@ -252,10 +275,15 @@ class Command
       
    def read_next
       line = STDIN.gets
+     $debug.puts "line is #{line}"
       cmd, param = /(\w+)(.*)$/.match(line)[1..2]
+     $debug.puts "cmd is #{cmd} param is #{param}"
       method = Command2Method[cmd]
+     $debug.puts "method is #{method}"
       fail "unrecognised command: #{cmd}" if method.nil?
+     $debug.puts "still here"
       send(method, param.strip)
+     $debug.puts "yaba daba"
       STDOUT.flush
    end
 
@@ -285,7 +313,9 @@ class Command
    end
 
    def display_info(keyw)
+     $debug.puts("in display_info 1 @ri.class is #{@ri.class}")
       @ri.display_info(keyw)
+     $debug.puts("in display_info 2")
       STDOUT.puts "RI_EMACS_END_OF_INFO"
    end
 
@@ -300,12 +330,14 @@ class Command
 end
 
 arg = ARGV[0]
+$debug = Kernel.open("/tmp/ri-emacs", "w")
 
 if arg == "--test"
    cmd = Command.new(RiEmacs.new(nil))
    cmd.test
    puts "Test succeeded"
 else
+  $debug.puts "here"
    cmd = Command.new(RiEmacs.new(arg))
    STDOUT.puts 'READY'
    STDOUT.flush

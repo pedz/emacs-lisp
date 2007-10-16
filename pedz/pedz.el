@@ -235,6 +235,62 @@
 (load "myloaddefs")
 (display-time)
 
+(defun unix-find ( dir &optional filter dont-add-self)
+  "Acts similar to the unix find command.  Starting from DIR,
+  recursively descends the file system calling FILTER.  Returns a list
+  of file entries like directory-files-and-attributes returns.  FILTER
+  is called with each file entry.  If it returns true, the file entry
+  is added to the list that is returned.  This is a recursive
+  function.  A third argument, if false, tests and adds DIR to the
+  result list. FILTER defaults to t (return all files)"
+  ;; Copyright Perry Smith, 2007
+  ;; Aug 19, 2007
+
+  ;; Default filter is to return everything
+  (unless filter
+    (setq filter (function (lambda (file) t))))
+  
+  ;; Set result to dir plus its attributes if appropriate
+  (let* ((temp-file (unless dont-add-self
+		      (cons dir (file-attributes dir))))
+	 (result (unless (or dont-add-self
+			     (not (funcall filter temp-file)))
+		   (list temp-file))))
+
+    ;; For each file in the directory, we call the lambda function
+    (mapc
+     (function (lambda (file)
+		 ;; pick out file-name and is-dir.  Create full-name
+		 ;; which is "dir/file-name"
+		 (let* ((file-name (nth 0 file))
+			(full-name (concat dir "/" file-name))
+			(is-dir (nth 1 file)))
+
+		   ;; for . and .. we do nothing
+		   (unless (or (string-equal file-name ".")
+			       (string-equal file-name ".."))
+
+		     ;; call filter to see if file should be added to
+		     ;; the result list.  We add a modified version of
+		     ;; file by changing the file name to be the full
+		     ;; path relative to the origin.
+		     (if (funcall filter file)
+			 (setq result (cons (cons full-name 
+						  (cdr file))
+					    result)))
+
+		     ;; If file is a directory, recursively call
+		     ;; ourselves.  We pass t as the third argument
+		     ;; because we have already added this file to the
+		     ;; result list.  We append what the recursive
+		     ;; calls returns with the results we have so far.
+		     (if is-dir
+			 (setq result (append result
+					      (unix-find full-name filter t))))))))
+     (directory-files-and-attributes dir nil nil t))
+    ;; return the result
+    result))
+
 ;;; (require 'psgml-setup)
 
 (provide 'pedz)

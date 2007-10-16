@@ -50,5 +50,6 @@
 (require 'ruby-setup)
 (require 'rails-setup)
 (require 'css-setup)
+(require 'javascript-setup)
 ;; (require 'wisent-setup)
 (require 'pedz)

@@ -7,6 +7,8 @@
 ;; Some eval-on-load stuff
 (require 'css-mode)
 
+(add-to-list 'auto-mode-alist '("\\.css$" . css-mode))
+
 (defadvice cssm-complete-property
   (after cssm-complete-add-space activate)
   "Modify CSS completion to add a space after full completion."

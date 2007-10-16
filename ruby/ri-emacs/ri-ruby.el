@@ -71,8 +71,8 @@
 (defvar ri-ruby-script "/home/kristof/.xemacs/ri-emacs.rb"
   "the ruby script to communicate with")
 
-(defvar ri-ruby-paths nil
-  "Documentation Search Paths")
+(defvar ri-ruby-paths ""
+  "*Documentation Search Paths")
 
 (defvar ri-ruby-process nil
   "The current ri process where emacs is interacting with")

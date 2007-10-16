@@ -7,11 +7,11 @@
 (require 'ruby-electric)
 (require 'inf-ruby)
 (require 'rubydb)
-; (require 'rails-server)
 (load "ri-ruby")
 
 ;; Set those modes!
 (add-to-list 'auto-mode-alist '("\\.rb$" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.rake$" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\(?:^\\|/\\)Rakefile$" . ruby-mode))
 (add-to-list 'auto-mode-alist '("\\.gemspec$" . ruby-mode))
 (add-to-list 'interpreter-mode-alist '("ruby" . ruby-mode))

@@ -1,0 +1,6 @@
+#!/bin/sh
+
+echo "Just hit return at the password prompt"
+EDB=-d:pserver:anonymous@ecb.cvs.sourceforge.net:/cvsroot/ecb
+cvs ${EDB} login 
+cvs -z3 ${EDB} co -P ecb
