@@ -305,6 +305,23 @@ spot"
 			  "/53H_COMPLETE" ))
 
 ;;;###autoload
+(defun cscope-53J-process ( )
+  (interactive)
+  (cscope-bananas-are-fun "/.../austin.ibm.com/fs/projects/aix/aix53J"
+			  "/53J_COMPLETE" ))
+
+;;;###autoload
+(defun cscope-53L-process ( )
+  (interactive)
+  (cscope-bananas-are-fun "/.../austin.ibm.com/fs/projects/aix/aix53L"
+			  "/53L_COMPLETE" ))
+;;;###autoload
+(defun cscope-53N-process ( )
+  (interactive)
+  (cscope-bananas-are-fun "/.../austin.ibm.com/fs/projects/aix/aix53N"
+			  "/53N_COMPLETE" ))
+
+;;;###autoload
 (defun cscope-bananas-are-fun ( base build )
   (let ((new-buf (get-buffer-create "$&$&$&$"))
 	(data-dir (concat base "/cscope"))

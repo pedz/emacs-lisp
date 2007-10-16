@@ -7,6 +7,7 @@
 ;;;;;;  x-cscope-view-from-list x-cscope-goto-from-list-other-window
 ;;;;;;  x-cscope-goto-from-list cscope-find-goodies cscope-format
 ;;;;;;  cscope-wait cscope-init-process cscope-new-process cscope-bananas-are-fun
+;;;;;;  cscope-53N-process cscope-53L-process cscope-53J-process
 ;;;;;;  cscope-53H-process cscope-53A-process cscope-530-process
 ;;;;;;  cscope-52Q-process cscope-52I-process cscope-52H-process
 ;;;;;;  cscope-52F-process cscope-52B-process cscope-520-process
@@ -17,7 +18,7 @@
 ;;;;;;  cscope-find-file-include cscope-find-file cscope-find-pattern
 ;;;;;;  cscope-find-string cscope-find-func-call cscope-find-functions-called
 ;;;;;;  cscope-find-func cscope-find-symbol cscope-mode) "cscope"
-;;;;;;  "cscope.el" (18025 47815))
+;;;;;;  "cscope.el" (18170 55319))
 ;;; Generated autoloads from cscope.el
 
 (autoload (quote cscope-mode) "cscope" "\
@@ -179,6 +180,21 @@ Not documented
 \(fn)" t nil)
 
 (autoload (quote cscope-53H-process) "cscope" "\
+Not documented
+
+\(fn)" t nil)
+
+(autoload (quote cscope-53J-process) "cscope" "\
+Not documented
+
+\(fn)" t nil)
+
+(autoload (quote cscope-53L-process) "cscope" "\
+Not documented
+
+\(fn)" t nil)
+
+(autoload (quote cscope-53N-process) "cscope" "\
 Not documented
 
 \(fn)" t nil)
