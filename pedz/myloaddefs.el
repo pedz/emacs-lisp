@@ -352,7 +352,7 @@ Find function via TAGS that mouse is pointing at
 ;;;;;;  x-get-pmr ppp pmrorder cs put-pmr put-all-pmr find-number
 ;;;;;;  pmr-search pgrep PTF APAR PMR retain-common wait-for-async-process
 ;;;;;;  async-call-process process-complete find-pmr pmrorder-mode)
-;;;;;;  "retain" "retain.el" (18002 5114))
+;;;;;;  "retain" "retain.el" (18207 28607))
 ;;; Generated autoloads from retain.el
 
 (autoload (quote pmrorder-mode) "retain" "\

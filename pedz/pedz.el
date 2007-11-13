@@ -291,6 +291,7 @@
     ;; return the result
     result))
 
-;;; (require 'psgml-setup)
+(global-set-key "\C-x/" 'point-to-register)
+(global-set-key "\C-xj" 'jump-to-register)
 
 (provide 'pedz)

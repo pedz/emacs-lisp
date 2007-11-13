@@ -137,7 +137,7 @@ refresh the buffer so FORCE-ERASE is set to true"
   "Pattern that matchs a PMR number")
 
 (defvar apar-pattern
-  "\\<[Ii][XxYy][0-9][0-9][0-9][0-9][0-9]\\>"
+  "\\<[Ii][XxYyZz][0-9][0-9][0-9][0-9][0-9]\\>"
   "Pattern that matchs an APAR number")
 
 (defvar ptf-pattern
@@ -403,7 +403,7 @@ string begins with \"pmr\", it is stripped of.  Any spaces are
 converted to commas"
   (interactive "sPMR: ")
   ;; Is this an apar number?
-  (if (and (string-match "\\`\\(\\([Ii][XxYy]\\)\\|[Aa]\\)" s)
+  (if (and (string-match "\\`\\(\\([Ii][XxYyZz]\\)\\|[Aa]\\)" s)
 	   (null (setq s (apar2pmr s))))
       nil
     (if (string-match "\\`pmr" s)
