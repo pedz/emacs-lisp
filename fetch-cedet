@@ -1,6 +1,0 @@
-#!/bin/sh
-
-echo "Just hit return at the password prompt"
-CEDET=-d:pserver:anonymous@cedet.cvs.sourceforge.net:/cvsroot/cedet
-cvs ${CEDET} login 
-cvs -z3 ${CEDET} co -P cedet
