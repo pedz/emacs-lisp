@@ -2,8 +2,8 @@
 
 ;; Copyright (C) 2002, 2003, 2004 David Ponce
 
-;; Author: Smith <pedzan@eon.austin.ibm.com>
-;; Created: 2007-06-07 11:50:51-0500
+;; Author: Perry Smith (IBM) <pedzan@NewToy.austin.ibm.com>
+;; Created: 2007-12-27 13:40:47-0600
 ;; Keywords: syntax
 ;; X-RCS: $Id$
 
@@ -253,7 +253,7 @@
 	((TOKEN token_type_opt SYMBOL string_value)
 	 `(wisent-raw-tag
 	   (semantic-tag ',$3 ',(if $2 'token 'keyword)
-	    :type ',$2 :value ',$4)))
+			 :type ',$2 :value ',$4)))
 	((TOKEN token_type_opt symbols)
 	 `(wisent-raw-tag
 	   (semantic-tag ',(car $3)

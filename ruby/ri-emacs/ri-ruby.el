@@ -65,10 +65,10 @@
 
 (require 'ansi-color)
 
-(defvar ri-ruby-program "/usr/local/bin/ruby"
+(defvar ri-ruby-program "/usr/bin/ruby"
   "The ruby program name.")
 
-(defvar ri-ruby-script "/home/kristof/.xemacs/ri-emacs.rb"
+(defvar ri-ruby-script "/Users/pedzan/.emacs.d/ruby/ri-emacs/ri-emacs.rb"
   "the ruby script to communicate with")
 
 (defvar ri-ruby-paths ""

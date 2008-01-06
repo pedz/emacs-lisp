@@ -2,8 +2,8 @@
 
 ;; Copyright (C) 2002 David Ponce
 
-;; Author: Perry Smith <pedz@NewToy.local>
-;; Created: 2007-05-26 22:02:19-0500
+;; Author: Perry Smith (IBM) <pedzan@NewToy.austin.ibm.com>
+;; Created: 2007-12-27 13:40:53-0600
 ;; Keywords: syntax
 ;; X-RCS: $Id$
 
