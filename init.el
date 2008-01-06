@@ -5,11 +5,6 @@
 (add-to-list 'load-path "~/.emacs.d")
 (require 'add-paths)
 
-;; Enable this if you develop in semantic, or develop grammars
-;; (semantic-load-enable-semantic-debugging-helpers)
-
-;; '(ecb-process-non-semantic-files nil)
-
 (custom-set-variables
   ;; custom-set-variables was added by Custom.
   ;; If you edit it by hand, you could mess it up, so be careful.
@@ -39,17 +34,19 @@
  '(mmm-comment-submode-face ((t (:foreground "Plum" :slant italic))))
  '(mmm-output-submode-face ((t (:foreground "Plum" :underline t)))))
 
+;; The wisent-ruby stuff uses word-at-point and part of emacs-rails uses it too
+(autoload 'word-at-point "thingatpt")
 (require 'flyspell)
 (require 'align)
-;; (require 'cedet-setup)
-;; (require 'ecb-setup)
-(require 'nxml-setup)
-(require 'mmm-setup)
-(require 'find-recursive)
-(require 'snippet-setup)
+(require 'cedet-setup)
+(require 'ecb-setup)
+;; (require 'nxml-setup)
+;; (require 'mmm-setup)
+;; (require 'find-recursive)
+;; (require 'snippet-setup)
 (require 'ruby-setup)
 (require 'rails-setup)
 (require 'css-setup)
 (require 'javascript-setup)
-;; (require 'wisent-setup)
+(require 'wisent-setup)
 (require 'pedz)
