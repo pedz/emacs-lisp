@@ -14,6 +14,7 @@
  '(case-fold-search nil)
  '(ecb-options-version "2.33beta1")
  '(ecb-primary-secondary-mouse-buttons (quote mouse-1--mouse-2))
+ '(ecb-show-sources-in-directories-buffer (quote always))
  '(ecb-source-path (quote (("/" "/") (#("/Users/pedz/rails-projects/rcm" 0 30 (help-echo "Mouse-2 toggles maximizing, mouse-3 displays a popup-menu")) "rcm"))))
  '(ecb-tip-of-the-day nil)
  '(ecb-wget-setup (quote ("Please_add_wget_to_your_path_or_set_the_fullpath_to_wget" . other)))
@@ -30,6 +31,8 @@
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
+ '(flymake-errline ((((class color)) (:background "DarkRed"))))
+ '(flymake-warnline ((((class color)) (:background "DarkOrange"))))
  '(mmm-code-submode-face ((t (:foreground "Plum"))))
  '(mmm-comment-submode-face ((t (:foreground "Plum" :slant italic))))
  '(mmm-output-submode-face ((t (:foreground "Plum" :underline t)))))
@@ -38,8 +41,8 @@
 (autoload 'word-at-point "thingatpt")
 (require 'flyspell)
 (require 'align)
-(require 'cedet-setup)
-(require 'ecb-setup)
+;; (require 'cedet-setup)
+;; (require 'ecb-setup)
 ;; (require 'nxml-setup)
 ;; (require 'mmm-setup)
 ;; (require 'find-recursive)
@@ -48,5 +51,5 @@
 (require 'rails-setup)
 (require 'css-setup)
 (require 'javascript-setup)
-(require 'wisent-setup)
+;; (require 'wisent-setup)
 (require 'pedz)
