@@ -1,5 +1,9 @@
 
 (require 'rails)
+;;; The require rails above pulls in ruby mode and tons of other
+;;; stuff.  I load my changes to ruby-mode at this time.
+;;; (load "ruby-changes")
+
 ;;;  
 ;;;  (setq ri-ruby-script (expand-file-name "~/.emacs.d/ruby/ri-emacs/ri-emacs.rb"))
 ;;;  (autoload 'ri "ri-ruby" nil t)
@@ -149,25 +153,5 @@
 ;;;    (define-key ruby-mode-map "\C-d"      'ruby-electric-delete)
 ;;;    (define-key ruby-mode-map "\C-c\C-a"  'ruby-annotate-buffer))
 ;;;  
-;;;  ;; RI everywhere!
-;;;  (define-key help-map "r" 'ri)
-;;;  
-
-(defun set-ri-ruby-paths (rails-root)
-  "Given RAILS-ROOT, sets ri-ruby-paths to RAILS-ROOT/*/ri directories"
-  (interactive "D")
-  (let* ((file-list (unix-find rails-root
-			       (function
-				(lambda (file)
-				  (and (string-equal "ri" (nth 0 file)) (nth 1 file))))))
-	 (temp nil))
-    (mapc (function
-	   (lambda (file)
-	     (let ((full-path (expand-file-name (nth 0 file) rails-root)))
-	       (if temp
-		   (setq temp (concat temp ":" full-path))
-		 (setq temp full-path)))))
-	  file-list)
-    (setq ri-ruby-paths (or temp ""))))
 
 (provide 'rails-setup)

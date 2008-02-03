@@ -1,9 +1,13 @@
 
+;;; Note that most of this is repeated in the Rails setup processing.
+
 ;; Suggestions from inf-ruby
 (autoload 'ruby-mode "ruby-mode"
   "Mode for editing ruby source files" t)
+
+
 (setq auto-mode-alist
-      (append '(("\\.rb$" . ruby-mode)) auto-mode-alist))
+      (append '(("\\.rb$" . my-ruby-mode)) auto-mode-alist))
 (setq interpreter-mode-alist (append '(("ruby" . ruby-mode))
 				     interpreter-mode-alist))
 
@@ -39,5 +43,10 @@ strings. Note that you must have Font Lock enabled." t)
 ;; setup to autoload ruby-style
 (autoload 'ruby-style-c-mode "ruby-style"
   "C/C++ mode style for Ruby." t)
+
+;; RI everywhere!
+(define-key help-map "r" 'ri)
+(autoload 'ri "ri-ruby"
+  "Execute `ri'.")
 
 (provide 'ruby-setup)

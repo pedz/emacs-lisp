@@ -39,17 +39,22 @@
 
 ;; The wisent-ruby stuff uses word-at-point and part of emacs-rails uses it too
 (autoload 'word-at-point "thingatpt")
-(require 'flyspell)
-(require 'align)
-;; (require 'cedet-setup)
-;; (require 'ecb-setup)
-;; (require 'nxml-setup)
-;; (require 'mmm-setup)
-;; (require 'find-recursive)
-;; (require 'snippet-setup)
+
+(require 'cedet-setup)
+(require 'ecb-setup)
 (require 'ruby-setup)
 (require 'rails-setup)
+
+;; These load as a result of rails mode...
+;; (require 'flyspell)
+;; (require 'align)
+;; (require 'find-recursive)
+;; (require 'snippet-setup)
+
+(require 'nxml-setup)
+(require 'mmm-setup)
 (require 'css-setup)
 (require 'javascript-setup)
 ;; (require 'wisent-setup)
+
 (require 'pedz)
