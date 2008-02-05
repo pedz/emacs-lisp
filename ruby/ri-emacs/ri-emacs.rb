@@ -1,4 +1,4 @@
-#!/usr/local/bin/ruby
+#!/usr/bin/env ruby
 ## ri-emacs.rb helper script for use with ri-ruby.el
 #
 # Author: Kristof Bastiaensen <kristof@vleeuwen.org>
@@ -330,7 +330,7 @@ class Command
 end
 
 arg = ARGV[0]
-$debug = Kernel.open("/tmp/ri-emacs", "w")
+$debug = Kernel.open("/tmp/ri-emacs" + ENV["USER"], "w")
 
 if arg == "--test"
    cmd = Command.new(RiEmacs.new(nil))

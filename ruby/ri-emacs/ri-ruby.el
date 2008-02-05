@@ -68,7 +68,8 @@
 (defvar ri-ruby-program "/usr/bin/ruby"
   "The ruby program name.")
 
-(defvar ri-ruby-script "/Users/pedzan/.emacs.d/ruby/ri-emacs/ri-emacs.rb"
+(defvar ri-ruby-script
+  (concat (getenv "HOME") "/.emacs.d/ruby/ri-emacs/ri-emacs.rb")
   "the ruby script to communicate with")
 
 (defvar ri-ruby-paths ""
