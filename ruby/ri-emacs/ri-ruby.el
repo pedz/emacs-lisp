@@ -89,7 +89,7 @@
 	 (setq ri-ruby-process
 	       (start-process "ri-ruby-process"
 			      nil
-			      ri-ruby-program ri-ruby-script ri-ruby-paths))
+			      ri-ruby-script ri-ruby-paths))
 	 (process-kill-without-query ri-ruby-process) ;kill when ending emacs
 	 (ri-ruby-process-check-ready)))
   ri-ruby-process)
