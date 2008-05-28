@@ -20,6 +20,7 @@
  '(ecb-wget-setup (quote ("Please_add_wget_to_your_path_or_set_the_fullpath_to_wget" . other)))
  '(inhibit-splash-screen t)
  '(mmm-submode-decoration-level 2)
+ '(rails-ws:default-server-type "webrick")
  '(shell-prompt-pattern ".+@.+<[0-9]+> on .*
 ")
  '(tool-bar-mode nil)
