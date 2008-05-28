@@ -128,6 +128,7 @@ for \"cd ../.......\" at the beginning as well as the \"[ /bos/blah
   "Called from ediff program via gnudoit"
   (ediff-files file1 file2))
 
+;;;###autoload
 (defun kill-buffers-reqexp ( reqexp &optional ask )
   "Kill all the buffers whose names match REQEXP.  Confirm before
 killing if ASK is true."

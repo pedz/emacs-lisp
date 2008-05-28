@@ -478,10 +478,10 @@ clicked on is retrieved
 
 ;;;***
 
-;;;### (autoloads (server-ediff-files update-my-autoloads from-work
-;;;;;;  from-home v4-build-compilation-finish start-vm split-window-in-thirds
-;;;;;;  backspace-delete-flip xon-xoff-mode) "util" "util.el" (17982
-;;;;;;  30376))
+;;;### (autoloads (kill-buffers-reqexp server-ediff-files update-my-autoloads
+;;;;;;  from-work from-home v4-build-compilation-finish start-vm
+;;;;;;  split-window-in-thirds backspace-delete-flip xon-xoff-mode)
+;;;;;;  "util" "util.el" (18381 27925))
 ;;; Generated autoloads from util.el
 
 (autoload (quote xon-xoff-mode) "util" "\
@@ -532,6 +532,12 @@ Update my personal loaddefs.el file
 Called from ediff program via gnudoit
 
 \(fn FILE1 FILE2)" nil nil)
+
+(autoload (quote kill-buffers-reqexp) "util" "\
+Kill all the buffers whose names match REQEXP.  Confirm before
+killing if ASK is true.
+
+\(fn REQEXP &optional ASK)" t nil)
 
 ;;;***
 
