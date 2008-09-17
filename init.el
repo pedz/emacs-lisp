@@ -12,6 +12,7 @@
   ;; If there is more than one, they won't work right.
  '(ansi-color-names-vector ["black" "red" "green" "yellow" "blue" "magenta" "darkturquoise" "white"])
  '(case-fold-search nil)
+ '(display-time-mail-file (quote none))
  '(ecb-options-version "2.33beta1")
  '(ecb-primary-secondary-mouse-buttons (quote mouse-1--mouse-2))
  '(ecb-show-sources-in-directories-buffer (quote always))
@@ -22,7 +23,7 @@
  '(mmm-submode-decoration-level 2)
  '(rails-ws:default-server-type "webrick")
  '(shell-prompt-pattern ".+@.+<[0-9]+> on .*
-")
+" t)
  '(tool-bar-mode nil)
  '(user-full-name "Perry Smith")
  '(vc-ignore-dir-regexp "\\`\\([\\/][\\/]\\|/\\.\\.\\./\\|/net/\\|/afs/\\)\\'"))

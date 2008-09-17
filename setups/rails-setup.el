@@ -1,5 +1,30 @@
 
 (require 'rails)
+
+(defvar rails-project-stop-regexp
+  "\\`/\\.\\.\\./\\'"
+  "Regexp that will stop the search up the directory tree for
+  config/environment.rb")
+
+(defun rails-project:root ()
+  "Return RAILS_ROOT if this file is a part of a Rails application,
+else return nil"
+  (let ((curdir (expand-file-name default-directory))
+        (max 10)
+        (found nil))
+    (while (and (not found)
+		(> max 0)
+		(not (string-match rails-project-stop-regexp curdir)))
+      (progn
+        (if (file-exists-p (concat curdir "config/environment.rb"))
+            (progn
+              (setq found t))
+          (progn
+            (setq curdir (expand-file-name (concat curdir "../")))
+            (setq max (- max 1))))))
+    (if found (expand-file-name curdir))))
+
+
 ;;; The require rails above pulls in ruby mode and tons of other
 ;;; stuff.  I load my changes to ruby-mode at this time.
 ;;; (load "ruby-changes")

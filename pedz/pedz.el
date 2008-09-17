@@ -294,4 +294,7 @@
 (global-set-key "\C-x/" 'point-to-register)
 (global-set-key "\C-xj" 'jump-to-register)
 
+(defun cleanup-grep ()
+  (replace-string "\004" "" nil (point-min) (point-max)))
+
 (provide 'pedz)

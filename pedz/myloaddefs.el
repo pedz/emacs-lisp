@@ -7,18 +7,19 @@
 ;;;;;;  x-cscope-view-from-list x-cscope-goto-from-list-other-window
 ;;;;;;  x-cscope-goto-from-list cscope-find-goodies cscope-format
 ;;;;;;  cscope-wait cscope-init-process cscope-new-process cscope-bananas-are-fun
-;;;;;;  cscope-53N-process cscope-53L-process cscope-53J-process
-;;;;;;  cscope-53H-process cscope-53A-process cscope-530-process
-;;;;;;  cscope-52Q-process cscope-52I-process cscope-52H-process
-;;;;;;  cscope-52F-process cscope-52B-process cscope-520-process
-;;;;;;  cscope-51G-process cscope-51F-process cscope-510-process
-;;;;;;  cscope-43X-process cscope-43V-process cscope-43S-process
-;;;;;;  cscope-43K-process cscope-42G-process cscope-41M-process
-;;;;;;  cscope-view-from-list cscope-goto-from-list cscope-get-line-number
-;;;;;;  cscope-find-file-include cscope-find-file cscope-find-pattern
-;;;;;;  cscope-find-string cscope-find-func-call cscope-find-functions-called
-;;;;;;  cscope-find-func cscope-find-symbol cscope-mode) "cscope"
-;;;;;;  "cscope.el" (18170 55319))
+;;;;;;  cscope-61F-process cscope-61D-process cscope-61B-process
+;;;;;;  cscope-610-process cscope-53N-process cscope-53L-process
+;;;;;;  cscope-53J-process cscope-53H-process cscope-53A-process
+;;;;;;  cscope-530-process cscope-52S-process cscope-52Q-process
+;;;;;;  cscope-52I-process cscope-52H-process cscope-52F-process
+;;;;;;  cscope-52B-process cscope-520-process cscope-51G-process
+;;;;;;  cscope-51F-process cscope-510-process cscope-43X-process
+;;;;;;  cscope-43V-process cscope-43S-process cscope-43K-process
+;;;;;;  cscope-42G-process cscope-41M-process cscope-view-from-list
+;;;;;;  cscope-goto-from-list cscope-get-line-number cscope-find-file-include
+;;;;;;  cscope-find-file cscope-find-pattern cscope-find-string cscope-find-func-call
+;;;;;;  cscope-find-functions-called cscope-find-func cscope-find-symbol
+;;;;;;  cscope-mode) "cscope" "cscope.el" (18521 43042))
 ;;; Generated autoloads from cscope.el
 
 (autoload (quote cscope-mode) "cscope" "\
@@ -169,6 +170,11 @@ Not documented
 
 \(fn)" t nil)
 
+(autoload (quote cscope-52S-process) "cscope" "\
+Not documented
+
+\(fn)" t nil)
+
 (autoload (quote cscope-530-process) "cscope" "\
 Not documented
 
@@ -195,6 +201,26 @@ Not documented
 \(fn)" t nil)
 
 (autoload (quote cscope-53N-process) "cscope" "\
+Not documented
+
+\(fn)" t nil)
+
+(autoload (quote cscope-610-process) "cscope" "\
+Not documented
+
+\(fn)" t nil)
+
+(autoload (quote cscope-61B-process) "cscope" "\
+Not documented
+
+\(fn)" t nil)
+
+(autoload (quote cscope-61D-process) "cscope" "\
+Not documented
+
+\(fn)" t nil)
+
+(autoload (quote cscope-61F-process) "cscope" "\
 Not documented
 
 \(fn)" t nil)
@@ -348,11 +374,11 @@ Find function via TAGS that mouse is pointing at
 
 ;;;***
 
-;;;### (autoloads (find-pmr-in-cs-buffer sanitize-pmr-number x-no-op
-;;;;;;  x-get-pmr ppp pmrorder cs put-pmr put-all-pmr find-number
+;;;### (autoloads (kill-retain-buffers find-pmr-in-cs-buffer sanitize-pmr-number
+;;;;;;  x-no-op x-get-pmr ppp pmrorder cs put-pmr put-all-pmr find-number
 ;;;;;;  pmr-search pgrep PTF APAR PMR retain-common wait-for-async-process
 ;;;;;;  async-call-process process-complete find-pmr pmrorder-mode)
-;;;;;;  "retain" "retain.el" (18207 28607))
+;;;;;;  "retain" "retain.el" (18522 29677))
 ;;; Generated autoloads from retain.el
 
 (autoload (quote pmrorder-mode) "retain" "\
@@ -475,6 +501,11 @@ When bound to a mouse event in a \"cs\" buffer, the pmr on the line
 clicked on is retrieved
 
 \(fn CLICK)" t nil)
+
+(autoload (quote kill-retain-buffers) "retain" "\
+Kill the PMR, APAR, and cs buffers
+
+\(fn)" t nil)
 
 ;;;***
 

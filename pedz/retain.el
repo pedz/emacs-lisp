@@ -514,4 +514,10 @@ shown in a currently visible window.  We pick the first one we find"
 	  (wait-for-async-process proc))
       (set-buffer this-buf))))
 
+;;;###autoload
+(defun kill-retain-buffers ( )
+  "Kill the PMR, APAR, and cs buffers"
+  (interactive)
+  (kill-buffers-reqexp "\\(PMR\\|APAR\\|PTF\\|cs\\) "))
+
 (provide 'retain)

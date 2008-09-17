@@ -81,20 +81,19 @@ for \"cd ../.......\" at the beginning as well as the \"[ /bos/blah
 ]\" messages and converts them into Entering and Leaving messages."
   (save-excursion
     (goto-char (point-min))
-    (beginning-of-line 3)
-    (if (not (looking-at "relative path: \\.\\(.*\\)/[^/]*\\.\ncd \\(.*\\)"))
-	t
-      (let ((rel-path (buffer-substring (match-beginning 1) (match-end 1)))
-	    (cd-path (buffer-substring (match-beginning 2) (match-end 2))))
-	(message rel-path)
-	(message cd-path)
-	(setq default-directory (file-name-as-directory
-				 (expand-file-name cd-path)))
-	(setq compilation-directory-stack (list default-directory))
-	(setq compilation-enter-directory-regexp
-	      (concat "^\\[ "
-		      (regexp-quote rel-path)
-		      "/\\(.*\\) \\]"))))))
+    (if (re-search-forward "^relative path: \\." 500 t)
+	(progn
+	 (beginning-of-line)
+	 (if (looking-at "relative path: \\.\\(.*\\)/[^/]*\\.\n\\(mkdir .*\n\\)*cd \\(.*\\)")
+	     (let ((rel-path (buffer-substring (match-beginning 1) (match-end 1)))
+		   (cd-path (buffer-substring (match-beginning 3) (match-end 3))))
+	       (setq default-directory (file-name-as-directory
+					(expand-file-name cd-path)))
+	       (setq compilation-directory-stack (list default-directory))
+	       (setq compilation-enter-directory-regexp
+		     (concat "^\\[ "
+			     (regexp-quote rel-path)
+			     "/\\(.*\\) \\]"))))))))
 
 ;;;###autoload
 (defun from-home ()
