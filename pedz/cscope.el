@@ -326,6 +326,11 @@ spot"
   (interactive)
   (cscope-bananas-are-fun "/.../austin.ibm.com/fs/projects/aix/aix53N"
 			  "/53N_COMPLETE" ))
+;;;###autoload
+(defun cscope-53Q-process ( )
+  (interactive)
+  (cscope-bananas-are-fun "/.../austin.ibm.com/fs/projects/aix/aix53Q"
+			  "/53Q_COMPLETE" ))
 
 ;;;###autoload
 (defun cscope-610-process ( )

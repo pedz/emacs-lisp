@@ -1,6 +1,8 @@
 
 (require 'rails)
 
+(autoload 'speedbar-make-specialized-keymap "speedbar")
+
 (defvar rails-project-stop-regexp
   "\\`/\\.\\.\\./\\'"
   "Regexp that will stop the search up the directory tree for

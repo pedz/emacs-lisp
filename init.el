@@ -42,8 +42,8 @@
 ;; The wisent-ruby stuff uses word-at-point and part of emacs-rails uses it too
 (autoload 'word-at-point "thingatpt")
 
-(require 'cedet-setup)
-(require 'ecb-setup)
+;; (require 'cedet-setup)
+;; (require 'ecb-setup)
 (require 'ruby-setup)
 (require 'rails-setup)
 
