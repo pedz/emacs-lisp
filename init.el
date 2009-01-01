@@ -58,5 +58,6 @@
 (require 'css-setup)
 (require 'javascript-setup)
 ;; (require 'wisent-setup)
-
+(if (eq window-system 'mac)
+    (require 'mac-setup))
 (require 'pedz)
