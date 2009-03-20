@@ -7,20 +7,19 @@
 ;;;;;;  x-cscope-view-from-list x-cscope-goto-from-list-other-window
 ;;;;;;  x-cscope-goto-from-list cscope-find-goodies cscope-format
 ;;;;;;  cscope-wait cscope-init-process cscope-new-process cscope-bananas-are-fun
-;;;;;;  cscope-61F-process cscope-61D-process cscope-61B-process
-;;;;;;  cscope-610-process cscope-53Q-process cscope-53N-process
-;;;;;;  cscope-53L-process cscope-53J-process cscope-53H-process
-;;;;;;  cscope-53A-process cscope-530-process cscope-52S-process
-;;;;;;  cscope-52Q-process cscope-52I-process cscope-52H-process
+;;;;;;  cscope-ipf-process cscope-61F-process cscope-61D-process
+;;;;;;  cscope-61B-process cscope-610-process cscope-53S-process
+;;;;;;  cscope-53Q-process cscope-53N-process cscope-53L-process
+;;;;;;  cscope-53J-process cscope-53H-process cscope-53E-process
+;;;;;;  cscope-53D-process cscope-53A-process cscope-530-process
+;;;;;;  cscope-52S-process cscope-52Q-process cscope-52M-process
+;;;;;;  cscope-52L-process cscope-52I-process cscope-52H-process
 ;;;;;;  cscope-52F-process cscope-52B-process cscope-520-process
-;;;;;;  cscope-51G-process cscope-51F-process cscope-510-process
-;;;;;;  cscope-43X-process cscope-43V-process cscope-43S-process
-;;;;;;  cscope-43K-process cscope-42G-process cscope-41M-process
 ;;;;;;  cscope-view-from-list cscope-goto-from-list cscope-get-line-number
 ;;;;;;  cscope-find-file-include cscope-find-file cscope-find-pattern
 ;;;;;;  cscope-find-string cscope-find-func-call cscope-find-functions-called
 ;;;;;;  cscope-find-func cscope-find-symbol cscope-mode) "cscope"
-;;;;;;  "cscope.el" (18761 34275))
+;;;;;;  "cscope.el" (18860 10247))
 ;;; Generated autoloads from cscope.el
 
 (autoload (quote cscope-mode) "cscope" "\
@@ -96,60 +95,19 @@ spot
 
 \(fn)" t nil)
 
-(autoload (quote cscope-41M-process) "cscope" "\
-Not documented
-
-\(fn)" t nil)
-
-(autoload (quote cscope-42G-process) "cscope" "\
-Not documented
-
-\(fn)" t nil)
-
-(autoload (quote cscope-43K-process) "cscope" "\
-Not documented
-
-\(fn)" t nil)
-
-(autoload (quote cscope-43S-process) "cscope" "\
-Not documented
-
-\(fn)" t nil)
-
-(autoload (quote cscope-43V-process) "cscope" "\
-Not documented
-
-\(fn)" t nil)
-
-(autoload (quote cscope-43X-process) "cscope" "\
-Not documented
-
-\(fn)" t nil)
-
-(autoload (quote cscope-510-process) "cscope" "\
-Not documented
-
-\(fn)" t nil)
-
-(autoload (quote cscope-51F-process) "cscope" "\
-Not documented
-
-\(fn)" t nil)
-
-(autoload (quote cscope-51G-process) "cscope" "\
-Not documented
-
-\(fn)" t nil)
-
 (autoload (quote cscope-520-process) "cscope" "\
 Not documented
 
 \(fn)" t nil)
 
+(defalias (quote cscope-5200-00) (quote cscope-520-process))
+
 (autoload (quote cscope-52B-process) "cscope" "\
 Not documented
 
 \(fn)" t nil)
+
+(defalias (quote cscope-5200-01) (quote cscope-52B-process))
 
 (autoload (quote cscope-52F-process) "cscope" "\
 Not documented
@@ -166,67 +124,135 @@ Not documented
 
 \(fn)" t nil)
 
+(defalias (quote cscope-5200-05) (quote cscope-52I-process))
+
+(defalias (quote cscope-5200-06) (quote cscope-52I-process))
+
+(autoload (quote cscope-52L-process) "cscope" "\
+Not documented
+
+\(fn)" t nil)
+
+(defalias (quote cscope-5200-07) (quote cscope-52L-process))
+
+(autoload (quote cscope-52M-process) "cscope" "\
+Not documented
+
+\(fn)" t nil)
+
+(defalias (quote cscope-5200-08) (quote cscope-52M-process))
+
 (autoload (quote cscope-52Q-process) "cscope" "\
 Not documented
 
 \(fn)" t nil)
+
+(defalias (quote cscope-5200-09) (quote cscope-52Q-process))
 
 (autoload (quote cscope-52S-process) "cscope" "\
 Not documented
 
 \(fn)" t nil)
 
+(defalias (quote cscope-5200-10) (quote cscope-52S-process))
+
 (autoload (quote cscope-530-process) "cscope" "\
 Not documented
 
 \(fn)" t nil)
+
+(defalias (quote cscope-5300-00) (quote cscope-530-process))
 
 (autoload (quote cscope-53A-process) "cscope" "\
 Not documented
 
 \(fn)" t nil)
 
+(defalias (quote cscope-5300-01) (quote cscope-53A-process))
+
+(autoload (quote cscope-53D-process) "cscope" "\
+Not documented
+
+\(fn)" t nil)
+
+(defalias (quote cscope-5300-03) (quote cscope-53D-process))
+
+(autoload (quote cscope-53E-process) "cscope" "\
+Not documented
+
+\(fn)" t nil)
+
+(defalias (quote cscope-5300-04) (quote cscope-53E-process))
+
 (autoload (quote cscope-53H-process) "cscope" "\
 Not documented
 
 \(fn)" t nil)
+
+(defalias (quote cscope-5300-05) (quote cscope-53H-process))
 
 (autoload (quote cscope-53J-process) "cscope" "\
 Not documented
 
 \(fn)" t nil)
 
+(defalias (quote cscope-5300-06) (quote cscope-53J-process))
+
 (autoload (quote cscope-53L-process) "cscope" "\
 Not documented
 
 \(fn)" t nil)
+
+(defalias (quote cscope-5300-07) (quote cscope-53L-process))
 
 (autoload (quote cscope-53N-process) "cscope" "\
 Not documented
 
 \(fn)" t nil)
 
+(defalias (quote cscope-5300-08) (quote cscope-53N-process))
+
 (autoload (quote cscope-53Q-process) "cscope" "\
 Not documented
 
 \(fn)" t nil)
+
+(defalias (quote cscope-5300-09) (quote cscope-53Q-process))
+
+(autoload (quote cscope-53S-process) "cscope" "\
+Not documented
+
+\(fn)" t nil)
+
+(defalias (quote cscope-5300-10) (quote cscope-53S-process))
 
 (autoload (quote cscope-610-process) "cscope" "\
 Not documented
 
 \(fn)" t nil)
 
+(defalias (quote cscope-6100-00) (quote cscope-610-process))
+
 (autoload (quote cscope-61B-process) "cscope" "\
 Not documented
 
 \(fn)" t nil)
+
+(defalias (quote cscope-6100-01) (quote cscope-61B-process))
 
 (autoload (quote cscope-61D-process) "cscope" "\
 Not documented
 
 \(fn)" t nil)
 
+(defalias (quote cscope-6100-02) (quote cscope-61D-process))
+
 (autoload (quote cscope-61F-process) "cscope" "\
+Not documented
+
+\(fn)" t nil)
+
+(autoload (quote cscope-ipf-process) "cscope" "\
 Not documented
 
 \(fn)" t nil)
@@ -291,6 +317,59 @@ Find function via cscope that mouse is pointing at
 Function which does nothing
 
 \(fn CLICK)" t nil)
+
+;;;***
+
+;;;### (autoloads (cscope-51G-process cscope-51F-process cscope-510-process
+;;;;;;  cscope-43X-process cscope-43V-process cscope-43S-process
+;;;;;;  cscope-43K-process cscope-42G-process cscope-41M-process)
+;;;;;;  "cscope-old" "cscope-old.el" (18796 54263))
+;;; Generated autoloads from cscope-old.el
+
+(autoload (quote cscope-41M-process) "cscope-old" "\
+Not documented
+
+\(fn)" t nil)
+
+(autoload (quote cscope-42G-process) "cscope-old" "\
+Not documented
+
+\(fn)" t nil)
+
+(autoload (quote cscope-43K-process) "cscope-old" "\
+Not documented
+
+\(fn)" t nil)
+
+(autoload (quote cscope-43S-process) "cscope-old" "\
+Not documented
+
+\(fn)" t nil)
+
+(autoload (quote cscope-43V-process) "cscope-old" "\
+Not documented
+
+\(fn)" t nil)
+
+(autoload (quote cscope-43X-process) "cscope-old" "\
+Not documented
+
+\(fn)" t nil)
+
+(autoload (quote cscope-510-process) "cscope-old" "\
+Not documented
+
+\(fn)" t nil)
+
+(autoload (quote cscope-51F-process) "cscope-old" "\
+Not documented
+
+\(fn)" t nil)
+
+(autoload (quote cscope-51G-process) "cscope-old" "\
+Not documented
+
+\(fn)" t nil)
 
 ;;;***
 
@@ -575,62 +654,6 @@ Kill all the buffers whose names match REQEXP.  Confirm before
 killing if ASK is true.
 
 \(fn REQEXP &optional ASK)" t nil)
-
-;;;***
-
-;;;### (autoloads (v3-uncompress-while-visiting v3-get-file-buffer
-;;;;;;  find-file-noselect v3-clone-relative-path v3-get-clone-top
-;;;;;;  v3-get-clone-list v3-setup process-output-to-string) "v3-file"
-;;;;;;  "v3-file.el" (18002 5254))
-;;; Generated autoloads from v3-file.el
-
-(autoload (quote process-output-to-string) "v3-file" "\
-Execute process and return its stdout as a string
-
-\(fn PROG &rest ARGS)" nil nil)
-
-(autoload (quote v3-setup) "v3-file" "\
-Setup v3-clone-list by calling Tpath with argument supplied
-
-\(fn LEVEL)" t nil)
-
-(autoload (quote v3-get-clone-list) "v3-file" "\
-Called to get the clone-list.  Looks at v3-clone-list and if it is
-null then it calls v3-setup with v3-clone-base if non-null
-otherwise it calls v3-setup interactively
-
-\(fn)" nil nil)
-
-(autoload (quote v3-get-clone-top) "v3-file" "\
-Call to retrieve the first directory in the list of directories searched
-
-\(fn)" t nil)
-
-(autoload (quote v3-clone-relative-path) "v3-file" "\
-If FILENAME is in the v3 build environment, returns the part of the
-filename which iss relative to the tpath directories, otherwise
-returns nil
-
-\(fn FILENAME)" nil nil)
-
-(autoload (quote find-file-noselect) "v3-file" "\
-Read file FILENAME into a buffer and return the buffer.
-If a buffer exists visiting FILENAME, return that one,
-but verify that the file has not changed since visited or saved.
-The buffer is not selected, just returned to the caller.
-
-\(fn FILENAME &optional NOWARN RAWFILE WILDCARDS)" nil nil)
-
-(autoload (quote v3-get-file-buffer) "v3-file" "\
-Returns buffer whose buffer-file-name ends with NAME
-
-\(fn NAME)" nil nil)
-
-(autoload (quote v3-uncompress-while-visiting) "v3-file" "\
-Temporary \"major mode\" used for .Z files, to uncompress the contents.
-It then selects a major mode from the uncompressed file name and contents.
-
-\(fn)" nil nil)
 
 ;;;***
 

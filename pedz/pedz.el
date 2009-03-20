@@ -122,10 +122,6 @@
                               (lambda ()
                                 (interactive)
                                 (recenter 0))))
-(define-key personal-map "\C-]" (function
-                                 (lambda ()
-                                   (interactive)
-                                   (insert (v3-get-clone-top)))))
 (define-key personal-map "\C-t" (function
                                  (lambda ()
                                    (interactive)
@@ -296,5 +292,7 @@
 
 (defun cleanup-grep ()
   (replace-string "\004" "" nil (point-min) (point-max)))
+
+(require 'osf-dce)
 
 (provide 'pedz)
