@@ -20,7 +20,8 @@
     ;; walk up the directory looking for link.  base is the directory
     ;; (that ends in a slash), base-directory is base sans the slash,
     ;; rest is the rest of the original path.
-    (while (and (not (string-match vc-ignore-dir-regexp base))
+    (while (and (not (string-equal base "/"))
+		(not (string-match vc-ignore-dir-regexp base))
 		(not (file-symlink-p (concat base "link"))))
       (setq rest (concat (file-name-as-directory
 			  (file-name-nondirectory base-directory)) rest))
@@ -39,7 +40,7 @@
 							rest)))))))
     ;; If we found something, we now need to set everything up right.
     (if found
-	(insert-file-contents (setq buffer-file-name new-path) t))))
+	(find-alternate-file new-path))))
 
 (add-hook 'find-file-not-found-functions 'osf-dce-file-not-found-hook)
 
