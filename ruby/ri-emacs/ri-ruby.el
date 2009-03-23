@@ -82,6 +82,10 @@
   "The history for ri")
 
 (defvar ri-ruby-process-buffer nil)
+;; These three variables are here just to make debugging possible.
+(defvar ri-ruby-last-get-expr nil)
+(defvar ri-buffer-count 0)
+(defvar ri-kill-buffers t)		;set to nil when debugging
 
 (defun ri-ruby-get-process ()
   (cond ((or (null ri-ruby-process)
@@ -107,9 +111,14 @@
     (goto-char (point-max))
     (insert-string (ansi-color-apply str))))
 
+(defun ri-generate-new-buffer ( str )
+  (generate-new-buffer
+   (concat str (int-to-string
+		(setq ri-buffer-count (1+ ri-buffer-count))))))
+
 (defvar ri-startup-timeout 60)
 (defun ri-ruby-process-check-ready ()
-  (let ((ri-ruby-process-buffer (generate-new-buffer  " ri-ruby-output")))
+  (let ((ri-ruby-process-buffer (ri-generate-new-buffer  " ri-ruby-output")))
     (unwind-protect
 	(save-excursion
 	  (set-buffer ri-ruby-process-buffer)
@@ -121,7 +130,8 @@
 		 (delete-process ri-ruby-process)
 		 (error "Couldn't start ruby script"))))
       (set-process-filter ri-ruby-process t)
-      (kill-buffer ri-ruby-process-buffer))))
+      (if ri-kill-buffers
+	  (kill-buffer ri-ruby-process-buffer)))))
 
 (defun ri-ruby-check-process (buffer)
   (or (equal (process-status ri-ruby-process) 'run)
@@ -132,28 +142,30 @@
 
 (defun ri-ruby-process-get-expr (cmd param)
   (ri-ruby-get-process)
-    (let ((ri-ruby-process-buffer (generate-new-buffer  " ri-ruby-output"))
-	  (command (concat cmd " " param "\n")))
-      (unwind-protect
-	  (save-excursion
-	    (set-buffer ri-ruby-process-buffer)
-	    (set-process-filter ri-ruby-process 'ri-ruby-process-filter-expr)
-	    (process-send-string ri-ruby-process command)
+  (let ((ri-ruby-process-buffer (ri-generate-new-buffer  " ri-ruby-output"))
+	(command (concat cmd " " param "\n")))
+    (unwind-protect
+	(save-excursion
+	  (set-buffer ri-ruby-process-buffer)
+	  (set-process-filter ri-ruby-process 'ri-ruby-process-filter-expr)
+	  (process-send-string ri-ruby-process command)
+	  (ri-ruby-check-process ri-ruby-process-buffer)
+	  (while (progn (goto-char (point-min))
+			(not (looking-at ".*\n"))) ;we didn't read a whole line
 	    (ri-ruby-check-process ri-ruby-process-buffer)
-	    (while (progn (goto-char (point-min))
-			  (not (looking-at ".*\n"))) ;we didn't read a whole line
-	      (ri-ruby-check-process ri-ruby-process-buffer)
-	      (accept-process-output ri-ruby-process))
-	    (goto-char (point-min))
-	    (read (buffer-substring (point)
-				    (point-at-eol))))
-	(set-process-filter ri-ruby-process t)
-	(kill-buffer ri-ruby-process-buffer))))
+	    (accept-process-output ri-ruby-process))
+	  (goto-char (point-min))
+	  (setq ri-ruby-last-get-expr
+		(read (buffer-substring (point)
+					(point-at-eol)))))
+      (set-process-filter ri-ruby-process t)
+      (if ri-kill-buffers
+	  (kill-buffer ri-ruby-process-buffer)))))
 
 (defun ri-ruby-process-get-lines (cmd param)
   (ri-ruby-get-process)
   (if (equal param "") nil
-    (let ((ri-ruby-process-buffer (generate-new-buffer " ri-ruby-output"))
+    (let ((ri-ruby-process-buffer (ri-generate-new-buffer " ri-ruby-output"))
 	  (command (concat cmd " " param "\n")))
       (unwind-protect
 	  (save-excursion
@@ -170,7 +182,8 @@
 	      (backward-char)
 	      (buffer-substring (point-min) (point))))
 	(set-process-filter ri-ruby-process t)
-	(kill-buffer ri-ruby-process-buffer)))))
+	(if ri-kill-buffers
+	    (kill-buffer ri-ruby-process-buffer))))))
 
 (defun ri-ruby-complete-method (str pred type)
   (let* ((cmd (cdr (assoc type '((nil . "TRY_COMPLETION")
