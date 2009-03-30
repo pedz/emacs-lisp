@@ -65,15 +65,12 @@
 
 (require 'ansi-color)
 
-(defvar ri-ruby-program "/usr/bin/ruby"
+(defvar ri-ruby-program "ruby"
   "The ruby program name.")
 
 (defvar ri-ruby-script
   (concat (getenv "HOME") "/.emacs.d/ruby/ri-emacs/ri-emacs.rb")
   "the ruby script to communicate with")
-
-(defvar ri-ruby-paths ""
-  "*Documentation Search Paths")
 
 (defvar ri-ruby-process nil
   "The current ri process where emacs is interacting with")
@@ -85,7 +82,7 @@
 ;; These three variables are here just to make debugging possible.
 (defvar ri-ruby-last-get-expr nil)
 (defvar ri-buffer-count 0)
-(defvar ri-kill-buffers t)		;set to nil when debugging
+(defvar ri-kill-buffers nil)		;set to nil when debugging
 
 (defun ri-ruby-get-process ()
   (cond ((or (null ri-ruby-process)
@@ -93,7 +90,7 @@
 	 (setq ri-ruby-process
 	       (start-process "ri-ruby-process"
 			      nil
-			      ri-ruby-script ri-ruby-paths))
+			      ri-ruby-program ri-ruby-script))
 	 (process-kill-without-query ri-ruby-process) ;kill when ending emacs
 	 (ri-ruby-process-check-ready)))
   ri-ruby-process)
@@ -111,14 +108,14 @@
     (goto-char (point-max))
     (insert-string (ansi-color-apply str))))
 
-(defun ri-generate-new-buffer ( str )
+(defun ri-generate-new-buffer ( str who )
   (generate-new-buffer
    (concat str (int-to-string
-		(setq ri-buffer-count (1+ ri-buffer-count))))))
+		(setq ri-buffer-count (1+ ri-buffer-count))) who)))
 
 (defvar ri-startup-timeout 60)
 (defun ri-ruby-process-check-ready ()
-  (let ((ri-ruby-process-buffer (ri-generate-new-buffer  " ri-ruby-output")))
+  (let ((ri-ruby-process-buffer (ri-generate-new-buffer  " ri-ruby-output" "check-ready")))
     (unwind-protect
 	(save-excursion
 	  (set-buffer ri-ruby-process-buffer)
@@ -142,30 +139,30 @@
 
 (defun ri-ruby-process-get-expr (cmd param)
   (ri-ruby-get-process)
-  (let ((ri-ruby-process-buffer (ri-generate-new-buffer  " ri-ruby-output"))
-	(command (concat cmd " " param "\n")))
-    (unwind-protect
-	(save-excursion
-	  (set-buffer ri-ruby-process-buffer)
-	  (set-process-filter ri-ruby-process 'ri-ruby-process-filter-expr)
-	  (process-send-string ri-ruby-process command)
-	  (ri-ruby-check-process ri-ruby-process-buffer)
-	  (while (progn (goto-char (point-min))
-			(not (looking-at ".*\n"))) ;we didn't read a whole line
+    (let ((ri-ruby-process-buffer (ri-generate-new-buffer  " ri-ruby-output" "get-expr"))
+	  (command (concat cmd " " param "\n")))
+      (unwind-protect
+	  (save-excursion
+	    (set-buffer ri-ruby-process-buffer)
+	    (set-process-filter ri-ruby-process 'ri-ruby-process-filter-expr)
+	    (process-send-string ri-ruby-process command)
 	    (ri-ruby-check-process ri-ruby-process-buffer)
-	    (accept-process-output ri-ruby-process))
-	  (goto-char (point-min))
-	  (setq ri-ruby-last-get-expr
-		(read (buffer-substring (point)
-					(point-at-eol)))))
-      (set-process-filter ri-ruby-process t)
-      (if ri-kill-buffers
-	  (kill-buffer ri-ruby-process-buffer)))))
+	    (while (progn (goto-char (point-min))
+			  (not (looking-at ".*\n"))) ;we didn't read a whole line
+	      (ri-ruby-check-process ri-ruby-process-buffer)
+	      (accept-process-output ri-ruby-process))
+	    (goto-char (point-min))
+	    (setq ri-ruby-last-get-expr
+		  (read (buffer-substring (point)
+					  (point-at-eol)))))
+	(set-process-filter ri-ruby-process t)
+	(if ri-kill-buffers
+	    (kill-buffer ri-ruby-process-buffer)))))
 
 (defun ri-ruby-process-get-lines (cmd param)
   (ri-ruby-get-process)
   (if (equal param "") nil
-    (let ((ri-ruby-process-buffer (ri-generate-new-buffer " ri-ruby-output"))
+    (let ((ri-ruby-process-buffer (ri-generate-new-buffer " ri-ruby-output" "get-lines"))
 	  (command (concat cmd " " param "\n")))
       (unwind-protect
 	  (save-excursion
@@ -193,7 +190,7 @@
     (if (and pred (listp result))
 	(setq result (mapcar pred result)))
     result))
-					       
+
 (defun ri-ruby-read-keyw ()
   (let* ((curr (current-word))
 	 (match (ri-ruby-process-get-expr "LAMBDA" curr))
@@ -262,6 +259,7 @@ printf
     (when info
       (message "%s" info))))
 
+;;;###autoload
 (defun ri (keyw &optional class)
   "Execute `ri'."
   (interactive (ri-ruby-read-keyw))
@@ -273,35 +271,74 @@ printf
 	     (setq info (ri-ruby-process-get-lines "DISPLAY_INFO" method))
 	     (if info (ri-ruby-show-info method info))))))
 
+(defgroup ri-emacs nil
+  "ri-emacs commands for users and programmers."
+  :group 'help
+  :prefix "ri-emacs")
+
+(defcustom ri-emacs-method-face 'underline
+  "*Face for method name in ri output, or nil for none."
+  :group 'ri-emacs
+  :type 'face)
+
+(defun ri-display (string)
+  (let ((info (ri-ruby-process-get-lines "DISPLAY_INFO" string)))
+    (if info (ri-ruby-show-info string info)
+      (message (format "No ri for %s" string)))))
+
+(define-button-type 'ri-method
+  'help-echo "mouse-2, RET: Display ri help on this method"
+  'follow-link t
+  'action (lambda (button)
+	    (ri-display (button-get button 'ri-method))))
+
+(defun ri-find-buttons ( )
+  (goto-char (point-min))
+  ;; Search forward and try to find the class or the parent class and
+  ;; make it a button
+  (let ((eol (progn (forward-line 1) (point))))
+    (goto-char (point-min))
+    (if (re-search-forward " \\([^ ]+\\)\\(::\\|#\\)\\([^#:\n\r \t]+\\)$" eol t)
+	(make-button (match-beginning 1)
+		     (match-end 1)
+		     'type 'ri-method
+		     'face ri-emacs-method-face
+		     'ri-method (match-string 1))))
+  (if (re-search-forward "^Instance methods:" nil t)
+      (while (re-search-forward " +\\([^, \n\r\t]+\\)" nil t)
+	(make-button (match-beginning 1)
+		     (match-end 1)
+		     'type 'ri-method
+		     'face ri-emacs-method-face
+		     'ri-method (match-string 1)))))
+
+(defun ri-mode ()
+  "Mode for viewing RI documentation."
+  (kill-all-local-variables)
+  (local-set-key (kbd "q") 'quit-window)
+  (local-set-key (kbd "RET") 'ri-follow)
+  (setq mode-name "RI")
+  (setq major-mode 'ri-mode)
+  (ri-find-buttons)
+  (goto-char 1)
+  (setq buffer-read-only t)
+  (run-hooks 'ri-mode-hook))
+
 (cond ((fboundp 'with-displaying-help-buffer) ; for XEmacs
        (defun ri-ruby-show-info (method info) 
 	 (with-displaying-help-buffer
 	  (lambda () (princ info))
-	  (format "ri `%s'" method))))
+	  (format "ri `%s'" method)
+          (ri-mode))))
       (t                                ; for Emacs
        (defun ri-ruby-show-info (method info)
-         (let ((b (get-buffer-create (format "ri `%s'" method))))
+         (let ((b (get-buffer-create (format "*ri `%s'*" method))))
            (display-buffer b)
            (with-current-buffer b
+	     (setq buffer-read-only nil)
              (buffer-disable-undo)
              (erase-buffer)
              (insert info)
-             (goto-char 1)))
+             (goto-char 1)
+             (ri-mode)))
          info)))
-
-(defun set-ri-ruby-paths (rails-root)
-  "Given RAILS-ROOT, sets ri-ruby-paths to RAILS-ROOT/*/ri directories"
-  (interactive "D")
-  (let* ((file-list (unix-find rails-root
-			       (function
-				(lambda (file)
-				  (and (string-equal "ri" (nth 0 file)) (nth 1 file))))))
-	 (temp nil))
-    (mapc (function
-	   (lambda (file)
-	     (let ((full-path (expand-file-name (nth 0 file) rails-root)))
-	       (if temp
-		   (setq temp (concat temp ":" full-path))
-		 (setq temp full-path)))))
-	  file-list)
-    (setq ri-ruby-paths (or temp ""))))
