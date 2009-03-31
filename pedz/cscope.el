@@ -203,7 +203,7 @@ spot"
 ;;;###autoload
 (defun cscope-520-process ( )
   (interactive)
-  (cscope-bananas-are-fun "/.../austin.ibm.com/fs/projects/aix/aix520"
+  (cscope-bananas-are-fun "/gsa/ausgsa/projects/a/aix/aix520"
 			  "/520_SERVICE" ))
 ;;;###autoload
 (defalias 'cscope-5200-00 'cscope-520-process)
@@ -211,7 +211,7 @@ spot"
 ;;;###autoload
 (defun cscope-52B-process ( )
   (interactive)
-  (cscope-bananas-are-fun "/.../austin.ibm.com/fs/projects/aix/aix52B"
+  (cscope-bananas-are-fun "/gsa/ausgsa/projects/a/aix/aix52B"
 			  "/52B_SERVICE" ))
 ;;;###autoload
 (defalias 'cscope-5200-01 'cscope-52B-process)
@@ -219,18 +219,18 @@ spot"
 ;;;###autoload
 (defun cscope-52F-process ( )
   (interactive)
-  (cscope-bananas-are-fun "/.../austin.ibm.com/fs/projects/aix/aix52F"
+  (cscope-bananas-are-fun "/gsa/ausgsa/projects/a/aix/aix52F"
 			  "/52F_COMPLETE" ))
 
 ;;;###autoload
 (defun cscope-52H-process ( )
   (interactive)
-  (cscope-bananas-are-fun "/.../austin.ibm.com/fs/projects/aix/aix52H"
+  (cscope-bananas-are-fun "/gsa/ausgsa/projects/a/aix/aix52H"
 			  "/52H_COMPLETE" ))
 ;;;###autoload
 (defun cscope-52I-process ( )
   (interactive)
-  (cscope-bananas-are-fun "/.../austin.ibm.com/fs/projects/aix/aix52I"
+  (cscope-bananas-are-fun "/gsa/ausgsa/projects/a/aix/aix52I"
 			  "/52I_COMPLETE" ))
 ;;;###autoload
 (defalias 'cscope-5200-05 'cscope-52I-process)
@@ -240,7 +240,7 @@ spot"
 ;;;###autoload
 (defun cscope-52L-process ( )
   (interactive)
-  (cscope-bananas-are-fun "/.../austin.ibm.com/fs/projects/aix/aix52L"
+  (cscope-bananas-are-fun "/gsa/ausgsa/projects/a/aix/aix52L"
 			  "/52L_COMPLETE" ))
 ;;;###autoload
 (defalias 'cscope-5200-07 'cscope-52L-process)
@@ -248,7 +248,7 @@ spot"
 ;;;###autoload
 (defun cscope-52M-process ( )
   (interactive)
-  (cscope-bananas-are-fun "/.../austin.ibm.com/fs/projects/aix/aix52M"
+  (cscope-bananas-are-fun "/gsa/ausgsa/projects/a/aix/aix52M"
 			  "/52M_COMPLETE" ))
 ;;;###autoload
 (defalias 'cscope-5200-08 'cscope-52M-process)
@@ -256,7 +256,7 @@ spot"
 ;;;###autoload
 (defun cscope-52Q-process ( )
   (interactive)
-  (cscope-bananas-are-fun "/.../austin.ibm.com/fs/projects/aix/aix52Q"
+  (cscope-bananas-are-fun "/gsa/ausgsa/projects/a/aix/aix52Q"
 			  "/52Q_COMPLETE" ))
 ;;;###autoload
 (defalias 'cscope-5200-09 'cscope-52Q-process)
@@ -264,7 +264,7 @@ spot"
 ;;;###autoload
 (defun cscope-52S-process ( )
   (interactive)
-  (cscope-bananas-are-fun "/.../austin.ibm.com/fs/projects/aix/aix52S"
+  (cscope-bananas-are-fun "/gsa/ausgsa/projects/a/aix/aix52S"
 			  "/52S_COMPLETE" ))
 ;;;###autoload
 (defalias 'cscope-5200-10 'cscope-52S-process)
@@ -272,7 +272,7 @@ spot"
 ;;;###autoload
 (defun cscope-530-process ( )
   (interactive)
-  (cscope-bananas-are-fun "/.../austin.ibm.com/fs/projects/aix/aix530"
+  (cscope-bananas-are-fun "/gsa/ausgsa/projects/a/aix/aix530"
 			  "/530_COMPLETE" ))
 ;;;###autoload
 (defalias 'cscope-5300-00 'cscope-530-process)
@@ -280,7 +280,7 @@ spot"
 ;;;###autoload
 (defun cscope-53A-process ( )
   (interactive)
-  (cscope-bananas-are-fun "/.../austin.ibm.com/fs/projects/aix/aix53A"
+  (cscope-bananas-are-fun "/gsa/ausgsa/projects/a/aix/aix53A"
 			  "/53A_COMPLETE" ))
 ;;;###autoload
 (defalias 'cscope-5300-01 'cscope-53A-process)
@@ -288,7 +288,7 @@ spot"
 ;;;###autoload
 (defun cscope-53D-process ( )
   (interactive)
-  (cscope-bananas-are-fun "/.../austin.ibm.com/fs/projects/aix/aix53D"
+  (cscope-bananas-are-fun "/gsa/ausgsa/projects/a/aix/aix53D"
 			  "/53D_COMPLETE" ))
 ;;;###autoload
 (defalias 'cscope-5300-03 'cscope-53D-process)
@@ -296,7 +296,7 @@ spot"
 ;;;###autoload
 (defun cscope-53E-process ( )
   (interactive)
-  (cscope-bananas-are-fun "/.../austin.ibm.com/fs/projects/aix/aix53E"
+  (cscope-bananas-are-fun "/gsa/ausgsa/projects/a/aix/aix53E"
 			  "/53E_COMPLETE" ))
 ;;;###autoload
 (defalias 'cscope-5300-04 'cscope-53E-process)
@@ -304,7 +304,7 @@ spot"
 ;;;###autoload
 (defun cscope-53H-process ( )
   (interactive)
-  (cscope-bananas-are-fun "/.../austin.ibm.com/fs/projects/aix/aix53H"
+  (cscope-bananas-are-fun "/gsa/ausgsa/projects/a/aix/aix53H"
 			  "/53H_COMPLETE" ))
 ;;;###autoload
 (defalias 'cscope-5300-05 'cscope-53H-process)
@@ -312,7 +312,7 @@ spot"
 ;;;###autoload
 (defun cscope-53J-process ( )
   (interactive)
-  (cscope-bananas-are-fun "/.../austin.ibm.com/fs/projects/aix/aix53J"
+  (cscope-bananas-are-fun "/gsa/ausgsa/projects/a/aix/aix53J"
 			  "/53J_COMPLETE" ))
 ;;;###autoload
 (defalias 'cscope-5300-06 'cscope-53J-process)
@@ -320,7 +320,7 @@ spot"
 ;;;###autoload
 (defun cscope-53L-process ( )
   (interactive)
-  (cscope-bananas-are-fun "/.../austin.ibm.com/fs/projects/aix/aix53L"
+  (cscope-bananas-are-fun "/gsa/ausgsa/projects/a/aix/aix53L"
 			  "/53L_COMPLETE" ))
 ;;;###autoload
 (defalias 'cscope-5300-07 'cscope-53L-process)
@@ -328,7 +328,7 @@ spot"
 ;;;###autoload
 (defun cscope-53N-process ( )
   (interactive)
-  (cscope-bananas-are-fun "/.../austin.ibm.com/fs/projects/aix/aix53N"
+  (cscope-bananas-are-fun "/gsa/ausgsa/projects/a/aix/aix53N"
 			  "/53N_COMPLETE" ))
 ;;;###autoload
 (defalias 'cscope-5300-08 'cscope-53N-process)
@@ -336,7 +336,7 @@ spot"
 ;;;###autoload
 (defun cscope-53Q-process ( )
   (interactive)
-  (cscope-bananas-are-fun "/.../austin.ibm.com/fs/projects/aix/aix53Q"
+  (cscope-bananas-are-fun "/gsa/ausgsa/projects/a/aix/aix53Q"
 			  "/53Q_COMPLETE" ))
 ;;;###autoload
 (defalias 'cscope-5300-09 'cscope-53Q-process)
@@ -344,7 +344,7 @@ spot"
 ;;;###autoload
 (defun cscope-53S-process ( )
   (interactive)
-  (cscope-bananas-are-fun "/.../austin.ibm.com/fs/projects/aix/aix53S"
+  (cscope-bananas-are-fun "/gsa/ausgsa/projects/a/aix/aix53S"
 			  "/53S_COMPLETE" ))
 ;;;###autoload
 (defalias 'cscope-5300-10 'cscope-53S-process)
@@ -382,7 +382,7 @@ spot"
 ;;;###autoload
 (defun cscope-ipf-process ( )
   (interactive)
-  (cscope-bananas-are-fun "/.../austin.ibm.com/fs/projects/aix/isr/53ipfl53H"
+  (cscope-bananas-are-fun "/gsa/ausgsa/projects/a/aix/isr/53ipfl53H"
 			  "/53ipfl53H_latest" ))
 
 ;;;###autoload
