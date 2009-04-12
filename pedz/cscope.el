@@ -328,7 +328,7 @@ spot"
 ;;;###autoload
 (defun cscope-53N-process ( )
   (interactive)
-  (cscope-bananas-are-fun "/gsa/ausgsa/projects/a/aix/aix53N"
+  (cscope-bananas-are-fun "/.../austin.ibm.com/fs/projects/aix/aix53N"
 			  "/53N_COMPLETE" ))
 ;;;###autoload
 (defalias 'cscope-5300-08 'cscope-53N-process)
