@@ -294,23 +294,71 @@ printf
 
 (defun ri-find-buttons ( )
   (goto-char (point-min))
-  ;; Search forward and try to find the class or the parent class and
-  ;; make it a button
-  (let ((eol (progn (forward-line 1) (point))))
+  ;; The types of pages I know of so far is an instance method or a
+  ;; class method.  In those cases, we find the class in the first
+  ;; line and make a button for it.  The other searches are going to
+  ;; fail.
+  ;;
+  ;; The other type of page I know of is a Module or a Class (which I
+  ;; treat the same so far).  In this case, I want to make a button
+  ;; for the subclass so we can easily walk up the tree.  I also need
+  ;; to save off the original class or module.
+  ;;
+  ;; For Class and Module pages, we continue to scan down the page
+  ;; looking for Includes, Class methods: and Instance Methods making
+  ;; buttons for each of the entries under each of those sections.
+  ;;
+  ;; For the class and instance methods, the class or module that the
+  ;; page is displaying has to be prepended to the method name with
+  ;; either a "::" or a "#" in between.
+  (let ((eol (progn (forward-line 1) (point)))
+	(includes-start (re-search-forward "^Includes:" nil t))
+	(class-start  (re-search-forward "^Class methods:" nil t))
+	(instance-start (re-search-forward "^Instance methods:" nil t))
+	(page-end (point-max))
+	(whole-match nil)
+	search-end)
     (goto-char (point-min))
-    (if (re-search-forward " \\([^ ]+\\)\\(::\\|#\\)\\([^#:\n\r \t]+\\)$" eol t)
-	(make-button (match-beginning 1)
-		     (match-end 1)
-		     'type 'ri-method
-		     'face ri-emacs-method-face
-		     'ri-method (match-string 1))))
-  (if (re-search-forward "^Instance methods:" nil t)
-      (while (re-search-forward " +\\([^, \n\r\t]+\\)" nil t)
-	(make-button (match-beginning 1)
-		     (match-end 1)
-		     'type 'ri-method
-		     'face ri-emacs-method-face
-		     'ri-method (match-string 1)))))
+    (if (re-search-forward " \\([^ ]+\\)\\(\\(::\\|#\\)\\([^#:\n\r \t]+\\)\\)?$" eol t)
+	(progn
+	  (setq whole-match (match-string 0))
+	  (make-button (match-beginning 1)
+		       (match-end 1)
+		       'type 'ri-method
+		       'face ri-emacs-method-face
+		       'ri-method (match-string 1))
+	  ;; If these match, then it must be a Module or a Class.  So
+	  ;; use the whole-match as the containing class or module
+	  ;; name.
+	  (if includes-start
+	      (progn
+		(goto-char includes-start)
+		(setq search-end (or class-start instance-start page-end))
+		(while (re-search-forward " +\\([^, \n\r\t]+\\)" search-end t)
+		  (make-button (match-beginning 1)
+			       (match-end 1)
+			       'type 'ri-method
+			       'face ri-emacs-method-face
+			       'ri-method (match-string 1)))))
+	  (if class-start
+	      (progn
+		(goto-char class-start)
+		(setq search-end (or instance-start page-end))
+		(while (re-search-forward " +\\([^, \n\r\t]+\\)" search-end t)
+		  (make-button (match-beginning 1)
+			       (match-end 1)
+			       'type 'ri-method
+			       'face ri-emacs-method-face
+			       'ri-method  (concat whole-match "::" (match-string 1))))))
+	  (if instance-start
+	      (progn
+		(goto-char instance-start)
+		(while (re-search-forward " +\\([^, \n\r\t]+\\)" nil t)
+		  (make-button (match-beginning 1)
+			       (match-end 1)
+			       'type 'ri-method
+			       'face ri-emacs-method-face
+			       'ri-method (concat whole-match "#" (match-string 1))))))))))
 
 (defun ri-mode ()
   "Mode for viewing RI documentation."
