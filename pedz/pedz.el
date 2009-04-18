@@ -183,7 +183,7 @@
 
 ;;(load "gnuserv")
 ;;(setenv "GNU_SECURE" "/home/pedz/.gnu_secure")
-;;(server-start)
+(server-start)
 
 ;;; mldrag.el setup
 ;;;
