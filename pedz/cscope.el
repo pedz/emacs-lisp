@@ -154,6 +154,12 @@ Type:
   (cscope-find-goodies (concat "8" string "\n")))
 
 ;;;###autoload
+(defun cscope-find-assignment ( string )
+  "Find assignments to variables and fields matching PATTERN"
+  (interactive (get-symbol-interactively "Find assignments to symbol: "))
+  (cscope-find-goodies (concat "9" string "\n")))
+
+;;;###autoload
 (defun cscope-get-line-number ()
   "Returns the \"line number\" out of a cscope output buffer"
   (end-of-line)
@@ -172,6 +178,7 @@ spot"
     (if arg
 	(find-file-other-window fname)
       (find-file fname))
+    (message (buffer-name))
     (goto-line lnum)))
 
 ;;;###autoload
@@ -256,7 +263,7 @@ spot"
 ;;;###autoload
 (defun cscope-52Q-process ( )
   (interactive)
-  (cscope-bananas-are-fun "/gsa/ausgsa/projects/a/aix/aix52Q"
+  (cscope-bananas-are-fun "/.../austin.ibm.com/fs/projects/aix/aix52Q"
 			  "/52Q_COMPLETE" ))
 ;;;###autoload
 (defalias 'cscope-5200-09 'cscope-52Q-process)
@@ -264,7 +271,7 @@ spot"
 ;;;###autoload
 (defun cscope-52S-process ( )
   (interactive)
-  (cscope-bananas-are-fun "/gsa/ausgsa/projects/a/aix/aix52S"
+  (cscope-bananas-are-fun "/.../austin.ibm.com/fs/projects/aix/aix52S"
 			  "/52S_COMPLETE" ))
 ;;;###autoload
 (defalias 'cscope-5200-10 'cscope-52S-process)
@@ -304,7 +311,7 @@ spot"
 ;;;###autoload
 (defun cscope-53H-process ( )
   (interactive)
-  (cscope-bananas-are-fun "/gsa/ausgsa/projects/a/aix/aix53H"
+  (cscope-bananas-are-fun "/.../austin.ibm.com/fs/projects/aix/aix53H"
 			  "/53H_COMPLETE" ))
 ;;;###autoload
 (defalias 'cscope-5300-05 'cscope-53H-process)
@@ -378,6 +385,8 @@ spot"
   (interactive)
   (cscope-bananas-are-fun "/gsa/ausgsa/projects/a/aix/aix61F"
 			  "/61F_COMPLETE" ))
+;;;###autoload
+(defalias 'cscope-6100-03 'cscope-61F-process)
 
 ;;;###autoload
 (defun cscope-ipf-process ( )

@@ -16,10 +16,10 @@
 ;;;;;;  cscope-52L-process cscope-52I-process cscope-52H-process
 ;;;;;;  cscope-52F-process cscope-52B-process cscope-520-process
 ;;;;;;  cscope-view-from-list cscope-goto-from-list cscope-get-line-number
-;;;;;;  cscope-find-file-include cscope-find-file cscope-find-pattern
-;;;;;;  cscope-find-string cscope-find-func-call cscope-find-functions-called
-;;;;;;  cscope-find-func cscope-find-symbol cscope-mode) "cscope"
-;;;;;;  "cscope.el" (18860 10247))
+;;;;;;  cscope-find-assignment cscope-find-file-include cscope-find-file
+;;;;;;  cscope-find-pattern cscope-find-string cscope-find-func-call
+;;;;;;  cscope-find-functions-called cscope-find-func cscope-find-symbol
+;;;;;;  cscope-mode) "cscope" "cscope.el" (19018 18036))
 ;;; Generated autoloads from cscope.el
 
 (autoload (quote cscope-mode) "cscope" "\
@@ -73,6 +73,11 @@ Finds files matching PATTERN
 
 (autoload (quote cscope-find-file-include) "cscope" "\
 Find the files which include the file matching PATTERN
+
+\(fn STRING)" t nil)
+
+(autoload (quote cscope-find-assignment) "cscope" "\
+Find assignments to variables and fields matching PATTERN
 
 \(fn STRING)" t nil)
 
@@ -251,6 +256,8 @@ Not documented
 Not documented
 
 \(fn)" t nil)
+
+(defalias (quote cscope-6100-03) (quote cscope-61F-process))
 
 (autoload (quote cscope-ipf-process) "cscope" "\
 Not documented
