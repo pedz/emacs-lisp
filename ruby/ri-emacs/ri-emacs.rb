@@ -1,3 +1,4 @@
+#!/usr/bin/env ruby
 ## ri-emacs.rb helper script for use with ri-ruby.el
 #
 # Author: Kristof Bastiaensen <kristof@vleeuwen.org>
@@ -22,6 +23,17 @@
 #
 #  For information on how to use and install see ri-ruby.el
 #
+require 'logger'
+
+def logger
+  if @logger.nil?
+    @logger = Logger.new("/tmp/ri-emacs-" + ENV["USER"])
+    @logger.level = Logger::DEBUG
+  end
+  @logger
+end
+
+logger.debug("ri-emacs started #{Time.now} running version #{RUBY_VERSION}")
 
 begin
   # RDoc 2
@@ -34,6 +46,7 @@ begin
   require 'rdoc/ri/reader'
   require 'rdoc/ri/formatter'
   require 'rdoc/ri/display'
+  logger.debug("RDoc 2 loaded")
 rescue LoadError
   # RDoc 1
   require 'rdoc/ri/ri_paths'
@@ -42,6 +55,7 @@ rescue LoadError
   require 'rdoc/ri/ri_reader'
   require 'rdoc/ri/ri_formatter'
   require 'rdoc/ri/ri_display'
+  logger.debug("RDoc 1 loaded")
 end
 
 class DefaultDisplay
@@ -57,8 +71,6 @@ class DefaultDisplay
   end
 end
 
-DEBUG_ON = true
-
 def debug(*args)
   if DEBUG_ON
     open_debug.puts *args
@@ -72,7 +84,7 @@ end
 
 def output(arg)
   arg = "nil" if arg.nil?
-  debug("Wrote: #{arg}")
+  logger.debug("Wrote: #{arg}")
   STDOUT.puts arg
   STDOUT.flush
 end
@@ -94,7 +106,8 @@ class RiEmacs
         Dir["#{Gem.path}/doc/*/ri"].each do |path|
           RI::Paths::PATH << path
         end
-      rescue LoadError
+      rescue LoadError => e
+        logger.error(e.to_s)
       end
     end
 
@@ -108,7 +121,7 @@ class RiEmacs
     begin
       desc = RI::NameDescriptor.new(keyw)
     rescue => e
-      puts e.message
+      logger.error(e.to_s)
       return nil
     end
 
@@ -129,13 +142,13 @@ class RiEmacs
                           when ?: then true
                           when ?# then false
                           end
-        methods = @ri_reader.find_methods("", is_class_method,
-                                          container)
+        methods = @ri_reader.find_methods("", is_class_method, container)
         return nil if methods.empty? && namespaces.empty?
       else
         #class_name = desc.class_names.last
-        debug("class_name is #{class_name}")
-        namespaces = last_space.find_all{ |n| n.name.index(class_name).zero? }
+        logger.debug("class_name is '#{class_name}'")
+        return nil if class_name.nil?
+        namespaces = last_space.find_all { |n| n.name.index(class_name).zero? }
         return nil if namespaces.empty?
         methods = []
       end
@@ -225,7 +238,7 @@ class RiEmacs
       namespaces = namespaces.find_all { |n| n.full_name == desc.full_class_name }
       return false if namespaces.empty?
       klass = @ri_reader.get_class(namespaces[0])
-      debug("klass is #{klass.inspect}")
+      logger.debug("klass is #{klass.inspect}")
       @display.display_class_info(klass)
     end
 
@@ -283,12 +296,16 @@ class Command
     "DISPLAY_INFO" => :display_info}
 
   def read_next
-    line = STDIN.gets
-    debug("read: #{line}")
+    if (line = STDIN.gets).nil?
+      logger.debug("Empty line -- exiting")
+      return nil
+    end
+    logger.debug("read: #{line.chomp}")
     cmd, param = /(\w+)(.*)$/.match(line)[1..2]
     method = Command2Method[cmd]
     fail "unrecognised command: #{cmd}" if method.nil?
     send(method, param.strip)
+    return true
   end
 
   def try_completion(keyw)
@@ -338,11 +355,22 @@ if arg == "--test"
   cmd.test
   puts "Test succeeded"
 else
-  if STDIN.isatty
-    debug "Turning off echo"
-    system("stty -echo")
+  begin
+    if STDIN.isatty
+      logger.debug "Turning off echo"
+      system("stty -echo")
+    end
+    cmd = Command.new(RiEmacs.new(arg))
+    output 'READY'
+    loop do
+      break if cmd.read_next.nil?
+    end
+  rescue => e
+    logger.fatal(e.to_s + "\n" + e.backtrace.join("\n"))
+  ensure
+    if STDIN.isatty
+      logger.debug "Turning echo back on"
+      system("stty echo")
+    end
   end
-  cmd = Command.new(RiEmacs.new(arg))
-  output 'READY'
-  loop { cmd.read_next }
 end

@@ -1,5 +1,14 @@
 ;;;; ri-ruby.el emacs wrapper around ri
 ;;
+;; Modified by Perry Smith <pedz@easesoftware.com>
+;;   July 11th, 2009
+;;
+;; Added much debugging capabilities.  Made various parts of the
+;; rendered page ``clicka-able''.  The way it is suppose to work is
+;; a click on base class will take you to the class or module.  If the
+;; page is for a page or module, each method is ``click-able'' to take
+;; you to the RDoc page for that method.  etc.
+;;
 ;; Author: Kristof Bastiaensen <kristof@vleeuwen.org>
 ;;
 ;;
@@ -83,6 +92,12 @@
 (defvar ri-ruby-last-get-expr nil)
 (defvar ri-buffer-count 0)
 (defvar ri-kill-buffers nil)		;set to nil when debugging
+
+(defun ri-ruby-kill ()
+  "Kills the ri-ruby process so a new one can be started"
+  (interactive)
+  (if ri-ruby-process
+      (kill-process ri-ruby-process)))
 
 (defun ri-ruby-get-process ()
   (cond ((or (null ri-ruby-process)
@@ -311,54 +326,116 @@ printf
   ;; For the class and instance methods, the class or module that the
   ;; page is displaying has to be prepended to the method name with
   ;; either a "::" or a "#" in between.
-  (let ((eol (progn (forward-line 1) (point)))
-	(includes-start (re-search-forward "^Includes:" nil t))
-	(class-start  (re-search-forward "^Class methods:" nil t))
-	(instance-start (re-search-forward "^Instance methods:" nil t))
-	(page-end (point-max))
-	(whole-match nil)
-	search-end)
-    (goto-char (point-min))
-    (if (re-search-forward " \\([^ ]+\\)\\(\\(::\\|#\\)\\([^#:\n\r \t]+\\)\\)?$" eol t)
+  ;;
+  ;; Ruby 1.9 formats the page different.  The first line is all -'s.
+  ;; The second line has what use to be at the end of the first line
+  (let* ((bol (progn
+		(if (looking-at "^-+$")
+		    (forward-line 1))
+		(point)))
+	 (eol (progn (forward-line 1) (point)))
+	 (includes-start (re-search-forward "^Includes:" nil t))
+	 (class-start  (re-search-forward "^Class methods:" nil t))
+	 (instance-start (re-search-forward "^Instance methods:" nil t))
+	 (page-end (point-max))
+	 (class nil)
+	 (parent-class nil)
+	 (base-class nil)
+	 (method nil)
+	 search-end)
+    (goto-char bol)
+    ;; Not parsing the base class "< Foo" string yet
+    (if (re-search-forward
+	 " ?\\(\\(Module\\|Class\\): \\)?\\(\\(\\(\\([^#: ]+\\)\\(::\\|#\\)\\)*\\)\\([^: ]+\\)\\)\\( < \\([^ \r\n\t]+\\)\\)?[ \r\t\n]*$"
+	 eol t)
 	(progn
-	  (setq whole-match (match-string 0))
-	  (make-button (match-beginning 1)
-		       (match-end 1)
-		       'type 'ri-method
-		       'face ri-emacs-method-face
-		       'ri-method (match-string 1))
-	  ;; If these match, then it must be a Module or a Class.  So
-	  ;; use the whole-match as the containing class or module
-	  ;; name.
-	  (if includes-start
+	  (if t
 	      (progn
-		(goto-char includes-start)
-		(setq search-end (or class-start instance-start page-end))
-		(while (re-search-forward " +\\([^, \n\r\t]+\\)" search-end t)
-		  (make-button (match-beginning 1)
-			       (match-end 1)
-			       'type 'ri-method
-			       'face ri-emacs-method-face
-			       'ri-method (match-string 1)))))
-	  (if class-start
-	      (progn
-		(goto-char class-start)
-		(setq search-end (or instance-start page-end))
-		(while (re-search-forward " +\\([^, \n\r\t]+\\)" search-end t)
-		  (make-button (match-beginning 1)
-			       (match-end 1)
-			       'type 'ri-method
-			       'face ri-emacs-method-face
-			       'ri-method  (concat whole-match "::" (match-string 1))))))
-	  (if instance-start
-	      (progn
-		(goto-char instance-start)
-		(while (re-search-forward " +\\([^, \n\r\t]+\\)" nil t)
-		  (make-button (match-beginning 1)
-			       (match-end 1)
-			       'type 'ri-method
-			       'face ri-emacs-method-face
-			       'ri-method (concat whole-match "#" (match-string 1))))))))))
+	       ;; "Class: " or "Module: " if present 
+	       (message (format "match  1: '%s'" (match-string 1)))
+	       ;; "Class" or "Module"
+	       (message (format "match  2: '%s'" (match-string 2)))
+	       ;; entire class, module, or method string
+	       (message (format "match  3: '%s'" (match-string 3)))
+	       ;; #3 with final segment removed but the # or :: still
+	       ;; attached
+	       (message (format "match  4: '%s'" (match-string 4)))
+	       ;; The piece of the A::B::C:: string.  This is not
+	       ;; useful that I can see.
+	       (message (format "match  5: '%s'" (match-string 5)))
+	       ;; #4 but with the :: or # removed
+	       (message (format "match  6: '%s'" (match-string 6)))
+	       ;; The final :: or #
+	       (message (format "match  7: '%s'" (match-string 7)))
+	       ;; The method name if a method was looked up.  If a
+	       ;; class or module was looked up, this is just the
+	       ;; final segment of what was looked up.
+	       (message (format "match  8: '%s'" (match-string 8)))
+	       ;; "< base class" if present
+	       (message (format "match  9: '%s'" (match-string 9)))
+	       ;; "base class" if present
+	       (message (format "match 10: '%s'" (match-string 10)))))
+ 	  (if (match-string 1)
+ 	      (progn
+ 		(message "have module")
+ 		(setq class (match-string 3)))
+ 	    (message "do not have module")
+ 	    (setq method (match-string 8)))
+	  ;; Icky but we need to trim off the last :: or #
+	  (if (< (match-beginning 4) (match-end 4))
+	      (setq parent-class (buffer-substring (match-beginning 4)
+						   (match-beginning 7))))
+	  (setq base-class (match-string 10))
+	  (message (format "base-class %s" base-class))
+ 	  (message (format "parent-class %s" parent-class))
+	  ;; Make a button for the parent class if any
+	  (if (< (match-beginning 4) (match-end 4))
+	      (make-button (match-beginning 4)
+			   (match-beginning 7)
+			   'type 'ri-method
+			   'face ri-emacs-method-face
+			   'ri-method parent-class))
+	  ;; Make a button for the base class if any
+	  (if base-class
+	      (make-button (match-beginning 10)
+			   (match-end 10)
+			   'type 'ri-method
+			   'face ri-emacs-method-face
+			   'ri-method base-class))
+ 	  ;; If these match, then it must be a Module or a Class.  So
+ 	  ;; use the class as the containing class or module
+ 	  ;; name.
+ 	  (if includes-start
+ 	      (progn
+ 		(goto-char includes-start)
+ 		(setq search-end (or class-start instance-start page-end))
+ 		(while (re-search-forward " +\\([^, \n\r\t]+\\)" search-end t)
+ 		  (make-button (match-beginning 1)
+ 			       (match-end 1)
+ 			       'type 'ri-method
+ 			       'face ri-emacs-method-face
+ 			       'ri-method (match-string 1)))))
+ 	  (if class-start
+ 	      (progn
+ 		(goto-char class-start)
+ 		(setq search-end (or instance-start page-end))
+ 		(while (re-search-forward " +\\([^, \n\r\t]+\\)" search-end t)
+ 		  (make-button (match-beginning 1)
+ 			       (match-end 1)
+ 			       'type 'ri-method
+ 			       'face ri-emacs-method-face
+ 			       'ri-method  (concat class "::" (match-string 1))))))
+ 	  (if instance-start
+ 	      (progn
+ 		(goto-char instance-start)
+ 		(while (re-search-forward " +\\([^, \n\r\t]+\\)" nil t)
+ 		  (make-button (match-beginning 1)
+ 			       (match-end 1)
+ 			       'type 'ri-method
+ 			       'face ri-emacs-method-face
+ 			       'ri-method (concat class "#" (match-string 1)))))))
+      (message "total miss"))))
+
 
 (defun ri-mode ()
   "Mode for viewing RI documentation."
