@@ -48,7 +48,8 @@
                     (lambda ()
                       (define-key vm-mode-map "A" nil))))
 
-(if (eq window-system 'mac)
+(if (or (eq window-system 'mac)
+        (eq window-system 'ns))
     (setq mac-emulate-three-button-mouse t))
 
 ;; real apropos
@@ -196,7 +197,8 @@
 (setq compilation-finish-function 'v4-build-compilation-finish)
 
 (if (or (eq window-system 'x)
-  (eq window-system 'mac))
+        (eq window-system 'mac)
+        (eq window-system 'ns))
     (progn
       (require 'x-stuff)
       (setup-x)))

@@ -9,9 +9,9 @@
       (setq is-dir (nth 1 file))
       (if (and (eq is-dir t)
                (not (or (eq (compare-strings file-name 0 nil "." 0 nil) t)
-                        (eq (compare-strings file-name 0 nil ".." 0 nil) t))))
+                        (eq (compare-strings file-name 0 nil ".." 0 nil) t)
+                        (eq (compare-strings file-name 0 nil ".svn" 0 nil) t)
+                        (eq (compare-strings file-name 0 nil "CVS" 0 nil) t))))
           (recursively-add-dir-to-load-path (concat dir "/" file-name))))))
-
-(recursively-add-dir-to-load-path "~/.emacs.d")
 
 (provide 'add-paths)

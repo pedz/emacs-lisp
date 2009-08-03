@@ -1,9 +1,21 @@
 
-(setq old-load-path load-path
-      inhibit-startup-message t)
+(defvar old-load-path load-path
+  "Saved value of load-path at startup")
+
+(defun print-load-path ()
+  "Used to debug load-path issues.  Prints the entire list into the
+current buffer which is assumed to be *scratch*"
+  (interactive)
+  (let ((temp load-path))
+    (while temp
+      (insert (format "%s\n" (car temp)))
+      (setq temp (cdr temp)))))
 
 (add-to-list 'load-path "~/.emacs.d")
 (require 'add-paths)
+(recursively-add-dir-to-load-path "~/.emacs.d")
+(recursively-add-dir-to-load-path "/usr/local/share/emacs/site-lisp")
+
 
 (custom-set-variables
   ;; custom-set-variables was added by Custom.
@@ -21,10 +33,12 @@
  '(ecb-wget-setup (quote ("Please_add_wget_to_your_path_or_set_the_fullpath_to_wget" . other)))
  '(inhibit-startup-screen t)
  '(mmm-submode-decoration-level 2)
+ '(ns-alternate-modifier (quote super))
+ '(ns-command-modifier (quote meta))
  '(rails-ws:default-server-type "webrick")
  '(save-abbrevs nil)
  '(shell-prompt-pattern ".+@.+<[0-9]+> on .*
-")
+" t)
  '(tool-bar-mode nil)
  '(user-full-name "Perry Smith")
  '(vc-ignore-dir-regexp "\\`\\([\\/][\\/]\\|/\\.\\.\\./\\|/net/\\|/afs/\\)\\'"))
@@ -54,11 +68,12 @@
 ;; (require 'find-recursive)
 ;; (require 'snippet-setup)
 
-(require 'nxml-setup)
-(require 'mmm-setup)
-(require 'css-setup)
-(require 'javascript-setup)
+;; (require 'nxml-setup)
+;; (require 'mmm-setup)
+;; (require 'css-setup)
+;; (require 'javascript-setup)
 ;; (require 'wisent-setup)
-(if (eq window-system 'mac)
+(if (or (eq window-system 'mac)
+	(eq window-system 'ns))
     (require 'mac-setup))
 (require 'pedz)
