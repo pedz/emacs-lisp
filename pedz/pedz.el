@@ -203,6 +203,12 @@
       (require 'x-stuff)
       (setup-x)))
 
+(if (eq window-system 'ns)
+    (progn
+      (global-set-key [?\M-h] 'ns-do-hide-emacs)
+      (global-set-key [?\M-\s-h] 'ns-do-hide-others)))
+
+
 ;; Put these lines uncommmented in your .emacs if you want C-r to refresh
 ;; ange-ftp's cache whilst doing filename completion.
 ;;
