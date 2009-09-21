@@ -91,7 +91,8 @@
 ;; These three variables are here just to make debugging possible.
 (defvar ri-ruby-last-get-expr nil)
 (defvar ri-buffer-count 0)
-(defvar ri-kill-buffers nil)		;set to nil when debugging
+(defvar ri-debug nil)			;set to t when debugging
+(defvar ri-kill-buffers (not ri-debug))
 
 (defun ri-ruby-kill ()
   "Kills the ri-ruby process so a new one can be started"
@@ -128,19 +129,28 @@
    (concat str (int-to-string
 		(setq ri-buffer-count (1+ ri-buffer-count))) who)))
 
-(defvar ri-startup-timeout 60)
+(defvar ri-startup-timeout .5)
 (defun ri-ruby-process-check-ready ()
-  (let ((ri-ruby-process-buffer (ri-generate-new-buffer  " ri-ruby-output" "check-ready")))
+  (let ((ri-ruby-process-buffer (ri-generate-new-buffer  " ri-ruby-output" "check-ready"))
+	(loop-counter 0)
+	(found nil))
     (unwind-protect
 	(save-excursion
 	  (set-buffer ri-ruby-process-buffer)
 	  (set-process-filter ri-ruby-process 'ri-ruby-process-filter-expr)
 	  (ri-ruby-check-process ri-ruby-process-buffer)
-	  (accept-process-output ri-ruby-process ri-startup-timeout)
-	  (goto-char (point-min))
-	  (cond ((not (looking-at "READY.*\n"))
-		 (delete-process ri-ruby-process)
-		 (error "Couldn't start ruby script"))))
+	  (while (and (< loop-counter 10)
+		      (not found))
+	    (accept-process-output ri-ruby-process ri-startup-timeout)
+	    (goto-char (point-max))
+	    (forward-line -1)
+	    (if (not (setq found (looking-at "READY.*\n")))
+		(progn
+		  (and ri-debug (message "counter %d" loop-counter))
+		  (setq loop-counter (1+ loop-counter)))))
+	  (unless found
+	    (delete-process ri-ruby-process)
+	    (error "Couldn't start ruby script")))
       (set-process-filter ri-ruby-process t)
       (if ri-kill-buffers
 	  (kill-buffer ri-ruby-process-buffer)))))
@@ -160,6 +170,7 @@
 	  (save-excursion
 	    (set-buffer ri-ruby-process-buffer)
 	    (set-process-filter ri-ruby-process 'ri-ruby-process-filter-expr)
+	    (and ri-debug (message "Sending %s" command))
 	    (process-send-string ri-ruby-process command)
 	    (ri-ruby-check-process ri-ruby-process-buffer)
 	    (while (progn (goto-char (point-min))
@@ -198,9 +209,10 @@
 	    (kill-buffer ri-ruby-process-buffer))))))
 
 (defun ri-ruby-complete-method (str pred type)
-  (let* ((cmd (cdr (assoc type '((nil . "TRY_COMPLETION")
-				 (t   . "COMPLETE_ALL")
-				 (lambda . "LAMBDA")))))
+  (let* ((cmd (cdr (or (assoc type '((nil . "TRY_COMPLETION")
+				     (t   . "COMPLETE_ALL")))
+		       '(lambda . "LAMBDA"))))
+	 ;;(dog (message "ri-ruby-complete-method %s" cmd))
 	 (result (ri-ruby-process-get-expr cmd str)))
     (if (and pred (listp result))
 	(setq result (mapcar pred result)))
@@ -351,43 +363,43 @@ printf
 	(progn
 	  (if t
 	      (progn
-	       ;; "Class: " or "Module: " if present 
-	       (message (format "match  1: '%s'" (match-string 1)))
-	       ;; "Class" or "Module"
-	       (message (format "match  2: '%s'" (match-string 2)))
-	       ;; entire class, module, or method string
-	       (message (format "match  3: '%s'" (match-string 3)))
-	       ;; #3 with final segment removed but the # or :: still
-	       ;; attached
-	       (message (format "match  4: '%s'" (match-string 4)))
-	       ;; The piece of the A::B::C:: string.  This is not
-	       ;; useful that I can see.
-	       (message (format "match  5: '%s'" (match-string 5)))
-	       ;; #4 but with the :: or # removed
-	       (message (format "match  6: '%s'" (match-string 6)))
-	       ;; The final :: or #
-	       (message (format "match  7: '%s'" (match-string 7)))
-	       ;; The method name if a method was looked up.  If a
-	       ;; class or module was looked up, this is just the
-	       ;; final segment of what was looked up.
-	       (message (format "match  8: '%s'" (match-string 8)))
-	       ;; "< base class" if present
-	       (message (format "match  9: '%s'" (match-string 9)))
-	       ;; "base class" if present
-	       (message (format "match 10: '%s'" (match-string 10)))))
+		;; "Class: " or "Module: " if present 
+		(and ri-debug (message (format "match  1: '%s'" (match-string 1))))
+		;; "Class" or "Module"
+		(and ri-debug (message (format "match  2: '%s'" (match-string 2))))
+		;; entire class, module, or method string
+		(and ri-debug (message (format "match  3: '%s'" (match-string 3))))
+		;; #3 with final segment removed but the # or :: still
+		;; attached
+		(and ri-debug (message (format "match  4: '%s'" (match-string 4))))
+		;; The piece of the A::B::C:: string.  This is not
+		;; useful that I can see.
+		(and ri-debug (message (format "match  5: '%s'" (match-string 5))))
+		;; #4 but with the :: or # removed
+		(and ri-debug (message (format "match  6: '%s'" (match-string 6))))
+		;; The final :: or #
+		(and ri-debug (message (format "match  7: '%s'" (match-string 7))))
+		;; The method name if a method was looked up.  If a
+		;; class or module was looked up, this is just the
+		;; final segment of what was looked up.
+		(and ri-debug (message (format "match  8: '%s'" (match-string 8))))
+		;; "< base class" if present
+		(and ri-debug (message (format "match  9: '%s'" (match-string 9))))
+		;; "base class" if present
+		(and ri-debug (message (format "match 10: '%s'" (match-string 10))))))
  	  (if (match-string 1)
  	      (progn
- 		(message "have module")
+ 		(and ri-debug (message "have module"))
  		(setq class (match-string 3)))
- 	    (message "do not have module")
+ 	    (and ri-debug (message "do not have module"))
  	    (setq method (match-string 8)))
 	  ;; Icky but we need to trim off the last :: or #
 	  (if (< (match-beginning 4) (match-end 4))
 	      (setq parent-class (buffer-substring (match-beginning 4)
 						   (match-beginning 7))))
 	  (setq base-class (match-string 10))
-	  (message (format "base-class %s" base-class))
- 	  (message (format "parent-class %s" parent-class))
+	  (and ri-debug (message (format "base-class %s" base-class)))
+ 	  (and ri-debug (message (format "parent-class %s" parent-class)))
 	  ;; Make a button for the parent class if any
 	  (if (< (match-beginning 4) (match-end 4))
 	      (make-button (match-beginning 4)
@@ -434,7 +446,7 @@ printf
  			       'type 'ri-method
  			       'face ri-emacs-method-face
  			       'ri-method (concat class "#" (match-string 1)))))))
-      (message "total miss"))))
+      (and ri-debug (message "total miss")))))
 
 
 (defun ri-mode ()

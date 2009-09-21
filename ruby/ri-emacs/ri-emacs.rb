@@ -28,7 +28,8 @@ require 'logger'
 def logger
   if @logger.nil?
     @logger = Logger.new("/tmp/ri-emacs-" + ENV["USER"])
-    @logger.level = Logger::DEBUG
+    # @logger.level = Logger::DEBUG
+    @logger.level = Logger::INFO
   end
   @logger
 end
@@ -85,8 +86,8 @@ end
 def output(arg)
   arg = "nil" if arg.nil?
   logger.debug("Wrote: #{arg}")
-  STDOUT.puts arg
-  STDOUT.flush
+  $stdout.puts arg
+  $stdout.flush
 end
 
 def ruby_minimum_version?(*version)
@@ -229,10 +230,12 @@ class RiEmacs
     desc, methods, namespaces = lookup_keyw(keyw)
     return false if desc.nil?
 
+    logger.debug("desc is #{desc.inspect}")
     if desc.method_name
       methods = methods.find_all { |m| m.name == desc.method_name }
       return false if methods.empty?
       meth = @ri_reader.get_method(methods[0])
+      logger.debug("meth is #{meth.inspect}")
       @display.display_method_info(meth)
     else
       namespaces = namespaces.find_all { |n| n.full_name == desc.full_class_name }
@@ -334,7 +337,9 @@ class Command
   end
 
   def display_info(keyw)
-    @ri.display_info(keyw)
+    logger.debug("@ri is class #{@ri.class}")
+    ret = @ri.display_info(keyw)
+    logger.debug("@ri.display returned #{ret.inspect}")
     output "RI_EMACS_END_OF_INFO"
   end
 
@@ -358,8 +363,9 @@ else
   begin
     if STDIN.isatty
       logger.debug "Turning off echo"
-      system("stty -echo")
+      system("stty -echo -opost")
     end
+    logger.debug("$stdout = #{$stdout.inspect}")
     cmd = Command.new(RiEmacs.new(arg))
     output 'READY'
     loop do
@@ -370,7 +376,7 @@ else
   ensure
     if STDIN.isatty
       logger.debug "Turning echo back on"
-      system("stty echo")
+      system("stty echo opost")
     end
   end
 end
