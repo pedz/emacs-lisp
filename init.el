@@ -18,10 +18,9 @@ current buffer which is assumed to be *scratch*"
 (recursively-add-dir-to-load-path "/usr/local/share/emacs/site-lisp")
 (recursively-add-dir-to-load-path "~/.emacs.d")
 
-;; Temp added to play with html5
-(add-to-list 'load-path "~/Source/GitHub/html5-el/")
+;; Added to make html5-el work (per README)
 (eval-after-load "rng-loc"
-  '(add-to-list 'rng-schema-locating-files "~/Source/GitHub/html5-el/schemas.xml"))
+  '(add-to-list 'rng-schema-locating-files "~/.emacs.d/html5-el/schemas.xml"))
 
 ;; Set by emacs' customizing routines -- don't change directly
 (custom-set-variables

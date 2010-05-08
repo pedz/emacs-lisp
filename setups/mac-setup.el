@@ -26,4 +26,6 @@ Currently the `mailto' and `txmt' schemes are supported."
 	   (select-frame-set-input-focus (selected-frame)))))
       (t (mac-resume-apple-event ae t)))))
 
+(define-key global-map "\M-\`" 'ns-next-frame)
+(define-key global-map "\M-~" 'ns-prev-frame)
 (provide 'mac-setup)
