@@ -21,7 +21,7 @@ current buffer which is assumed to be *scratch*"
 ;; Temp added to play with html5
 (add-to-list 'load-path "~/Source/GitHub/html5-el/")
 (eval-after-load "rng-loc"
-  '(add-to-list 'rng-schema-locating-files "~/code/html5-el/schemas.xml"))
+  '(add-to-list 'rng-schema-locating-files "~/Source/GitHub/html5-el/schemas.xml"))
 
 ;; Set by emacs' customizing routines -- don't change directly
 (custom-set-variables
