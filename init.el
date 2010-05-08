@@ -11,12 +11,19 @@ current buffer which is assumed to be *scratch*"
       (insert (format "%s\n" (car temp)))
       (setq temp (cdr temp)))))
 
+;; Add to load path so we can find add-paths
 (add-to-list 'load-path "~/.emacs.d")
 (require 'add-paths)
+;; Now add paths to all the directories in site-lisp and here
 (recursively-add-dir-to-load-path "/usr/local/share/emacs/site-lisp")
 (recursively-add-dir-to-load-path "~/.emacs.d")
 
+;; Temp added to play with html5
+(add-to-list 'load-path "~/Source/GitHub/html5-el/")
+(eval-after-load "rng-loc"
+  '(add-to-list 'rng-schema-locating-files "~/code/html5-el/schemas.xml"))
 
+;; Set by emacs' customizing routines -- don't change directly
 (custom-set-variables
   ;; custom-set-variables was added by Custom.
   ;; If you edit it by hand, you could mess it up, so be careful.
@@ -33,16 +40,20 @@ current buffer which is assumed to be *scratch*"
  '(ecb-wget-setup (quote ("Please_add_wget_to_your_path_or_set_the_fullpath_to_wget" . other)))
  '(inhibit-startup-screen t)
  '(mmm-submode-decoration-level 2)
+ '(mumamo-chunk-coloring 1 nil nil "let most of the page be uncolored and color only the sub-chunks")
  '(ns-alternate-modifier (quote super))
  '(ns-command-modifier (quote meta))
+ '(nxhtml-skip-welcome nil nil nil "Shh!!!")
  '(rails-ws:default-server-type "webrick")
+ '(rng-nxml-auto-validate-flag t nil nil "Validate all the time")
  '(save-abbrevs nil)
  '(shell-prompt-pattern ".+@.+<[0-9]+> on .*
-")
+" t)
  '(tool-bar-mode nil)
  '(user-full-name "Perry Smith")
  '(vc-ignore-dir-regexp "\\`\\([\\/][\\/]\\|/\\.\\.\\./\\|/net/\\|/afs/\\)\\'"))
 
+;; Ditto from above -- don't change by hand.
 (custom-set-faces
   ;; custom-set-faces was added by Custom.
   ;; If you edit it by hand, you could mess it up, so be careful.
@@ -57,6 +68,9 @@ current buffer which is assumed to be *scratch*"
 ;; The wisent-ruby stuff uses word-at-point and part of emacs-rails uses it too
 (autoload 'word-at-point "thingatpt")
 
+;; Pull in nxhtml
+(require 'nxhtml-setup)
+
 ;; (require 'cedet-setup)
 ;; (require 'ecb-setup)
 (require 'ruby-setup)
@@ -68,10 +82,17 @@ current buffer which is assumed to be *scratch*"
 ;; (require 'find-recursive)
 ;; (require 'snippet-setup)
 
+;; nxml is now part of the standard distribution.  Probably this set
+;; up needs to go away.
 ;; (require 'nxml-setup)
-;; (require 'mmm-setup)
-;; (require 'css-setup)
+
+;; Probably will change with next update of emacs but currently need
+;; to point to js.el
 (require 'javascript-setup)
+
+;; Part of the html5 setup to load the html5 schema.
+(require 'whattf-dt)
+
 ;; (require 'wisent-setup)
 (if (or (eq window-system 'mac)
 	(eq window-system 'ns))

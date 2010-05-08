@@ -24,7 +24,12 @@
   ("stat" nil)
   ("perl" "/usr/bin/perl")
   ("id" "/usr/bin/id")
-  ("gid-integer" 20))
+  ("gid-integer" 20)
+  ("uid-integer" 1025)
+  ("local-encoding" base64-encode-region)
+  ("local-decoding" base64-decode-region)
+  ("remote-encoding" tramp-perl-encode-with-module)
+  ("remote-decoding" tramp-perl-decode-with-module))
  (["scp" "apache" "easeserver" nil]
   ("uname" "Darwin 8.11.0")
   ("test" "test")

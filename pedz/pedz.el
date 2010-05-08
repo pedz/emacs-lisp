@@ -7,8 +7,7 @@
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
 
-(setq auto-mode-alist (cons (cons "\\.[n0-9]$" 'nroff-mode) auto-mode-alist)
-      auto-save-interval 1000
+(setq auto-save-interval 1000
       auto-save-list-file-prefix "~/.save/saves-"
       backup-by-copying-when-linked t
       backup-by-copying-when-mismatch t
@@ -215,12 +214,8 @@
 (define-key minibuffer-local-completion-map "\C-r" 'ange-ftp-re-read-dir)
 (define-key minibuffer-local-must-match-map "\C-r" 'ange-ftp-re-read-dir)
 
-;; (require 'uncompress)
-;; (setq auto-mode-alist
-;;       (cons '("\\.Z\\(l\\(st?\\)?\\)?$" .
-;;            uncompress-while-visiting) auto-mode-alist))
-(setq auto-mode-alist
-      (cons '("pmrorder" . pmrorder-mode) auto-mode-alist))
+(add-to-list 'auto-mode-alist '("\\.[n0-9]$" . nroff-mode))
+(add-to-list 'auto-mode-alist '("pmrorder" . pmrorder-mode))
 
 (defun server-ediff (f1 f2)
   (delete-other-windows)

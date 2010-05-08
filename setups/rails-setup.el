@@ -33,6 +33,10 @@ else return nil"
   (not-modified)
   (toggle-read-only t))
 
+;; As part of nxhtml mode, we set this:
+(message "here")
+(add-to-list 'auto-mode-alist '("\\.html\\.erb\\'" . eruby-nxhtml-mumamo))
+
 ;;; The require rails above pulls in ruby mode and tons of other
 ;;; stuff.  I load my changes to ruby-mode at this time.
 ;;; (load "ruby-changes")
