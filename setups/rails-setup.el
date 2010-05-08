@@ -26,6 +26,12 @@ else return nil"
             (setq max (- max 1))))))
     (if found (expand-file-name curdir))))
 
+(defun load-log-file ()
+  (interactive)
+  (widen)
+  (ansi-color-apply-on-region (point-min) (point-max))
+  (not-modified)
+  (toggle-read-only t))
 
 ;;; The require rails above pulls in ruby mode and tons of other
 ;;; stuff.  I load my changes to ruby-mode at this time.

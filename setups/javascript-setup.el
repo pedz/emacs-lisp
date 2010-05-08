@@ -1,7 +1,11 @@
 ;;; 49javascript.el --- Custom javascript-mode configuration
 
-(add-to-list 'auto-mode-alist '("\\.js\\'" . javascript-mode))
-(autoload 'javascript-mode "javascript" nil t)
+;;; Switched to espresso.el on 05/07/2010
+;;; (add-to-list 'auto-mode-alist '("\\.js\\'" . javascript-mode))
+;;; (autoload 'javascript-mode "javascript" nil t)
+(autoload #'espresso-mode "espresso" "Start espresso-mode" t)
+(add-to-list 'auto-mode-alist '("\\.js$" . espresso-mode))
+(add-to-list 'auto-mode-alist '("\\.json$" . espresso-mode))
 
 ;;; Never tested from other guy...
 ;;; (require 'javascript-mode)

@@ -13,8 +13,8 @@ current buffer which is assumed to be *scratch*"
 
 (add-to-list 'load-path "~/.emacs.d")
 (require 'add-paths)
-(recursively-add-dir-to-load-path "~/.emacs.d")
 (recursively-add-dir-to-load-path "/usr/local/share/emacs/site-lisp")
+(recursively-add-dir-to-load-path "~/.emacs.d")
 
 
 (custom-set-variables
@@ -38,7 +38,7 @@ current buffer which is assumed to be *scratch*"
  '(rails-ws:default-server-type "webrick")
  '(save-abbrevs nil)
  '(shell-prompt-pattern ".+@.+<[0-9]+> on .*
-" t)
+")
  '(tool-bar-mode nil)
  '(user-full-name "Perry Smith")
  '(vc-ignore-dir-regexp "\\`\\([\\/][\\/]\\|/\\.\\.\\./\\|/net/\\|/afs/\\)\\'"))
@@ -71,7 +71,7 @@ current buffer which is assumed to be *scratch*"
 ;; (require 'nxml-setup)
 ;; (require 'mmm-setup)
 ;; (require 'css-setup)
-;; (require 'javascript-setup)
+(require 'javascript-setup)
 ;; (require 'wisent-setup)
 (if (or (eq window-system 'mac)
 	(eq window-system 'ns))
