@@ -1303,24 +1303,72 @@ PREDICATE.  PREDICATE takes one argument, the symbol."
 
 ;;;###autoload
 (defun narrow-to-comment ()
+  "Narrow to current comments."
   (interactive)
+  (let ((range (ourcomments-find-comments-range (point))))
+    (if (not range)
+        (message "Can't narrow to comment because not in a comment")
+      (narrow-to-region (car range) (cdr range)))))
+
+;;;###autoload
+(defun narrow-to-defun+comments-above ()
+  "Like `narrow-to-defun' but include comments above.
+See also `widen-to-comments-above'."
+  (interactive)
+  (narrow-to-defun)
+  (widen-to-comments-above))
+
+;;;###autoload
+(defun widen-to-comments-above ()
+  "Widen to include comments above current narrowing.
+See also `narrow-to-defun+comments-above'."
+  (interactive)
+  (let ((here (point))
+        (beg (point-min))
+        (end (point-max))
+        new-beg)
+    (unless (= 1 beg)
+      (widen)
+      (when (setq new-beg (car (ourcomments-find-comments-range (1- beg))))
+        (setq beg new-beg)))
+    (narrow-to-region beg end)
+    (if new-beg
+        (progn
+          (set-window-point (selected-window) new-beg)
+          (redisplay t)
+          (goto-char here)
+          (message "Widened to comments above"))
+      (message "There is no comments immediately above"))))
+
+(defun ourcomments-find-comments-range (pos)
   (let* ((here (point-marker))
-         (size 1000)
-         (beg (progn (forward-comment (- size))
-                     ;; It looks like the wrong syntax-table is used here:
-                     ;;(message "skipped %s " (skip-chars-forward "[:space:]"))
-                     ;; See Emacs bug 3823, http://debbugs.gnu.org/cgi/bugreport.cgi?bug=3823
-                     (message "skipped %s " (skip-chars-forward " \t\r\n"))
-                     (point)))
-         (end (progn (forward-comment size)
-                     ;;(message "skipped %s " (skip-chars-backward "[:space:]"))
-                     (message "skipped %s " (skip-chars-backward " \t\r\n"))
-                     (point))))
-    (goto-char here)
-    (if (not (and (>= here beg)
-                  (<= here end)))
-        (error "Not in a comment")
-      (narrow-to-region beg end))))
+         (in-comment (syntax-ppss-context (syntax-ppss pos))))
+    (unless (eq in-comment 'comment)
+      ;; It looks like the wrong syntax-table is used here: (message
+      ;;"skipped %s " (skip-chars-forward "[:space:]")) See Emacs bug
+      ;;3823, http://debbugs.gnu.org/cgi/bugreport.cgi?bug=3823
+      (skip-chars-backward " \t\r\n")
+      (setq in-comment (syntax-ppss-context (syntax-ppss))))
+    (unless (eq in-comment 'comment)
+      (goto-char pos)
+      (skip-chars-forward " \t\r\n")
+      (unless (eobp) (forward-char 1))
+      (setq in-comment (syntax-ppss-context (syntax-ppss))))
+    (when (eq in-comment 'comment)
+      (let* ((syntax (syntax-ppss))
+             (beg (nth 8 syntax))
+             end)
+        (goto-char beg)
+        (while (forward-comment -1)
+          (setq beg (point)))
+        (goto-char beg)
+        (skip-chars-backward " \t")
+        (when (bolp) (setq beg (point)))
+        (goto-char beg)
+        (while (forward-comment 1)
+          (setq end (point)))
+        (goto-char here)
+        (cons beg end)))))
 
 (defvar describe-symbol-alist nil)
 
@@ -1832,14 +1880,14 @@ See also `ourcomments-started-emacs-use-output-buffer'."
     (when out-buf
       (display-buffer out-buf)
       (setq fin-msg ". Finished.")
-      (message "Started 'emacs%s' => %s. Locked until this is finished." args-text ret fin-msg)
+      (message "Started 'emacs%s' => %s. Locked until this is finished." args-text ret)
       (redisplay))
     (setq ret (apply 'call-process (ourcomments-find-emacs) nil buf-arg nil args))
     (message "Started 'emacs%s' => %s%s" args-text ret fin-msg)
     ret))
 
 ;;;###autoload
-(defun emacs-buffer-file()
+(defun emacs-buffer-file(&rest args)
   "Start a new Emacs showing current buffer file.
 Go to the current line and column in that file.
 If there is no buffer file then instead start with `dired'.
@@ -1852,8 +1900,8 @@ the file or a call to dired."
         (lin (line-number-at-pos))
         (col (current-column)))
     (if file
-        (apply 'emacs "--no-desktop" (format "+%d:%d" lin col) file nil)
-      (applay 'emacs "--no-desktop" "--eval" (format "(dired \"%s\")" default-directory nil)))))
+        (apply 'emacs "--no-desktop" (format "+%d:%d" lin col) file args)
+      (apply 'emacs "--no-desktop" "--eval" (format "(dired \"%s\")" default-directory) args))))
 
 ;;;###autoload
 (defun emacs--debug-init(&rest args)
@@ -2149,6 +2197,59 @@ Return full path if found."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; Org Mode
+
+;; (define-minor-mode ourcomments-org-where-mode
+;;   "Shows path in header line."
+;;   :global nil
+;;   :group 'ourcomments-util
+;;   :group 'org
+;;   (if ourcomments-org-where-mode
+;;       ;;Turn it on
+;;       (ourcomments-org-where-mode-start)
+;;     ;; Turn it off
+;;     (ourcomments-org-where-mode-stop)
+;;     ))
+;; (put 'ourcomments-org-where-mode 'permanent-local t)
+
+(defun ourcomments-org-beginning-of-defun (arg)
+  "Find previous header start.
+If ARG is positive then search that many times backward, else forward.
+
+This is the function is used for `beginning-of-defun-function'."
+  (let ((here (point))
+        on-heading)
+    (outline-back-to-heading)
+    (setq on-heading (= here (point)))
+    (if (< 0 arg)
+        (progn
+          (unless on-heading (setq arg (1- arg)))
+          ;; See `outline-backward-same-level'.
+          (while (> arg 0)
+            (let ((here2 (point))
+                  (point-to-move-to (outline-get-last-sibling)))
+              (if point-to-move-to
+                  (progn
+                    (goto-char point-to-move-to)
+                    (setq arg (1- arg)))
+                (setq arg 0)
+                (goto-char here2)))))
+      ;;(forward-char)
+      (outline-forward-same-level (- arg)))))
+
+(defun ourcomments-org-end-of-defun ()
+  "Find next header start.
+This function is used for `end-of-defun-function'."
+  (org-end-of-subtree t t)
+  (backward-char)
+  )
+
+(defun ourcomments-org-set-beginning-and-end-defuns ()
+  "Setup beginning and end of defun functions for `org-mode'."
+  (unless (local-variable-p 'beginning-of-defun-function)
+    (set (make-local-variable 'beginning-of-defun-function) 'ourcomments-org-beginning-of-defun)
+    (set (make-local-variable 'end-of-defun-function) 'ourcomments-org-end-of-defun)))
+
+(add-hook 'org-mode-hook 'ourcomments-org-set-beginning-and-end-defuns)
 
 (defun ourcomments-org-complete-and-replace-file-link ()
   "If on a org file link complete file name and replace it."

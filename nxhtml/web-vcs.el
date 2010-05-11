@@ -1318,6 +1318,7 @@ If LOAD"
 ;;; Temporary helpers, possibly included in Emacs
 
 ;; (setq x (web-vcs-url-retrieve-synch "http://emacswiki.org/"))
+;;;###autoload
 (defun web-vcs-url-retrieve-synch (url)
   "Retrieve URL, return cons with buffer and http status."
   (let* ((url-show-status nil) ;; just annoying showing status here
@@ -1346,6 +1347,7 @@ If LOAD"
     (cons buffer http-status)))
 
 ;; Modified just to return http status
+;;;###autoload
 (defun web-vcs-url-copy-file (url newname &optional ok-if-already-exists
                                   keep-time preserve-uid-gid)
   "Copy URL to NEWNAME.  Both args must be strings.
@@ -1484,8 +1486,9 @@ some sort of escape sequence, the ambiguity is resolved via `web-vcs-read-key-de
           (end   (point-max)))
       (cond ((and (boundp 'jit-lock-mode) (symbol-value 'jit-lock-mode))
              (jit-lock-fontify-now start end))
-            ((and (boundp 'lazy-lock-mode) (symbol-value 'lazy-lock-mode))
-             (lazy-lock-fontify-region start end))))))
+            ;; ((and (boundp 'lazy-lock-mode) (symbol-value 'lazy-lock-mode))
+            ;;  (lazy-lock-fontify-region start end))
+            ))))
 
 
 ;;(web-vcs-get-fun-details 'describe-function)
