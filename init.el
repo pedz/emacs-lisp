@@ -18,10 +18,6 @@ current buffer which is assumed to be *scratch*"
 (recursively-add-dir-to-load-path "/usr/local/share/emacs/site-lisp")
 (recursively-add-dir-to-load-path "~/.emacs.d")
 
-;; Added to make html5-el work (per README)
-(eval-after-load "rng-loc"
-  '(add-to-list 'rng-schema-locating-files "~/.emacs.d/html5-el/schemas.xml"))
-
 ;; Set by emacs' customizing routines -- don't change directly
 (custom-set-variables
   ;; custom-set-variables was added by Custom.
@@ -45,6 +41,7 @@ current buffer which is assumed to be *scratch*"
  '(nxhtml-skip-welcome nil nil nil "Shh!!!")
  '(rails-ws:default-server-type "webrick")
  '(rng-nxml-auto-validate-flag t nil nil "Validate all the time")
+ '(rng-schema-locating-files (quote ("/Users/pedzan/.emacs.d/schemas.xml" "schemas.xml" "/Applications/Emacs.app/Contents/Resources/etc/schema/schemas.xml" "/Users/pedzan/.emacs.d/rnc/html5/html5-schemas.xml")))
  '(save-abbrevs nil)
  '(shell-prompt-pattern ".+@.+<[0-9]+> on .*
 " t)
@@ -90,7 +87,11 @@ current buffer which is assumed to be *scratch*"
 (require 'javascript-setup)
 
 ;; Part of the html5 setup to load the html5 schema.
-(require 'whattf-dt)
+;; (require 'whattf-dt)
+(add-hook 'nxml-mode-hook 
+	  (function (lambda()
+		      (require 'whattf-dt)
+		      )))
 
 ;; (require 'wisent-setup)
 (if (or (eq window-system 'mac)
