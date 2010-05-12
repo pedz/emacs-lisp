@@ -35,7 +35,7 @@ else return nil"
 
 ;; As part of nxhtml mode, we set this:
 (message "here")
-(add-to-list 'auto-mode-alist '("\\.html\\.erb\\'" . eruby-nxhtml-mumamo))
+(add-to-list 'auto-mode-alist '("\\.html\\.erb\\'" . eruby-nxhtml-mumamo-mode))
 
 ;;; The require rails above pulls in ruby mode and tons of other
 ;;; stuff.  I load my changes to ruby-mode at this time.
