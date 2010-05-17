@@ -16,8 +16,9 @@
 ;;           : Randolph Fritz <rfritz@u.washington.edu>
 ;;           : Vincent Belaiche (VB1) <vincentb1@users.sourceforge.net>
 ;; Version: 1.4.8 (2009-09-29)
-;; Serial Version: %Id: 17%
+;; Serial Version: %Id: 19%
 ;; Keywords: languages, basic, Evil
+;; X-URL:  http://www.emacswiki.org/cgi-bin/wiki/visual-basic-mode.el
 
 
 ;; (Old) LCD Archive Entry:
@@ -124,8 +125,8 @@
 ;;           add command visual-basic-insert-item
 
 ;; Lennart Borgman:
-;; 2009-11-20
-;; - Added eval-and-compile to visual-basic-label-regexp.
+;; 2010-05-16
+;; - Minor corrections
 ;;
 ;; Notes:
 ;; Dave Love
@@ -428,14 +429,15 @@ Commands:
   (setq mode-name "Visual Basic")
   (set-syntax-table visual-basic-mode-syntax-table)
 
-  ;;; This does not work in multi major modes.
+  ;; This should be the users choice
   ;;(add-hook 'local-write-file-hooks 'visual-basic-untabify)
 
   (setq local-abbrev-table visual-basic-mode-abbrev-table)
   (if visual-basic-capitalize-keywords-p
       (progn
-        (make-local-variable 'pre-abbrev-expand-hook)
-        (add-hook 'pre-abbrev-expand-hook 'visual-basic-pre-abbrev-expand-hook)
+        ;;(make-local-variable 'pre-abbrev-expand-hook)
+        ;;(add-hook 'pre-abbrev-expand-hook 'visual-basic-pre-abbrev-expand-hook)
+        (add-hook 'abbrev-expand-functions 'visual-basic-abbrev-expand-function nil t)
         (abbrev-mode 1)))
 
   (make-local-variable 'comment-start)
@@ -542,11 +544,13 @@ Commands:
            (null (nth 4 list))))))      ; inside comment
 
 
-(defun visual-basic-pre-abbrev-expand-hook ()
+;;(defun visual-basic-pre-abbrev-expand-hook ()
+(defun visual-basic-abbrev-expand-function (expand-fun)
   ;; Allow our abbrevs only in a code context.
   (setq local-abbrev-table
         (if (visual-basic-in-code-context-p)
-            visual-basic-mode-abbrev-table)))
+            visual-basic-mode-abbrev-table))
+  (call expand-fun))
 
 
 (defun visual-basic-newline-and-indent (&optional count)
@@ -644,11 +648,11 @@ Commands:
     (search-backward "()" bound t)))
 
 
-;; (defun visual-basic-untabify ()
-;;   "Do not allow any tabs into the file."
-;;   (if (eq major-mode 'visual-basic-mode)
-;;       (untabify (point-min) (point-max)))
-;;   nil)
+(defun visual-basic-untabify ()
+  "Do not allow any tabs into the file."
+  (if (eq major-mode 'visual-basic-mode)
+      (untabify (point-min) (point-max)))
+  nil)
 
 (defun visual-basic-default-tag ()
   (if (and (not (bobp))
@@ -1118,8 +1122,6 @@ With' if the block is a `With ...', etc..."
       (insert end-statement)
       (visual-basic-indent-to-column end-indent))))
 
-(defvar delta-split-to-cur-point) ;; Don't know what it is, just silence compiler
-
 (defun visual-basic-insert-item ()
   "Insert a new item in a block.
 
@@ -1192,12 +1194,12 @@ Interting an item means:
 			nil)))
 		(goto-char split-point)
 		(setq item-case (if (<= split-point cur-point) 'dim-split-before 'dim-split-after))
-                (setq delta-split-to-cur-point (- split-point cur-point))
+                ;; Looks like a left over, not known to Emacs or Google:
+                ;; (setq delta-split-to-cur-point (- split-point cur-point))
 		(setq cur-point-mark (make-marker))
 		(set-marker cur-point-mark cur-point)
 		(looking-at "\\s-*")
-		(setq delta-split-to-cur-point (- delta-split-to-cur-point
-						  (- (match-end 0) (match-beginning 0))))
+		;;(setq delta-split-to-cur-point (- delta-split-to-cur-point (- (match-end 0) (match-beginning 0))))
 		(delete-region (point) (match-end 0))
 		(when (looking-back ",")
 		  (delete-region split-point (1- split-point)))

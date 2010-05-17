@@ -2470,6 +2470,7 @@ Note: This minor mode will defadvice the paste commands."
 ;; (setq extended-command-history nil)
 (defun ourcomments-M-x-menu-pre ()
   "Add menu command to M-x history."
+  ;;(message "M-x-menu-pre: %s" (this-command-keys-vector))
   (let ((is-menu-command (equal '(menu-bar)
                                 (when (< 0 (length (this-command-keys-vector)))
                                   (elt (this-command-keys-vector) 0))))
@@ -2520,6 +2521,38 @@ Only commands that are not already in M-x history are added."
   (setq ourcomments-warnings (cons (apply 'format format-string args)
                                    ourcomments-warnings))
   (add-hook 'post-command-hook 'ourcomments-warning-post))
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; Windmove
+
+(defcustom ourcomments-windmove-mode-modifier 'meta
+  "Modifier for windmove key bindings.
+Used as in `windmove-default-keybindings' but for
+`ourcomments-windmove-mode'."
+  :type '(choice (const meta)
+                 (const control))
+  :group 'windmove)
+
+(defvar ourcomments-windmove-mode-map
+  (let ((map (make-sparse-keymap))
+        (modifier 'meta))
+    (define-key map (vector (list modifier 'left))  'windmove-left)
+    (define-key map (vector (list modifier 'right)) 'windmove-right)
+    (define-key map (vector (list modifier 'up))    'windmove-up)
+    (define-key map (vector (list modifier 'down))  'windmove-down)
+    map))
+
+(define-minor-mode ourcomments-windmove-mode
+  "Make windmove bindings a minor mode.
+`windmove-default-keybindings' defines key bindings in
+`global-map'.  Those can then be overrided by major mode
+bindings, which mayb be quite inconvenient since the user
+probably frequently uses the windmove keybindings.
+
+This minor mode therefore instead defines them in a minor mode."
+  :global t
+  :group 'windmove)
 
 
 

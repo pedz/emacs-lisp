@@ -71,6 +71,10 @@
   "Customize your health personal Emacs health saver!"
   :group 'convenience)
 
+;; DEBUG
+;;(progn (setq pause-after-minutes 0.2) (setq pause-alpha-100-delay 5) (setq pause-extra-fun nil) (pause-mode -1))
+;;(progn (setq pause-after-minutes 15) (setq pause-alpha-100-delay 30) (setq pause-extra-fun 'pause-start-get-yoga-poses) (pause-mode 1))
+;;(pause-mode 1)
 (defcustom pause-after-minutes 15
   "Pause after this number of minutes."
   :type 'number
@@ -139,6 +143,11 @@ can be used."
   :type '(integer :tag "Opacity (100 full)")
   :group 'pause)
 
+(defcustom pause-alpha-100-delay 60
+  "Delay seconds before setting pause frame opaque."
+  :type 'integer
+  :group 'pause)
+
 (defcustom pause-break-background-color "orange"
   "Background color during pause."
   :type 'color
@@ -204,7 +213,7 @@ frame is otherwise deleted between pauses."
 
 (defcustom pause-img-dir pause-default-img-dir
   "Image directory for pause.
-A random image is choosen from this directory for pauses."
+A random image is chosen from this directory for pauses."
   :type 'directory
   :group 'pause)
 
@@ -227,13 +236,13 @@ A random image is choosen from this directory for pauses."
   "Give you another minute ...
 Start main timer with delay `pause-1-minute-delay'."
   (pause-start-timer-1 pause-1-minute-delay)
-  (message (propertize " OK, I will come back in a minute! -- greatings from pause"
+  (message (propertize " OK, I will come back in a minute! -- greetings from pause"
                        'face 'pause-message-face)))
 
 (defun pause-save-me ()
   "Start main timer and give a message."
   (pause-start-timer)
-  (message (propertize " OK, I will save you again in %d minutes! -- greatings from pause "
+  (message (propertize " OK, I will save you again in %d minutes! -- gratings from pause "
                        'face 'pause-message-face)
            pause-after-minutes))
 
@@ -241,9 +250,9 @@ Start main timer with delay `pause-1-minute-delay'."
   "Start waiting for idle `pause-idle-delay' before break."
   (condition-case err
       (save-match-data ;; runs in timer
-        (message "pause: enter pause-bre-break")
+        ;;(message "pause: enter pause-bre-break")
         (pause-cancel-timer)
-        (message "pause: after pause-cancel-timer, pause-idle-delay=%s" pause-idle-delay)
+        ;;(message "pause: after pause-cancel-timer, pause-idle-delay=%s" pause-idle-delay)
         (setq pause-timer (run-with-idle-timer pause-idle-delay nil 'pause-break-in-timer)))
     (error
      (lwarn 'pause-pre-break
@@ -329,7 +338,7 @@ if single pause Emacs start timer immediately."
               (add-hook 'window-configuration-change-hook 'pause-break-exit))))
 
       (remove-hook 'window-configuration-change-hook 'pause-break-exit-no-topmost)
-      ;;(pause-tell-again-cancel-timer)
+      ;;(pause-cancel-tell-again-timer)
       ;;(set-frame-parameter nil 'background-color "white")
       (dolist (f old-frame-list)
         (set-frame-parameter f 'background-color     (cdr (assq f old-frame-bg-color)))
@@ -402,13 +411,56 @@ Please note that it is run in a timer.")
 
 (defun pause-start-alpha-100-timer (delay)
   (pause-cancel-alpha-100-timer)
-  (setq pause-set-alpha-100-timer (run-with-idle-timer delay nil 'pause-set-alpha-100)))
+  (setq pause-set-alpha-100-timer (run-with-timer delay nil 'pause-set-alpha-100)))
 
 (defun pause-set-alpha-100 ()
-  (when (frame-live-p pause-frame)
-    (modify-frame-parameters pause-frame '((alpha . 100)))
-    (message "pause: alpha 100 done")
-    (redisplay t)))
+  (condition-case err
+      (when (frame-live-p pause-frame)
+        (modify-frame-parameters pause-frame '((alpha . 100)))
+        ;;(message "pause: alpha 100 done")
+        (pause-set-topmost t)
+        ;;(redisplay t)
+        )
+    (error (message "pause-set-alpha-100 error: %s" (error-message-string err)))))
+
+(defun pause-check-alpha-on-click ()
+  (if (eq 100 (frame-parameter pause-frame 'alpha))
+      t
+    (pause-set-alpha-100)
+    nil))
+
+(defun pause-create-pause-buffer ()
+  (with-current-buffer (setq pause-buffer
+                             (get-buffer-create "* P A U S E *"))
+    (setq mode-line-format nil)
+    (let ((inhibit-read-only t))
+      (erase-buffer)
+      (pause-break-mode)
+      ;;(setq left-margin-width 25)
+      ;;(pause-insert-img 'left-margin)
+      (insert (propertize pause-break-text 'face 'pause-text-face))
+      (goto-char (point-min))
+      (when (search-forward "mindfulness" nil t)
+        (make-text-button (- (point) 11) (point)
+                          'face '(:inherit pause-text-face :underline t)
+                          'action (lambda (btn)
+                                     (condition-case err
+                                         (when (pause-check-alpha-on-click)
+                                           (browse-url "http://www.jimhopper.com/mindfulness/"))
+                                       (error (message "pause-button: %s" (error-message-string err)))))))
+      (goto-char (point-max))
+      (insert (propertize "\n\nClick on a link below to continue\n" 'face 'pause-info-text-face))
+      ;;(add-text-properties (point-min) (point-max) (list 'keymap (make-sparse-keymap)))
+      (insert-text-button "I am ready with this break"
+                          'action `(lambda (button)
+                                     (condition-case err
+                                         (when (pause-check-alpha-on-click)
+                                           (pause-break-exit-from-button))
+                                       (error (message "pause-button: %s" (error-message-string err))))))
+      (insert "\n")
+      (dolist (m '(hl-needed-mode))
+        (when (and (boundp m) (symbol-value m))
+          (funcall m -1))))))
 
 (defun pause-break-show-1 ()
   ;;(setq pause-frame (selected-frame))
@@ -417,6 +469,7 @@ Please note that it is run in a timer.")
   ;;(setq frame-alpha-lower-limit 5)
   (let ((frame-alpha-lower-limit pause-hint-alpha)
         (use-alpha (if (pause-use-topmost) pause-hint-alpha 100)))
+    (message "SETTING pause-frame size now!")
     (modify-frame-parameters pause-frame
                              `((background-color . ,pause-break-background-color)
                                (width . ,(car pause-break-frame-size))
@@ -441,33 +494,7 @@ Please note that it is run in a timer.")
       (erase-buffer)
       (pause-insert-img nil)
       ))
-  (with-current-buffer (setq pause-buffer
-                             (get-buffer-create "* P A U S E *"))
-    (setq mode-line-format nil)
-    (let ((inhibit-read-only t))
-      (erase-buffer)
-      (pause-break-mode)
-      ;;(setq left-margin-width 25)
-      ;;(pause-insert-img 'left-margin)
-      (insert (propertize pause-break-text 'face 'pause-text-face))
-      (goto-char (point-min))
-      (when (search-forward "mindfulness" nil t)
-        (make-text-button (- (point) 11) (point)
-                          'face '(:inherit pause-text-face :underline t)
-                          'action (lambda (btn)
-                                    (browse-url "http://www.jimhopper.com/mindfulness/"))))
-      (goto-char (point-max))
-      (insert (propertize "\n\nClick on a link below to continue\n" 'face 'pause-info-text-face))
-      ;;(add-text-properties (point-min) (point-max) (list 'keymap (make-sparse-keymap)))
-      (insert-text-button "I am ready with this break"
-                          'action `(lambda (button)
-                                     (condition-case err
-                                         (pause-break-exit-from-button)
-                                       (error (message "pause-break-show-1: %s" (error-message-string err))))))
-      (insert "\n")
-      (dolist (m '(hl-needed-mode))
-        (when (and (boundp m) (symbol-value m))
-          (funcall m -1)))))
+  (pause-create-pause-buffer)
   (unless (pause-use-topmost)
     (dolist (f (frame-list))
       (pause-max-frame f)))
@@ -501,11 +528,11 @@ Please note that it is run in a timer.")
 (defvar pause-tell-again-timer nil)
 
 (defun pause-tell-again-start-timer ()
-  (pause-tell-again-cancel-timer)
+  (pause-cancel-tell-again-timer)
   (setq pause-tell-again-timer
         (run-with-idle-timer (* 60 pause-tell-again-after) t 'pause-tell-again)))
 
-(defun pause-tell-again-cancel-timer ()
+(defun pause-cancel-tell-again-timer ()
   (when (timerp pause-tell-again-timer)
     (cancel-timer pause-tell-again-timer))
   (setq pause-tell-again-timer nil))
@@ -519,6 +546,7 @@ Please note that it is run in a timer.")
 (defun pause-set-topmost (on)
   (cond
    ((fboundp 'w32-set-frame-topmost)
+    ;;(message "pause-set-topmost: %s %s" pause-frame on)
     (w32-set-frame-topmost pause-frame on nil)
     ;;(redisplay t)
     t)
@@ -534,22 +562,22 @@ Please note that it is run in a timer.")
       (if (pause-use-topmost)
           (progn
             (pause-set-topmost t)
-            (message "pause-tell-again: : topmost t done")
-            (pause-start-alpha-100-timer 60)
-            )
-        (message "pause-tell-again: raise-frame part")
+            (pause-show-no-activate)
+            ;;(message "pause-tell-again: : topmost t done")
+            (pause-start-alpha-100-timer pause-alpha-100-delay))
+        ;;(message "pause-tell-again: raise-frame part")
         (raise-frame pause-frame)
-        (x-focus-frame pause-frame))
-      (condition-case nil
-          (make-frame-visible pause-frame t)
-        (error
-         (setq old-make-vis t)))
-      (when old-make-vis
-        (make-frame-visible pause-frame)
-        (run-with-idle-timer 5 nil 'pause-tell-again-reset-frame curr-frame)))))
+        (x-focus-frame pause-frame)
+        (condition-case nil
+            (make-frame-visible pause-frame t)
+          (error
+           (setq old-make-vis t)))
+        (when old-make-vis
+          (make-frame-visible pause-frame)
+          (run-with-idle-timer 5 nil 'pause-tell-again-reset-frame curr-frame))))))
 
 (defun pause-tell-again-reset-frame (frame)
-  (message "pause-tell-again-reset-frame: frame=%S" frame)
+  ;;(message "pause-tell-again-reset-frame: frame=%S" frame)
   (condition-case err
       (select-frame frame)
     (error (message "pause-tell-again-reset-frame frame=%S: %s" frame (error-message-string err)))))
@@ -578,14 +606,14 @@ Please note that it is run in a timer.")
 
 (defun pause-break-exit-no-topmost ()
   (interactive)
-  (pause-tell-again-cancel-timer)
+  (pause-cancel-tell-again-timer)
   (let ((elapsed (- (float-time) pause-break-last-wcfg-change)))
     ;;(message "elapsed=%s pause-break-last-wcfg-change=%s" elapsed pause-break-last-wcfg-change)
     (setq pause-break-last-wcfg-change (float-time))
     (when (> elapsed 1.0)
       (setq pause-break-exit-active t)
       (remove-hook 'window-configuration-change-hook 'pause-break-exit)
-      ;;(pause-tell-again-cancel-timer)
+      ;;(pause-cancel-tell-again-timer)
       (when (/= 0 (recursion-depth))
         (exit-recursive-edit)))))
 
@@ -637,6 +665,7 @@ Please note that it is run in a timer.")
   (when (timerp pause-timer) (cancel-timer pause-timer))
   (setq pause-timer nil))
 
+;;(pause-break-in-timer)
 (defun pause-break-in-timer ()
   (save-match-data ;; runs in timer
     (pause-cancel-timer)
@@ -665,7 +694,7 @@ Please note that it is run in a timer.")
                ))))))))
 
 (defcustom pause-only-when-server-mode t
-  "Allow `pause-mode' inly in the Emacs that has server-mode enabled.
+  "Allow `pause-mode' only in the Emacs that has server-mode enabled.
 This is to prevent multiple Emacs with `pause-mode'."
   :type 'boolean
   :group 'pause)
@@ -711,7 +740,13 @@ interrupted."
         (add-hook 'delete-frame-functions 'pause-stop-on-frame-delete)
         (pause-start-timer))
     (remove-hook 'delete-frame-functions 'pause-stop-on-frame-delete)
-    (pause-cancel-timer)))
+    (pause-cancel-timer)
+    (pause-cancel-alpha-100-timer)
+    (pause-cancel-tell-again-timer)
+    (when (and pause-frame
+               (not pause-in-separate-emacs))
+      (when (frame-live-p pause-frame) (delete-frame pause-frame))
+      (setq pause-frame nil))))
 
 ;; (emacs-Q "-l" buffer-file-name "--eval" "(pause-temp-err)")
 ;; (emacs-Q "-l" buffer-file-name "--eval" "(run-with-timer 1 nil 'pause-temp-err)")
@@ -771,7 +806,7 @@ interrupted."
   "Start `pause-mode' with interval AFTER-MINUTES.
 This bypasses `pause-only-when-server-mode'.
 
-You can use this funciton to start a separate Emacs process that
+You can use this function to start a separate Emacs process that
 handles pause, for example like this if you want a pause every 15
 minutes:
 
@@ -791,8 +826,18 @@ Note: Another easier alternative might be to use
          ;; #define SW_MINIMIZE 6
          (w32-showwindow pause-frame 6))
         ((window-system 'w32)
+         (select-frame pause-frame)
          (w32-send-sys-command #xf020))
         (t (lower-frame))))
+
+(defun pause-show-no-activate ()
+  (cond ((fboundp 'w32-showwindow)
+         ;; #define SW_SHOWNOACTIVATE 4
+         (w32-showwindow pause-frame 4))
+        ((window-system 'w32)
+         (select-frame pause-frame)
+         (w32-send-sys-command #xf120))
+        (t (raise-frame))))
 
 (defun pause-start-1 (after-minutes cus-file)
   (setq pause-in-separate-emacs (or (not cus-file) (stringp cus-file)))
@@ -899,53 +944,94 @@ See `pause-start' for more info.
 ;;(run-with-idle-timer 0 nil 'pause-get-yoga-poses)
 (defvar pause-yoga-poses-host-url "http://www.abc-of-yoga.com/")
 
+(defgroup pause-yoga nil
+  "Customization for yoga exercises."
+  :group 'pause)
+
+(defcustom pause-yoga-poses-use-dir nil
+  "Set this to always use local poses yoga files.
+See `pause-yoga-poses-dir' for more info."
+  :type 'boolean
+  :group 'pause-yoga)
+
+(defcustom pause-yoga-poses-dir ""
+  "Directory with yoga poses files.
+This should be files your browser can show and the directory
+should only contain those files.  They will be used in case the
+connection fails or you have set `pause-yoga-poses-use-dir' on."
+  :type 'directory
+  :group 'pause-yoga)
+
 ;;(pause-start-get-yoga-poses)
 (defun pause-start-get-yoga-poses ()
-  (require 'url-vars)
-  (let ((url-show-status nil)) ;; do not show download messages
-    (url-retrieve (concat pause-yoga-poses-host-url "yogapractice/mountain.asp")
-                  'pause-callback-get-yoga-poses)))
+  (if (and pause-yoga-poses-use-dir
+           (< 0 (length pause-yoga-poses-dir))
+           (file-directory-p pause-yoga-poses-dir))
+      (pause-tell-about-yoga-link (pause-get-pose-from-yoga-poses-dir))
+    (require 'url-vars)
+    (let ((url-show-status nil)) ;; do not show download messages
+      (url-retrieve (concat pause-yoga-poses-host-url "yogapractice/mountain.asp")
+                    'pause-callback-get-yoga-poses))))
+
+(defvar pause-collected-yoga-poses nil)
+
+;;(setq x (pause-get-pose-from-yoga-poses-dir))
+(defun pause-get-pose-from-yoga-poses-dir ()
+  "Get a random file name from `pause-yoga-poses-dir'."
+  (let* ((files (directory-files pause-yoga-poses-dir nil "[^.]$"))
+         (num (length files))
+         (file (pause-random-yoga-pose files)))
+    (cons (expand-file-name file pause-yoga-poses-dir) file)))
 
 (defun pause-callback-get-yoga-poses (status)
-  (message "pause get-yoga-poses: status=%S" status) (message nil)
+  ;;(message "pause get-yoga-poses: status=%S" status) (message nil)
   ;; pause-callback-get-yoga-poses: status=(:error (error http 500))
-  (let ((err (plist-get status :error)))
-    (if err
-        (when (buffer-live-p pause-buffer)
-          (with-current-buffer pause-buffer
-            (let ((inhibit-read-only t))
-              (goto-char (point-max))
-              (insert "Sorry, no yoga pose available at the moment\n  from ")
-              (insert-text-button pause-yoga-poses-host-url
-                                  'action (lambda (button)
-                                            (condition-case err
-                                                (browse-url pause-yoga-poses-host-url)
-                                              (error (message "pause-callback-get-yoga-poses: %s" (error-message-string err))))))
-              (insert (format ": %S" (cdr err))))))
-      (let ((pose (pause-random-yoga-pose (pause-get-yoga-poses-1 (current-buffer)))))
-        (message nil)
-        (when (and pose (buffer-live-p pause-buffer))
-          (pause-insert-yoga-link pose)
-          (pause-start-alpha-100-timer 60)
-          )))))
+  (when (buffer-live-p pause-buffer)
+    (let ((err (plist-get status :error))
+          pose)
+      (if err
+          (progn
+            (message "Can't connect to %s: %s" pause-yoga-poses-host-url err)
+            (if (< 0 (length pause-yoga-poses-dir))
+                (setq pose (pause-get-pose-from-yoga-poses-dir))
+              (with-current-buffer pause-buffer
+                (let ((inhibit-read-only t))
+                  (goto-char (point-max))
+                  (insert "Sorry, no yoga pose available at the moment\n  from ")
+                  (insert-text-button
+                   pause-yoga-poses-host-url
+                   'action (lambda (button)
+                             (condition-case err
+                                 (when (pause-check-alpha-on-click)
+                                   (browse-url pause-yoga-poses-host-url))
+                               (error (message "pause-callback-get-yoga-poses: %s" (error-message-string err))))))
+                  (insert (format ": %S" (cdr err)))))))
+        (setq pose (pause-random-yoga-pose (pause-get-yoga-poses-1 (current-buffer))))
+        (setq pose (cons (concat pause-yoga-poses-host-url (car pose)) (cdr pose))))
+      (when pose
+        (pause-tell-about-yoga-link pose)))))
 
-(defun pause-insert-yoga-link (pose)
+(defun pause-tell-about-yoga-link (pose)
+  (unless (buffer-live-p pause-buffer) (pause-create-pause-buffer))
+  (message nil)
   (with-current-buffer pause-buffer
     (let ((here (point))
           (inhibit-read-only t)
-          (pose-url (concat pause-yoga-poses-host-url (car pose))))
+          (pose-url (car pose)))
       (goto-char (point-max))
       (insert "Link to yoga posture for you: ")
-      (insert-text-button (cdr pose)
-                          'action `(lambda (button)
-                                     (condition-case err
-                                         (progn
-                                           (pause-tell-again-cancel-timer)
-                                           (browse-url ,pose-url)
-                                           (run-with-idle-timer 1 nil 'pause-break-exit-from-button))
-                                       (error (message "pause-insert-yoga-link: %s" (error-message-string err))))))
+      (insert-text-button
+       (cdr pose)
+       'action `(lambda (button)
+                  (condition-case err
+                      (when (pause-check-alpha-on-click)
+                        (pause-cancel-tell-again-timer)
+                        (browse-url ,pose-url)
+                        (run-with-idle-timer 1 nil 'pause-break-exit-from-button))
+                    (error (message "pause-tell-about-yoga-link: %s" (error-message-string err))))))
       (insert "\n")
-      (pause-break-message))))
+      (pause-break-message)))
+  (pause-start-alpha-100-timer 60))
 
 (defun pause-get-yoga-poses ()
   (let* ((url-show-status nil) ;; do not show download messages

@@ -1,40 +1,41 @@
 ;;; amrita.el --- Amrita major mode
 
- ;; Author: Roger Mason.  Based on sample.el by StefanMonnier
- ;; Copyright: Roger Mason
- ;; Keywords: extensions
+;; Author: Roger Mason.  Based on sample.el by StefanMonnier
+;; Copyright: Roger Mason
+;; Modified by Lennart Borgman
+;; Keywords: extensions
 
- ;; sample.el is:
- ;; Copyright (C) Free Software Foundation 2009.
+;; sample.el is:
+;; Copyright (C) Free Software Foundation 2009.
 
- ;; This file is free software; you can redistribute it and/or modify
- ;; it under the terms of the GNU General Public License as published by
- ;; the Free Software Foundation; either version 2, or (at your option)
- ;; any later version.
+;; This file is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation; either version 2, or (at your option)
+;; any later version.
 
- ;; This file is distributed in the hope that it will be useful,
- ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
- ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- ;; GNU General Public License for more details.
+;; This file is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
 
- ;; You should have received a copy of the GNU General Public License
- ;; along with GNU Emacs; see the file COPYING.  If not, write to
- ;; the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- ;; Boston, MA 02111-1307, USA.
+;; You should have received a copy of the GNU General Public License
+;; along with GNU Emacs; see the file COPYING.  If not, write to
+;; the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+;; Boston, MA 02111-1307, USA.
 
- ;;; Commentary:
+;;; Commentary:
 
- ;; See also http://www.emacswiki.org/emacs/ModeTutorial
+;; See also http://www.emacswiki.org/emacs/ModeTutorial
 
- ;;; Code:
+;;; Code:
 
 (defvar amrita-mode-hook nil)
 
- (defvar amrita-mode-map
-   (let ((map (make-sparse-keymap)))
-     (define-key map [foo] 'amrita-do-foo)
-     map)
-   "Keymap for `amrita-mode'.")
+(defvar amrita-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map [foo] 'amrita-do-foo)
+    map)
+  "Keymap for `amrita-mode'.")
 
 (defvar amrita-font-lock-keywords
   (list
@@ -45,15 +46,15 @@
 
  ;;; Indentation
 
- (defun amrita-indent-line ()
-   "Indent current line of Amrita code."
-   (interactive)
-   (let ((savep (> (current-column) (current-indentation)))
- 	 (indent (condition-case nil (max (amrita-calculate-indentation) 0)
- 		   (error 0))))
-     (if savep
- 	 (save-excursion (indent-line-to indent))
-       (indent-line-to indent))))
+(defun amrita-indent-line ()
+  "Indent current line of Amrita code."
+  (interactive)
+  (let ((savep (> (current-column) (current-indentation)))
+        (indent (condition-case nil (max (amrita-calculate-indentation) 0)
+                  (error 0))))
+    (if savep
+        (save-excursion (indent-line-to indent))
+      (indent-line-to indent))))
 
 (defun amrita-tell-me-indentation ()
   "Indicate how the current line of Amrita code would be
@@ -103,17 +104,17 @@
 ;; change double quote to punctuation:
 ;;(modify-syntax-entry ?\" ".")
 
- (defvar amrita-mode-syntax-table
-   (let ((st (make-syntax-table)))
-     (modify-syntax-entry ?# "<" st)
-     (modify-syntax-entry ?\n ">" st)
-;;     (modify-syntax-entry ?\" (char-to-string (char-syntax ?=)) st)
-     (modify-syntax-entry ?\" "." st)
-     st)
-   "Syntax table for `amrita-mode'.")
+(defvar amrita-mode-syntax-table
+  (let ((st (make-syntax-table)))
+    (modify-syntax-entry ?# "<" st)
+    (modify-syntax-entry ?\n ">" st)
+    ;;     (modify-syntax-entry ?\" (char-to-string (char-syntax ?=)) st)
+    (modify-syntax-entry ?\" "." st)
+    st)
+  "Syntax table for `amrita-mode'.")
 
- (defvar amrita-imenu-generic-expression
-   nil)
+(defvar amrita-imenu-generic-expression
+  nil)
 
 (defvar amrita-outline-regexp
   "\\(^[ \t]*.*{.*\\)")
@@ -128,13 +129,13 @@
       (let ((beg (point)) (col (amrita-calculate-indentation)) (keepgoing t) )
 	(message "Column = %d" col)
     	(beginning-of-line)
-;    	(setq keepgoing t)
+                                        ;    	(setq keepgoing t)
     	(while keepgoing
     	  (forward-line 1)
     	  (if (looking-at "^[ \t]*.*}.*")
     	      (progn
     		(if (eq col (amrita-calculate-indentation))
-    		(setq keepgoing nil)))))
+                    (setq keepgoing nil)))))
 	(narrow-to-region beg (point))))))
 
 
@@ -160,23 +161,23 @@ and 'comment' is placed after the {."
 
  ;;;###autoload
 (define-derived-mode amrita-mode fundamental-mode "Amrita"
-   "A major mode for editing Amrita files."
-   :syntax-table amrita-mode-syntax-table
-   (set (make-local-variable 'comment-start) "# ")
-   (set (make-local-variable 'comment-start-skip) "#+\\s-*")
-   (set (make-local-variable 'font-lock-defaults)
-	'(amrita-font-lock-keywords))
-   (set (make-local-variable 'indent-line-function) 'amrita-indent-line)
-   (set (make-local-variable 'imenu-generic-expression)
-	amrita-imenu-generic-expression)
-;;   (set (make-local-variable 'outline-regexp) amrita-outline-regexp)
-   (set (make-local-variable 'outline-regexp) "^[ ]*fold::")
-   ;;(set (make-local-variable 'outline-minor-mode) t)
-   (outline-minor-mode 1)
-   (set (make-local-variable 'indent-tabs-mode) nil)
-   )
+  "A major mode for editing Amrita files."
+  :syntax-table amrita-mode-syntax-table
+  (set (make-local-variable 'comment-start) "# ")
+  (set (make-local-variable 'comment-start-skip) "#+\\s-*")
+  (set (make-local-variable 'font-lock-defaults)
+       '(amrita-font-lock-keywords))
+  (set (make-local-variable 'indent-line-function) 'amrita-indent-line)
+  (set (make-local-variable 'imenu-generic-expression)
+       amrita-imenu-generic-expression)
+  ;;   (set (make-local-variable 'outline-regexp) amrita-outline-regexp)
+  (set (make-local-variable 'outline-regexp) "^[ ]*fold::")
+  ;;(set (make-local-variable 'outline-minor-mode) t)
+  (outline-minor-mode 1)
+  (set (make-local-variable 'indent-tabs-mode) nil)
+  )
 
- (provide 'amrita)
+(provide 'amrita)
  ;;; amrita.el ends here
 
 ;; ;;======= Code folding =======
