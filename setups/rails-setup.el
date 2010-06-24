@@ -35,8 +35,7 @@ else return nil"
 
 ;; As part of nxhtml mode, we set this:
 (defun erb-load ()
-  (eruby-nxhtml-mumamo-mode)
-  (nxhtml-validation-header-mode))
+  (eruby-html-mumamo-mode))
 
 (add-to-list 'auto-mode-alist '("\\.html\\.erb\\'" . erb-load))
 
