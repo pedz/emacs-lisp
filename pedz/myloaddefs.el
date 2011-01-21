@@ -601,6 +601,34 @@ Kill the PMR, APAR, and cs buffers
 
 ;;;***
 
+;;;### (autoloads (rvm-open-gem rvm-use rvm-activate-corresponding-ruby
+;;;;;;  rvm-use-default) "rvm" "../ruby/rvm/rvm.el" (19769 55092))
+;;; Generated autoloads from ../ruby/rvm/rvm.el
+
+(autoload 'rvm-use-default "rvm" "\
+use the rvm-default ruby as the current ruby version
+
+\(fn)" t nil)
+
+(autoload 'rvm-activate-corresponding-ruby "rvm" "\
+activate the corresponding ruby version for the file in the current buffer.
+This function searches for an .rvmrc file and actiavtes the configured ruby.
+If no .rvmrc file is found, the default ruby is used insted.
+
+\(fn)" t nil)
+
+(autoload 'rvm-use "rvm" "\
+switch the current ruby version to any ruby, which is installed with rvm
+
+\(fn NEW-RUBY NEW-GEMSET)" t nil)
+
+(autoload 'rvm-open-gem "rvm" "\
+Not documented
+
+\(fn GEMHOME)" t nil)
+
+;;;***
+
 ;;;### (autoloads (kill-buffers-reqexp server-ediff-files update-my-autoloads
 ;;;;;;  from-work from-home v4-build-compilation-finish start-vm
 ;;;;;;  split-window-in-thirds backspace-delete-flip xon-xoff-mode)
@@ -661,6 +689,22 @@ Kill all the buffers whose names match REQEXP.  Confirm before
 killing if ASK is true.
 
 \(fn REQEXP &optional ASK)" t nil)
+
+;;;***
+
+;;;### (autoloads (yari yari-anything) "yari" "../ruby/yari/yari.el"
+;;;;;;  (19769 54699))
+;;; Generated autoloads from ../ruby/yari/yari.el
+
+(autoload 'yari-anything "yari" "\
+Not documented
+
+\(fn &optional REHASH)" t nil)
+
+(autoload 'yari "yari" "\
+Look up Ruby documentation.
+
+\(fn &optional RI-TOPIC REHASH)" t nil)
 
 ;;;***
 
