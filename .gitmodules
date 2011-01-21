@@ -1,3 +1,6 @@
 [submodule "ruby/yari"]
 	path = ruby/yari
 	url = git@github.com:pedz/yari-with-buttons.git
+[submodule "ruby/rvm"]
+	path = ruby/rvm
+	url = https://github.com/senny/rvm.el.git
