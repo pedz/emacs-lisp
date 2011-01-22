@@ -33,6 +33,7 @@ current buffer which is assumed to be *scratch*"
  '(ecb-source-path (quote (("/" "/") (#("/Users/pedz/rails-projects/rcm" 0 30 (help-echo "Mouse-2 toggles maximizing, mouse-3 displays a popup-menu")) "rcm"))))
  '(ecb-tip-of-the-day nil)
  '(ecb-wget-setup (quote ("Please_add_wget_to_your_path_or_set_the_fullpath_to_wget" . other)))
+ '(ido-mode (quote both) nil (ido))
  '(inhibit-startup-screen t)
  '(mmm-submode-decoration-level 2)
  '(mumamo-chunk-coloring 1 nil nil "let most of the page be uncolored and color only the sub-chunks")
@@ -44,7 +45,8 @@ current buffer which is assumed to be *scratch*"
  '(rng-schema-locating-files (quote ("/Users/pedzan/.emacs.d/schemas.xml" "schemas.xml" "/Applications/Emacs.app/Contents/Resources/etc/schema/schemas.xml" "/Users/pedzan/.emacs.d/rnc/html5/html5-schemas.xml")))
  '(save-abbrevs nil)
  '(shell-prompt-pattern ".+@.+<[0-9]+> on .*
-" t)
+")
+ '(split-width-threshold 1600)
  '(tool-bar-mode nil)
  '(user-full-name "Perry Smith")
  '(vc-ignore-dir-regexp "\\`\\([\\/][\\/]\\|/\\.\\.\\./\\|/net/\\|/afs/\\)\\'"))

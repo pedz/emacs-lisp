@@ -44,9 +44,7 @@ strings. Note that you must have Font Lock enabled." t)
 (autoload 'ruby-style-c-mode "ruby-style"
   "C/C++ mode style for Ruby." t)
 
-;; RI everywhere!
-(define-key help-map "r" 'ri)
-(autoload 'ri "ri-ruby"
-  "Execute `ri'.")
+;; YARI everywhere!
+(define-key help-map "r" 'yari)
 
 (provide 'ruby-setup)
