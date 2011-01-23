@@ -73,7 +73,7 @@ current buffer which is assumed to be *scratch*"
 ;; (require 'cedet-setup)
 ;; (require 'ecb-setup)
 (require 'ruby-setup)
-(require 'rails-setup)
+;;(require 'rails-setup)
 
 ;; These load as a result of rails mode...
 ;; (require 'flyspell)
