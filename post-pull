@@ -1,0 +1,29 @@
+#!/bin/sh
+#
+# Script to run after doing a git pull
+#
+# Emacs is taken as /Applications/Emacs.app/Contents/MacOS/Emacs if it
+# exists (a Mac platform), otherwise, we just use emacs.
+if [[ -x /Applications/Emacs.app/Contents/MacOS/Emacs ]] ; then
+    EMACS=/Applications/Emacs.app/Contents/MacOS/Emacs
+else
+    EMACS=emacs
+fi
+
+# First, make all the .elc files:
+
+${EMACS} -batch -l batch-commands.el -f batch-byte-recompile-directory-all
+
+# Now, update the myloaddefs.el file:
+
+find . -type f -name '*.el' -print | \
+    egrep -v '/\.git' | \
+    xargs egrep -l '# *autoload' | \
+    xargs ${EMACS} \
+        -batch \
+        -l batch-commands.el \
+        -f batch-update-my-autoloads
+
+# We don't want myloaddefs.el compiled because it confuses me.
+
+rm -f pedz/myloadsdefs.elc

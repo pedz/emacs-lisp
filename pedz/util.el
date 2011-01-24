@@ -146,3 +146,26 @@ killing if ASK is true."
 				       "HAS BEEN EDITED" "is unmodified"))))))
 	    (kill-buffer buffer)))
       (setq list (cdr list)))))
+
+;;;###autoload
+(defun recursive-update-lisp (dir)
+  "Calls `update-lisp' for every *.el file in DIR or its sub
+  directories"
+  (interactive "DBase directory")
+  (byte-recompile-directory dir 0)
+  (let ((generated-autoload-file "~/.emacs.d/pedz/myloaddefs.el"))
+    (update-directory-autoloads dir)))
+
+;;;###autoload
+(defun update-lisp (file)
+  "Calls `byte-compile-file' and `update-file-autoloads' on FILE."
+  (interactive "fUpdate lisp code for: ")
+  (byte-compile-file file)
+  (update-my-autoloads file))
+
+;;;###autoload
+(defun update-my-autoloads (file)
+  (let ((generated-autoload-file "~/.emacs.d/pedz/myloaddefs.el"))
+    (update-file-autoloads file)))
+
+(provide 'util)

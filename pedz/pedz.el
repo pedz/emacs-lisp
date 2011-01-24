@@ -222,13 +222,6 @@
   (server-find-file f2)
   (ediff-buffers (get-file-buffer f1) (current-buffer)))
 
-(defun update-lisp (file)
-  "Calls `byte-compile-file' and `update-file-autoloads' on FILE."
-  (interactive "fUpdate lisp code for: ")
-  (byte-compile-file file)
-  (let ((generated-autoload-file "~/.emacs.d/pedz/myloaddefs.el"))
-    (update-file-autoloads file)))
-
 (setq gnus-select-methods '(nntp "ausnews.austin.ibm.com"))
 
 (load "myloaddefs")
