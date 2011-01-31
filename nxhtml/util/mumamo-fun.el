@@ -55,6 +55,7 @@
 (eval-when-compile (add-to-list 'load-path default-directory))
 (eval-when-compile (require 'mumamo))
 (eval-and-compile (require 'mumamo-chunks))
+(declare-function nxhtml-validation-header-mode "nxhtml-mode")
 
 
 
@@ -136,16 +137,16 @@ This covers inlined style and javascript."
 (define-mumamo-multi-major-mode embperl-html-mumamo-mode
   "Turn on multiple major modes for Embperl files with main mode `html-mode'.
 This also covers inlined style and javascript."
-    ("Embperl HTML Family" html-mode
-     (mumamo-chunk-embperl-<-
-      mumamo-chunk-embperl-<+
-      mumamo-chunk-embperl-<!
-      mumamo-chunk-embperl-<$
-      mumamo-chunk-inlined-style
-      mumamo-chunk-inlined-script
-      mumamo-chunk-style=
-      mumamo-chunk-onjs=
-     )))
+  ("Embperl HTML Family" html-mode
+   (mumamo-chunk-embperl-<-
+    mumamo-chunk-embperl-<+
+    mumamo-chunk-embperl-<!
+    mumamo-chunk-embperl-<$
+    mumamo-chunk-inlined-style
+    mumamo-chunk-inlined-script
+    mumamo-chunk-style=
+    mumamo-chunk-onjs=
+    )))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -256,13 +257,13 @@ This covers inlined style and javascript."
 (define-mumamo-multi-major-mode gsp-html-mumamo-mode
   "Turn on multiple major modes for GSP with main mode `html-mode'.
 This also covers inlined style and javascript."
-    ("GSP HTML Family" html-mode
-     (mumamo-chunk-gsp
-      mumamo-chunk-inlined-style
-      mumamo-chunk-inlined-script
-      mumamo-chunk-style=
-      mumamo-chunk-onjs=
-      )))
+  ("GSP HTML Family" html-mode
+   (mumamo-chunk-gsp
+    mumamo-chunk-inlined-style
+    mumamo-chunk-inlined-script
+    mumamo-chunk-style=
+    mumamo-chunk-onjs=
+    )))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; jsp - Java Server Pages
@@ -271,13 +272,14 @@ This also covers inlined style and javascript."
 (define-mumamo-multi-major-mode jsp-html-mumamo-mode
   "Turn on multiple major modes for JSP with main mode `html-mode'.
 This also covers inlined style and javascript."
-    ("JSP HTML Family" html-mode
-     (mumamo-chunk-jsp
-      mumamo-chunk-inlined-style
-      mumamo-chunk-inlined-script
-      mumamo-chunk-style=
-      mumamo-chunk-onjs=
-      )))
+  ("JSP HTML Family" html-mode
+   (mumamo-chunk-jsp-hidden-comment
+    mumamo-chunk-jsp
+    mumamo-chunk-inlined-style
+    mumamo-chunk-inlined-script
+    mumamo-chunk-style=
+    mumamo-chunk-onjs=
+    )))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -298,7 +300,16 @@ This also covers inlined style and javascript."
 ;;;###autoload
 (define-mumamo-multi-major-mode eruby-html-mumamo-mode
   "Turn on multiple major modes for eRuby with main mode `html-mode'.
-This also covers inlined style and javascript."
+This also covers inlined style and javascript.
+
+The eRuby chunks handled are:
+
+       <% Ruby code -- inline with output %>
+       <%= Ruby expression -- replace with result %>
+       <%# comment -- ignored -- useful in testing %>
+
+See URL `https://bugs.launchpad.net/nxhtml/+bug/579581' for
+information about <%% ... %%>, % and %%."
   ("eRuby Html Family" html-mode
    (
     mumamo-chunk-eruby-comment
@@ -366,7 +377,7 @@ See `mumamo-heredoc-modes' for how to specify heredoc major modes."
 
 ;;;###autoload
 (define-mumamo-multi-major-mode python-heredoc-mumamo-mode
-  "Turn on multiple major modes for Perl heredoc document.
+  "Turn on multiple major modes for Python heredoc document.
 See `mumamo-heredoc-modes' for how to specify heredoc major modes."
   ("Python HereDoc" python-mode
    (mumamo-chunk-python-heredoc
@@ -443,13 +454,13 @@ See `mumamo-heredoc-modes' for how to specify heredoc major modes."
 TT = Template-Toolkit.
 
 This also covers inlined style and javascript."
-    ("TT HTML Family" html-mode
-     (mumamo-chunk-tt
-      mumamo-chunk-inlined-style
-      mumamo-chunk-inlined-script
-      mumamo-chunk-style=
-      mumamo-chunk-onjs=
-     )))
+  ("TT HTML Family" html-mode
+   (mumamo-chunk-tt
+    mumamo-chunk-inlined-style
+    mumamo-chunk-inlined-script
+    mumamo-chunk-style=
+    mumamo-chunk-onjs=
+    )))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -477,10 +488,10 @@ This also covers inlined style and javascript."
 ** Note about HTML subchunks:
 Unfortunately this only allows `html-mode' (not `nxhtml-mode') in
 sub chunks."
-    ("Org Mode + Html" org-mode
-     (mumamo-chunk-org-html
-      mumamo-chunk-org-src
-      )))
+  ("Org Mode + Html" org-mode
+   (mumamo-chunk-org-html
+    mumamo-chunk-org-src
+    )))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -492,12 +503,12 @@ sub chunks."
 (define-mumamo-multi-major-mode mako-html-mumamo-mode
   "Turn on multiple major modes for Mako with main mode `html-mode'.
 This also covers inlined style and javascript."
-;; Fix-me: test case
-;;
-;; Fix-me: Add chunks for the tags, but make sure these are made
-;; invisible to nxml-mode parser.
-;;
-;; Fix-me: Maybe finally add that indentation support for one-line chunks?
+  ;; Fix-me: test case
+  ;;
+  ;; Fix-me: Add chunks for the tags, but make sure these are made
+  ;; invisible to nxml-mode parser.
+  ;;
+  ;; Fix-me: Maybe finally add that indentation support for one-line chunks?
   ("Mako HTML Family" html-mode
    (
     mumamo-chunk-mako-one-line-comment
@@ -509,7 +520,7 @@ This also covers inlined style and javascript."
 
     mumamo-chunk-mako-<%def
     ;;mumamo-chunk-mako-<%namesp:name
-    ;;mumamo-chunk-mako-<%call
+    mumamo-chunk-mako-<%call
     ;;mumamo-chunk-mako-<%text
 
     mumamo-chunk-mako-<%
@@ -602,11 +613,11 @@ You will need `haskell-mode' which you can download from URL
 
 ;;;###autoload
 (define-mumamo-multi-major-mode python-rst-mumamo-mode
- "Turn on multiple major modes for Python with RestructuredText docstrings."
- ("Python ReST Family" python-mode
-  (
-   mumamo-python-rst-long-string-chunk
-   )))
+  "Turn on multiple major modes for Python with RestructuredText docstrings."
+  ("Python ReST Family" python-mode
+   (
+    mumamo-python-rst-long-string-chunk
+    )))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -614,12 +625,12 @@ You will need `haskell-mode' which you can download from URL
 
 ;;;###autoload
 (define-mumamo-multi-major-mode amrita-mumamo-mode
- "Turn on multiple major modes for Amrita.
+  "Turn on multiple major modes for Amrita.
 Fix-me: This does not yet take care of inner chunks."
- ("Amrita Family" amrita-mode
-  (
-   mumamo-chunk-amrita-fold
-   )))
+  ("Amrita Family" amrita-mode
+   (
+    mumamo-chunk-amrita-fold
+    )))
 
 (provide 'mumamo-fun)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

@@ -99,6 +99,7 @@ file so this might work in many cases."
   "Check if bazaar project page on Launchpad.
 If URL is a project page for a file try to get description page
 URL instead."
+  (declare (special url-http-end-of-headers url-http-response-status))
   (let* ((proj-url-re (rx string-start
                           (or "http:" "https:") "//launchpad.net/"
                           (submatch (+ (not (any "/"))))
@@ -106,6 +107,7 @@ URL instead."
     (if (or (not (string-match proj-url-re url))
             (string-match "/download/" url))
         url
+      (require 'url-http)
       (let* ((proj-name (match-string 1 url))
              (url-show-status nil) ;; just annoying showing status here
              buffer
@@ -118,7 +120,6 @@ URL instead."
              file-list-url
              (dl-link-patt (concat "href=\"\\([^\"]*/download/[^\"]*" file-name "\\)\""))
              dl-link)
-        (require 'url-http)
         ;; Get file list page. Unfortunately this requires TLS
         (if t
             ;; No TLS
@@ -175,6 +176,7 @@ URL instead."
   "Check if bazaar list page on Launchpad.
 If URL is a description page for a file get download URL
 instead."
+  (require 'url-http)
   (let* ((bazaar-url "http://bazaar.launchpad.net/")
          (bazaar-len (length bazaar-url)))
     (if (and (< bazaar-len (length url))
@@ -194,7 +196,6 @@ instead."
                 (progn
                   (message "Got empty page for %s" url)
                   (throw 'command-level nil))
-              (require 'url-http)
               (setq http-status (url-http-parse-response))
               (if (memq http-status '(200 201))
                   (progn
@@ -239,7 +240,8 @@ suggest to use the download URL instead."
              (not (string-match-p "/download/" url)))
         (let ((prompt
                (concat "This seem to be the description page on EmacsWiki,"
-                       "\n\tdo you want the download url instead? ")))
+                       "\n\tdo you want the download url instead? "))
+              (resize-mini-windows (or resize-mini-windows t)))
           (when (y-or-n-p prompt)
             ;;(let ((start (+ 6 (string-match "/wiki/" url))))
             (let ((start (+ 0 (string-match file-name url))))
