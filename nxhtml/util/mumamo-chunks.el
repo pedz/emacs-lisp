@@ -48,9 +48,10 @@
 ;;; Code:
 
 (eval-when-compile (require 'cl))
-(eval-when-compile (add-to-list 'load-path default-directory))
+;;(eval-when-compile (add-to-list 'load-path default-directory))
 (eval-when-compile (require 'mumamo))
 (eval-when-compile (require 'sgml-mode))
+(declare-function nxhtml-validation-header-mode "nxhtml-mode")
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -67,6 +68,14 @@
 (define-derived-mode mumamo-comment-mode nil "Comment chunk"
   "For comment blocks."
   (set (make-local-variable 'font-lock-defaults) mumamo-comment-font-lock-defaults))
+
+;; See bug nXhtml bug 610648.
+;; The keymap need to be changed in borders.
+(define-derived-mode mumamo-border-mode nil "MuMaMo border"
+  "For MuMaMo borders.
+This is just for the keyboard, not for the fontification."
+  ;;(set (make-local-variable 'font-lock-defaults) mumamo-comment-font-lock-defaults)
+  )
 
 
 
@@ -86,12 +95,54 @@
 (defun mumamo-define-html-file-wide-keys ()
   "Define keys in multi major mode keymap for html files."
   (let ((map (mumamo-multi-mode-map)))
-    (define-key map [(control ?c) (control ?h) ?b] 'nxhtml-browse-file)
-    ))
+    (when map
+      (define-key map [(control ?c) (control ?h) ?b] 'nxhtml-browse-file)
+      )))
 ;; (defun mumamo-add-html-file-wide-keys (hook)
 ;;   (add-hook hook 'mumamo-define-html-file-wide-keys)
 ;;   )
 
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; No mumamo?
+
+;; Fix-me: Generalize etc.
+(add-hook 'nxhtml-mumamo-mode-hook 'mumamo-php-if-all-php)
+(add-hook 'html-mumamo-mode-hook 'mumamo-php-if-all-php)
+(defun mumamo-php-if-all-php ()
+  "Switch to php mode if the whole buffer suits `php-mode'.
+These conditions must be fullfilled:
+- The buffer must begin with '<?php'.
+- There should not be any '?>'.
+- There should not be any '<<<'.
+
+This function can be added to `nxhtml-mumamo-mode-hook' and
+`html-mumamo-mode-hook'.
+
+Note: This is in response to bug #610470, see URL
+`https://bugs.launchpad.net/nxhtml/+bug/610470'.  I am not sure
+this is a good thing, but let us test it."
+  (when (and buffer-file-name
+             (string= "php" (file-name-extension buffer-file-name)))
+    (message "Checking if all php...")
+    (let ((here (point))
+          all-php)
+      (save-restriction
+        (widen)
+        (cond
+         ((> 6 (buffer-size))
+          (setq all-php t))
+         ((string= (buffer-substring 1 6)
+                   "<?php")
+          (goto-char (point-min))
+          (unless (or (search-forward "?>" nil t)
+                      (search-forward "<<<" nil t))
+            (setq all-php t)
+            (goto-char here)))))
+      (when all-php
+        (php-mode))
+      (message (if all-php "... switching to php-mode" "... multi major mode")))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -653,9 +704,10 @@ just `php-mode' if there is no html code in the file."
               (error "Will not do this because local-write-file-hooks is non-nil"))))
         (remove-hook 'write-contents-functions 'mumamo-alt-php-write-contents t)
         (when write-contents-functions
-          (error "Will not do this because write-contents-functions is non-nil"))
-        (when (delq 'recentf-track-opened-file (copy-sequence write-file-functions))
-          (error "Will not do this because write-file-functions is non-nil"))
+          (error "Will not do this because write-contents-functions is non-nil=%S" write-contents-functions))
+        (let ((wff (delq 'recentf-track-opened-file (copy-sequence write-file-functions))))
+          (when wff
+            (error "Will not do this because write-file-functions is non-nil=%S" wff)))
 
         (add-hook 'write-contents-functions 'mumamo-alt-php-write-contents t t)
         (put 'write-contents-functions 'permanent-local t)
@@ -1102,6 +1154,10 @@ See `mumamo-possible-chunk-forward' for POS and MAX."
 See `mumamo-possible-chunk-forward' for POS and MAX."
   (mumamo-quick-chunk-forward pos max "<%" "%>" 'borders 'java-mode))
 
+(defun mumamo-chunk-jsp-hidden-comment (pos max)
+  "Find <%-- ... --%>.  Return range and 'mumamo-comment-mode.
+See `mumamo-possible-chunk-forward' for POS and MAX."
+  (mumamo-quick-chunk-forward pos max "<%--" "--%>" 'borders 'mumamo-comment-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; eruby
@@ -1109,18 +1165,19 @@ See `mumamo-possible-chunk-forward' for POS and MAX."
 (defun mumamo-chunk-eruby (pos max)
   "Find <% ... %>.  Return range and 'ruby-mode.
 See `mumamo-possible-chunk-forward' for POS and MAX."
-  (let ((chunk (mumamo-quick-chunk-forward pos max "<%" '("-?%>" . t) 'borders 'ruby-mode)))
+  (let ((chunk (mumamo-quick-chunk-forward pos max '("<%-?" . t) '("-?%>" . t) 'borders 'ruby-mode)))
     (when chunk
       ;; Put indentation type on 'mumamo-next-indent on the chunk:
       (setcdr (last chunk) '(mumamo-template-indentor))
       chunk)))
 
 (defun mumamo-chunk-eruby= (pos max)
-  "Find <% ... %>.  Return range and 'ruby-mode.
+  "Find <%= ... %>.  Return range and 'ruby-mode.
 See `mumamo-possible-chunk-forward' for POS and MAX."
   (let ((chunk (mumamo-quick-chunk-forward pos max "<%=" '("-?%>" . t) 'borders 'ruby-mode)))
     (when chunk
-      ;; Put indentation type on 'mumamo-next-indent on the chunk:
+      ;; Put indentation type on 'mumamo-next-indent on the chunk.
+      ;; See nXhtml bug 579581 for a case where it is needed.
       (setcdr (last chunk) '(mumamo-template-indentor))
       chunk)))
 
@@ -1912,13 +1969,18 @@ See `mumamo-possible-chunk-forward' for POS and MAX."
 (defun mumamo-search-fw-org-src-start (pos max)
   "Helper for `mumamo-chunk-org-src'.
 POS is where to start search and MAX is where to stop."
-  (let ((where (mumamo-chunk-start-fw-str pos max "#+BEGIN_SRC")))
+  ;;(let ((where (mumamo-chunk-start-fw-str pos max "#+BEGIN_SRC")))
+  (let* ((case-fold-search t)
+         (where (mumamo-chunk-start-fw-re pos max "#\\+BEGIN_SRC[^\n]*")))
     (when where
       (let ((exc-mode (let ((here (point)))
                         (goto-char where)
+                        (forward-line 0)
+                        (forward-char 12)
                         (prog1
                             (read (current-buffer))
                           (goto-char here)))))
+        (msgtrc "where=%s, exc-mode=%s" where exc-mode)
         (setq exc-mode (mumamo-org-mode-from-spec exc-mode))
         (let ((start where)
               (here (point)))
@@ -2005,6 +2067,10 @@ See `mumamo-possible-chunk-forward' for POS and MAX."
 (defun mumamo-chunk-mako-<%doc (pos max)
   (mumamo-quick-chunk-forward pos max "<%doc>" "</%doc>" 'borders 'mumamo-comment-mode))
 
+;; Fix-me: looks like %call and %def should and several others here
+;; should be treated similar to eRuby since their inner are
+;; html-mode. However I am not sure how to handle it yet. Maybe it is
+;; better rewrite the indenting code to handle this situation?
 (defun mumamo-chunk-mako-<%include (pos max)
   (mumamo-quick-chunk-forward pos max "<%include" "/>" 'borders 'html-mode))
 
@@ -2016,6 +2082,9 @@ See `mumamo-possible-chunk-forward' for POS and MAX."
 
 (defun mumamo-chunk-mako-<%page (pos max)
   (mumamo-quick-chunk-forward pos max "<%page" "/>" 'borders 'html-mode))
+
+(defun mumamo-chunk-mako-<%call (pos max)
+  (mumamo-quick-chunk-forward pos max "<%call" "/%call>" 'borders 'html-mode))
 
 ;; Fix-me: this is not correct
 (defun mumamo-chunk-mako-<%def (pos max)
