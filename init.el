@@ -101,3 +101,6 @@ current buffer which is assumed to be *scratch*"
 	(eq window-system 'ns))
     (require 'mac-setup))
 (require 'pedz)
+;; This gets loaded because of ido at the first find file so lets just
+;; load it now and get it over with.
+(require 'tramp)

@@ -18,6 +18,7 @@ ${EMACS} -batch -l batch-commands.el -f batch-byte-recompile-directory-all
 
 find . -type f -name '*.el' -print | \
     egrep -v '/\.git' | \
+    egrep -v /nxhtml/ | \
     xargs egrep -l '# *autoload' | \
     xargs ${EMACS} \
         -batch \
