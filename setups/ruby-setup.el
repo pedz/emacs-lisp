@@ -1,6 +1,6 @@
+;;; Now using GNU Emacs 23.2 which ships ruby mode but rinari uses its
+;;; own (slightly newer) ruby.el.
 
-
-;; ;;; Note that most of this is repeated in the Rails setup processing.
 
 ;; ;; Suggestions from inf-ruby
 ;; (autoload 'ruby-mode "ruby-mode"
@@ -27,19 +27,19 @@
 ;; The directory containing FILE becomes the initial working directory
 ;; and source-file directory for your debugger." t)
 
-;; ;; Setup to autoload ruby-electric
-;; (autoload 'ruby-electric-mode "ruby-electric"
-;;   "Toggle Ruby Electric minor mode.
-;; With no argument, this command toggles the mode.  Non-null prefix
-;; argument turns on the mode.  Null prefix argument turns off the
-;; mode.
+;; Setup to autoload ruby-electric
+(autoload 'ruby-electric-mode "ruby-electric"
+  "Toggle Ruby Electric minor mode.
+With no argument, this command toggles the mode.  Non-null prefix
+argument turns on the mode.  Null prefix argument turns off the
+mode.
 
-;; When Ruby Electric mode is enabled, an indented 'end' is
-;; heuristicaly inserted whenever typing a word like 'module',
-;; 'class', 'def', 'if', 'unless', 'case', 'until', 'for', 'begin',
-;; 'do'. Simple, double and back quotes as well as braces are paired
-;; auto-magically. Expansion does not occur inside comments and
-;; strings. Note that you must have Font Lock enabled." t)
+When Ruby Electric mode is enabled, an indented 'end' is
+heuristicaly inserted whenever typing a word like 'module',
+'class', 'def', 'if', 'unless', 'case', 'until', 'for', 'begin',
+'do'. Simple, double and back quotes as well as braces are paired
+auto-magically. Expansion does not occur inside comments and
+strings. Note that you must have Font Lock enabled." t)
 
 ;; ;; setup to autoload ruby-style
 ;; (autoload 'ruby-style-c-mode "ruby-style"
