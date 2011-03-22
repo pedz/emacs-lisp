@@ -48,4 +48,10 @@ strings. Note that you must have Font Lock enabled." t)
 ;; YARI everywhere!
 (define-key help-map "r" 'yari)
 
+;; Turn on ruby-electric-mode
+(eval-after-load 'ruby-mode
+  '(add-hook 'ruby-mode-hook (function
+			      (lambda ()
+				(ruby-electric-mode t)))))
+
 (provide 'ruby-setup)
