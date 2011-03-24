@@ -15,7 +15,8 @@ current buffer which is assumed to be *scratch*"
 (add-to-list 'load-path "~/.emacs.d")
 (require 'add-paths)
 ;; Now add paths to all the directories in site-lisp and here
-(recursively-add-dir-to-load-path "/usr/local/share/emacs/site-lisp")
+(if (file-directory-p "/usr/local/share/emacs/site-lisp")
+    (recursively-add-dir-to-load-path "/usr/local/share/emacs/site-lisp"))
 (recursively-add-dir-to-load-path (expand-file-name "~/.emacs.d"))
 
 ;; Set by emacs' customizing routines -- don't change directly
