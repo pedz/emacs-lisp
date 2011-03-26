@@ -28,3 +28,4 @@ find . -type f -name '*.el' -print | \
 # We don't want myloaddefs.el compiled because it confuses me.
 
 rm -f pedz/myloadsdefs.elc
+cd magit && make
