@@ -11,11 +11,6 @@
       auto-save-list-file-prefix "~/.save/saves-"
       backup-by-copying-when-linked t
       backup-by-copying-when-mismatch t
-      c-mode-common-hook (function
-                          (lambda ()
-                            (setq comment-column 40
-                                  c-basic-offset 4)))
-      default-major-mode 'text-mode
       delete-old-versions t
       display-time-24hr-format t
       display-time-day-and-date t
@@ -25,27 +20,34 @@
       kept-old-versions 4
       lpr-command "lpr"
       mail-default-reply-to "pedz@austin.ibm.com"
-      mail-mode-hook (function
-                      (lambda ()
-                        (define-key mail-mode-map "\e\t"
-                          'ispell-complete-word)
-                        (pgp-insinuate-keys)))
       mail-self-blind t
       mail-archive-file-name nil
-      pascal-mode-hook (function
-                        (lambda ()
-                          (setq case-fold-search t)))
       rlogin-directory-tracking-mode t
-      text-mode-hook (function
-                      (lambda ()
-                        (auto-fill-mode 1)
-                        (define-key text-mode-map "\e\t"
-                          'ispell-complete-word)))
       trim-versions-without-asking t
-      version-control t
-      vm-mode-hook (function
-                    (lambda ()
-                      (define-key vm-mode-map "A" nil))))
+      version-control t)
+
+;; All of these are somewhat obsolete and I don't know how to do them
+;; right so lets just leave them out for now.
+;; (add-hook 'c-mode-common-hook (function
+;; 			      	(lambda ()
+;; 				  (setq comment-column 40
+;; 					c-basic-offset 4))))
+;; (add-hook 'mail-mode-hook (function
+;; 			   (lambda ()
+;; 			     (define-key mail-mode-map "\e\t"
+;; 			       'ispell-complete-word)
+;; 			     (pgp-insinuate-keys))))
+;; (add-hook 'pascal-mode-hook (function
+;; 			      (lambda ()
+;; 				(setq case-fold-search t))))
+;; (add-hook 'text-mode-hook (function
+;; 			   (lambda ()
+;; 			     (auto-fill-mode 1)
+;; 			     (define-key text-mode-map "\e\t"
+;; 				'ispell-complete-word))))
+;; (add-hook 'vm-mode-hook (function
+;; 			 (lambda ()
+;; 			   (define-key vm-mode-map "A" nil))))
 
 (if (or (eq window-system 'mac)
         (eq window-system 'ns))
@@ -149,11 +151,6 @@
       shell-mode-hook (function (lambda ()
                                   (define-key shell-mode-map "\C-c\C-d" 'dirs))))
 
-;;
-;; ispell hooks and things
-;;
-(define-key esc-map "$" 'ispell-word)
-
 (define-key global-map "\C-x\C-b" 'electric-buffer-list)
 
 (defun decode-message ( key )
@@ -193,7 +190,9 @@
 ;;;                'mldrag-drag-vertical-line)
 ;;;(require 'mldrag)
 
-(setq compilation-finish-function 'v4-build-compilation-finish)
+;; I took this out because of an "obsolete" warning.  Add it back and
+;; and then debug when you need to use it.
+;; (setq compilation-finish-function 'v4-build-compilation-finish)
 
 (if (or (eq window-system 'x)
         (eq window-system 'mac)
@@ -217,10 +216,13 @@
 (add-to-list 'auto-mode-alist '("\\.[n0-9]$" . nroff-mode))
 (add-to-list 'auto-mode-alist '("pmrorder" . pmrorder-mode))
 
-(defun server-ediff (f1 f2)
-  (delete-other-windows)
-  (server-find-file f2)
-  (ediff-buffers (get-file-buffer f1) (current-buffer)))
+;; Not sure what this use to do but server-find-file is no longer
+;; defined (that I can find)
+;;
+;; (defun server-ediff (f1 f2)
+;;   (delete-other-windows)
+;;   (server-find-file f2)
+;;   (ediff-buffers (get-file-buffer f1) (current-buffer)))
 
 (setq gnus-select-methods '(nntp "ausnews.austin.ibm.com"))
 
@@ -286,8 +288,11 @@
 (global-set-key "\C-x/" 'point-to-register)
 (global-set-key "\C-xj" 'jump-to-register)
 
-(defun cleanup-grep ()
-  (replace-string "\004" "" nil (point-min) (point-max)))
+;; Should not use replace-string non-interactively -- also, can't find
+;; where this is used.
+;;
+;; (defun cleanup-grep ()
+;;   (replace-string "\004" "" nil (point-min) (point-max)))
 
 (require 'osf-dce)
 

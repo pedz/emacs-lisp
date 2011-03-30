@@ -2,6 +2,10 @@
 #
 # Script to run after doing a git pull
 #
+# Note that we might need to do:
+# git submodule init
+# git submodule update
+#
 # Emacs is taken as /Applications/Emacs.app/Contents/MacOS/Emacs if it
 # exists (a Mac platform), otherwise, we just use emacs.
 if [[ -x /Applications/Emacs.app/Contents/MacOS/Emacs ]] ; then

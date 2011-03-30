@@ -10,7 +10,8 @@
 (autoload 'c++-mode  "cc-mode" "C++ Editing Mode" t)
 (autoload 'c-mode    "cc-mode" "C Editing Mode" t)
 (autoload 'objc-mode "cc-mode" "Objective-C Editing Mode" t)
-(setq c-mode-common-hook (function
-			  (lambda ()
-			    (c-set-style "BSD"))))
+;; I don't know how to do this right.
+;; (add-hook 'c-mode-common-hook '(function
+;; 			       (lambda ()
+;; 				 (c-set-style "BSD"))))
 (provide 'pedz-cc)

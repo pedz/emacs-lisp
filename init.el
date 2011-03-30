@@ -35,8 +35,10 @@ current buffer which is assumed to be *scratch*"
  '(ecb-source-path (quote (("/" "/") (#("/Users/pedz/rails-projects/rcm" 0 30 (help-echo "Mouse-2 toggles maximizing, mouse-3 displays a popup-menu")) "rcm"))))
  '(ecb-tip-of-the-day nil)
  '(ecb-wget-setup (quote ("Please_add_wget_to_your_path_or_set_the_fullpath_to_wget" . other)))
+ '(exec-path (quote ("/usr/bin" "/bin" "/usr/sbin" "/sbin" "/Applications/Emacs.app/Contents/MacOS/libexec" "/Applications/Emacs.app/Contents/MacOS/bin" "/usr/local/bin")))
  '(ido-mode (quote both) nil (ido))
  '(inhibit-startup-screen t)
+ '(major-mode (quote text-mode))
  '(mmm-submode-decoration-level 2)
  '(mumamo-chunk-coloring 1 nil nil "let most of the page be uncolored and color only the sub-chunks")
  '(ns-alternate-modifier (quote super))
@@ -89,6 +91,7 @@ current buffer which is assumed to be *scratch*"
 ;; Probably will change with next update of emacs but currently need
 ;; to point to js.el
 (require 'javascript-setup)
+(require 'doxygen-setup)
 
 ;; Part of the html5 setup to load the html5 schema.
 ;; (require 'whattf-dt)
@@ -105,4 +108,3 @@ current buffer which is assumed to be *scratch*"
 ;; This gets loaded because of ido at the first find file so lets just
 ;; load it now and get it over with.
 (require 'tramp)
-(require 'doxymacs)
