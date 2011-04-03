@@ -22,7 +22,6 @@
       mail-default-reply-to "pedz@austin.ibm.com"
       mail-self-blind t
       mail-archive-file-name nil
-      rlogin-directory-tracking-mode t
       trim-versions-without-asking t
       version-control t)
 

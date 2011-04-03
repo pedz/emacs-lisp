@@ -36,6 +36,7 @@ current buffer which is assumed to be *scratch*"
  '(ecb-tip-of-the-day nil)
  '(ecb-wget-setup (quote ("Please_add_wget_to_your_path_or_set_the_fullpath_to_wget" . other)))
  '(exec-path (quote ("/usr/bin" "/bin" "/usr/sbin" "/sbin" "/Applications/Emacs.app/Contents/MacOS/libexec" "/Applications/Emacs.app/Contents/MacOS/bin" "/usr/local/bin")))
+ '(ido-enable-tramp-completion nil)
  '(ido-mode (quote both) nil (ido))
  '(inhibit-startup-screen t)
  '(major-mode (quote text-mode))
