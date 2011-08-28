@@ -223,8 +223,6 @@
 ;;   (server-find-file f2)
 ;;   (ediff-buffers (get-file-buffer f1) (current-buffer)))
 
-(setq gnus-select-methods '(nntp "ausnews.austin.ibm.com"))
-
 (load "myloaddefs")
 (display-time)
 
