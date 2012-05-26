@@ -22,7 +22,6 @@
       mail-default-reply-to "pedz@austin.ibm.com"
       mail-self-blind t
       mail-archive-file-name nil
-      rlogin-directory-tracking-mode t
       trim-versions-without-asking t
       version-control t)
 
@@ -223,8 +222,6 @@
 ;;   (delete-other-windows)
 ;;   (server-find-file f2)
 ;;   (ediff-buffers (get-file-buffer f1) (current-buffer)))
-
-(setq gnus-select-methods '(nntp "ausnews.austin.ibm.com"))
 
 (load "myloaddefs")
 (display-time)
