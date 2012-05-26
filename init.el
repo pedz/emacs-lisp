@@ -21,10 +21,10 @@ current buffer which is assumed to be *scratch*"
 
 ;; Set by emacs' customizing routines -- don't change directly
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(ansi-color-for-comint-mode t)
  '(ansi-color-names-vector ["black" "red" "green" "yellow" "blue" "magenta" "darkturquoise" "white"])
  '(case-fold-search nil)
@@ -36,6 +36,7 @@ current buffer which is assumed to be *scratch*"
  '(ecb-tip-of-the-day nil)
  '(ecb-wget-setup (quote ("Please_add_wget_to_your_path_or_set_the_fullpath_to_wget" . other)))
  '(exec-path (quote ("/usr/bin" "/bin" "/usr/sbin" "/sbin" "/Applications/Emacs.app/Contents/MacOS/libexec" "/Applications/Emacs.app/Contents/MacOS/bin" "/usr/local/bin")))
+ '(explicit-bash-args (quote ("--noediting" "--login" "-i")))
  '(ido-mode (quote both) nil (ido))
  '(inhibit-startup-screen t)
  '(major-mode (quote text-mode))
@@ -57,10 +58,10 @@ current buffer which is assumed to be *scratch*"
 
 ;; Ditto from above -- don't change by hand.
 (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(flymake-errline ((((class color)) (:background "DarkRed"))))
  '(flymake-warnline ((((class color)) (:background "DarkOrange"))))
  '(mmm-code-submode-face ((t (:foreground "Plum"))))
@@ -76,7 +77,7 @@ current buffer which is assumed to be *scratch*"
 ;; (require 'cedet-setup)
 ;; (require 'ecb-setup)
 (require 'ruby-setup)
-;;(require 'rails-setup)
+(require 'rails-setup)
 
 ;; These load as a result of rails mode...
 ;; (require 'flyspell)
@@ -105,6 +106,7 @@ current buffer which is assumed to be *scratch*"
 	(eq window-system 'ns))
     (require 'mac-setup))
 (require 'pedz)
+(require 'yasnippet-setup)
 ;; This gets loaded because of ido at the first find file so lets just
 ;; load it now and get it over with.
 (require 'tramp)

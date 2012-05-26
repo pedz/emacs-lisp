@@ -1,44 +1,69 @@
+;; Hook to trigger yasnappits and jasmine mode within the spec.js
+;; files.
 
-(require 'rails)
-
-(autoload 'speedbar-make-specialized-keymap "speedbar")
-
-(defvar rails-project-stop-regexp
-  "\\`/\\.\\.\\./\\'"
-  "Regexp that will stop the search up the directory tree for
-  config/environment.rb")
-
-(defun rails-project:root ()
-  "Return RAILS_ROOT if this file is a part of a Rails application,
-else return nil"
-  (let ((curdir (expand-file-name default-directory))
-        (max 10)
-        (found nil))
-    (while (and (not found)
-		(> max 0)
-		(not (string-match rails-project-stop-regexp curdir)))
-      (progn
-        (if (file-exists-p (concat curdir "config/environment.rb"))
-            (progn
-              (setq found t))
-          (progn
-            (setq curdir (expand-file-name (concat curdir "../")))
-            (setq max (- max 1))))))
-    (if found (expand-file-name curdir))))
-
-(defun load-log-file ()
+(defun jasmine-mode ()
+  "Not really a 'mode'"
   (interactive)
-  (widen)
-  (ansi-color-apply-on-region (point-min) (point-max))
-  (not-modified)
-  (toggle-read-only t))
+  (js-mode)
+  (yas/minor-mode t)
+  (setq yas/mode-symbol 'jasmine))
 
-;; As part of nxhtml mode, we set this:
-(defun erb-load ()
-  (eruby-html-mumamo-mode))
+(add-hook 'rinari-minor-mode-hook
+	  #'(lambda ()
+	      (if (and buffer-file-name
+		       (string-match-p ".*[Ss]pec\.js" buffer-file-name))
+		  (jasmine-mode))))
 
-(add-to-list 'auto-mode-alist '("\\.html\\.erb\\'" . erb-load))
+;; Used by rgrep.  Now you can say "rails" for the files prompt and
+;; get the files with these suffixs
+(add-to-list 'grep-files-aliases (cons "rails" "*.rb *.erb *.js *.css"))
 
+;; The ";;" code was commented out on 2011/05/28.  It was not being
+;; loaded anyway.  I have switched to Rinari which gets loaded.
+
+;; (require 'rails)
+
+;; (autoload 'speedbar-make-specialized-keymap "speedbar")
+
+;; (defvar rails-project-stop-regexp
+;;   "\\`/\\.\\.\\./\\'"
+;;   "Regexp that will stop the search up the directory tree for
+;;   config/environment.rb")
+
+;; (defun rails-project:root ()
+;;   "Return RAILS_ROOT if this file is a part of a Rails application,
+;; else return nil"
+;;   (let ((curdir (expand-file-name default-directory))
+;;         (max 10)
+;;         (found nil))
+;;     (while (and (not found)
+;; 		(> max 0)
+;; 		(not (string-match rails-project-stop-regexp curdir)))
+;;       (progn
+;;         (if (file-exists-p (concat curdir "config/environment.rb"))
+;;             (progn
+;;               (setq found t))
+;;           (progn
+;;             (setq curdir (expand-file-name (concat curdir "../")))
+;;             (setq max (- max 1))))))
+;;     (if found (expand-file-name curdir))))
+
+;; (defun load-log-file ()
+;;   (interactive)
+;;   (widen)
+;;   (ansi-color-apply-on-region (point-min) (point-max))
+;;   (not-modified)
+;;   (toggle-read-only t))
+
+;; ;; As part of nxhtml mode, we set this:
+;; (defun erb-load ()
+;;   (eruby-html-mumamo-mode))
+
+;; (add-to-list 'auto-mode-alist '("\\.html\\.erb\\'" . erb-load))
+
+;;; This code was already commented out on 2011/05/28. It looks like
+;;; it has some interestings stuff in it.
+;;;
 ;;; The require rails above pulls in ruby mode and tons of other
 ;;; stuff.  I load my changes to ruby-mode at this time.
 ;;; (load "ruby-changes")
