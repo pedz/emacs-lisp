@@ -16,3 +16,6 @@
 [submodule "popup-el"]
 	path = popup-el
 	url = https://github.com/m2ym/popup-el.git
+[submodule "jquery-doc.el"]
+	path = jquery-doc.el
+	url = https://github.com/ananthakumaran/jquery-doc.el.git
