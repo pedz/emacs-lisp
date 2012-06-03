@@ -113,3 +113,7 @@ current buffer which is assumed to be *scratch*"
 
 (require 'auto-complete-config)
 (ac-config-default)
+
+(require 'jquery-doc)
+;; adds ac-source-jquery to the ac-sources list
+(add-hook 'js2-mode-hook 'jquery-doc-setup)
