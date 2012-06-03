@@ -110,3 +110,6 @@ current buffer which is assumed to be *scratch*"
 ;; This gets loaded because of ido at the first find file so lets just
 ;; load it now and get it over with.
 (require 'tramp)
+
+(require 'auto-complete-config)
+(ac-config-default)
