@@ -1,3 +1,3 @@
 
-(require 'ecb-autoloads)
+;; (require 'ecb-autoloads)
 (provide 'ecb-setup)

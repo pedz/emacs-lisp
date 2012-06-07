@@ -6,7 +6,7 @@
 ;;     xargs egrep -l '# *autoload' | \
 ;;     xargs /Applications/Emacs.app/Contents/MacOS/Emacs \
 ;;         -batch \
-;;         -l q.el \
+;;         -l batch-commands.el \
 ;;         -l autoload \
 ;;         -f batch-update-my-autoloads
 ;;
