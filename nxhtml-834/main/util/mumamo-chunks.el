@@ -1198,6 +1198,7 @@ This is a workaround for problems with strings."
       ;;(setcdr (last chunk) '(mumamo-template-indentor))
       chunk)))
 
+;;;###autoload
 (defun mumamo-chunk-eruby-comment (pos max)
   "Find <%# ... %>.  Return range and 'ruby-mode.
 See `mumamo-possible-chunk-forward' for POS and MAX.

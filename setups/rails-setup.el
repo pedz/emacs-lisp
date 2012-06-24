@@ -16,7 +16,7 @@
 
 ;; Used by rgrep.  Now you can say "rails" for the files prompt and
 ;; get the files with these suffixs
-(add-to-list 'grep-files-aliases (cons "rails" "*.rb *.erb *.js *.css"))
+(add-to-list 'grep-files-aliases (cons "rails" "*.rb *.erb *.js *.css *.scss"))
 
 (add-to-list 'auto-mode-alist '("\\.scss\\'"      . css-mode))
 (provide 'rails-setup)
