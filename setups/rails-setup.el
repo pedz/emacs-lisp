@@ -1,6 +1,8 @@
 ;; Hook to trigger yasnappits and jasmine mode within the spec.js
 ;; files.
 
+(require 'grep)
+
 (defun jasmine-mode ()
   "Not really a 'mode'"
   (interactive)
