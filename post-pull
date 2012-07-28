@@ -3,8 +3,9 @@
 # Script to run after doing a git pull
 #
 # Note that we might need to do:
-# git submodule init
-# git submodule update
+# git submodule update --init --recursive
+# or
+# git submodule update --recursive
 #
 # Emacs is taken as /Applications/Emacs.app/Contents/MacOS/Emacs if it
 # exists (a Mac platform), otherwise, we just use emacs.
@@ -16,7 +17,10 @@ fi
 
 # First, make all the .elc files:
 
-${EMACS} -batch -l batch-commands.el -f batch-byte-recompile-directory-all
+if ! ${EMACS} -batch -l batch-commands.el -f batch-byte-recompile-directory-all . ; then
+    echo batch-byte-recompile failed
+    exit 1
+fi
 
 # Now, update the myloaddefs.el file:
 
@@ -31,5 +35,6 @@ find . -type f -name '*.el' -print | \
 
 # We don't want myloaddefs.el compiled because it confuses me.
 
-rm -f pedz/myloadsdefs.elc
+rm -f pedz/myloadsdefs.elc nxhtml-834/main/util/ourcomments-util.elc
 cd magit && make
+find . -name '*.elc' -print | xargs mv '{}' elc
