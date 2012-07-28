@@ -12,12 +12,15 @@ current buffer which is assumed to be *scratch*"
       (setq temp (cdr temp)))))
 
 ;; Add to load path so we can find add-paths
-(add-to-list 'load-path "~/.emacs.d")
+(add-to-list 'load-path (expand-file-name "~/.emacs.d"))
 (require 'add-paths)
 ;; Now add paths to all the directories in site-lisp and here
 (if (file-directory-p "/usr/local/share/emacs/site-lisp")
     (recursively-add-dir-to-load-path "/usr/local/share/emacs/site-lisp"))
 (recursively-add-dir-to-load-path (expand-file-name "~/.emacs.d"))
+;; put the elc directory at the front
+(setq load-path (remove (expand-file-name "~/.emacs.d/elc") load-path))
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/elc"))
 
 ;; Set by emacs' customizing routines -- don't change directly
 (custom-set-variables
