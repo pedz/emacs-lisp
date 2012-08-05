@@ -179,7 +179,8 @@ spot"
 	(find-file-other-window fname)
       (find-file fname))
     (message (buffer-name))
-    (goto-line lnum)))
+    (goto-char (point-min))
+    (forward-line (1- lnum))))
 
 ;;;###autoload
 (defun cscope-view-from-list ()
@@ -192,7 +193,8 @@ spot"
 	 (lnum (aref cscope-line-vector num)))
     (save-excursion
       (find-file fname)
-      (goto-line lnum)
+      (goto-char (point-min))
+      (forward-line (1- lnum))
       (view-buffer (current-buffer)))))
 
 ;;;
@@ -554,9 +556,15 @@ spot"
 	pat return-value)
     (goto-char (point-max))
     (beginning-of-line)
-    (kill-line 1)
+    (delete-region (point)
+		   (save-excursion
+		     (forward-line 1)
+		     (point)))
     (goto-char (point-min))
-    (kill-line 1)
+    (delete-region (point)
+		   (save-excursion
+		     (forward-line 1)
+		     (point)))
     ;;
     ;; Go through buffer finding the longest filename, function name,
     ;; and line number.
