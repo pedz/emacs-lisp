@@ -98,7 +98,7 @@ current buffer which is assumed to be *scratch*"
 ;; Probably will change with next update of emacs but currently need
 ;; to point to js.el
 (require 'javascript-setup)
-(require 'doxygen-setup)
+;; (require 'doxygen-setup)
 
 ;; Part of the html5 setup to load the html5 schema.
 ;; (require 'whattf-dt)
