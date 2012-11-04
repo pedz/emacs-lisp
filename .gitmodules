@@ -7,9 +7,6 @@
 [submodule "ruby/rinari"]
 	path = ruby/rinari
 	url = https://github.com/eschulte/rinari.git
-[submodule "magit"]
-	path = magit
-	url = https://github.com/philjackson/magit.git
 [submodule "auto-complete"]
 	path = auto-complete
 	url = https://github.com/m2ym/auto-complete.git
