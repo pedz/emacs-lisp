@@ -21,4 +21,7 @@
 (add-to-list 'grep-files-aliases (cons "rails" "*.rb *.erb *.js *.css *.scss"))
 
 (add-to-list 'auto-mode-alist '("\\.scss\\'"      . css-mode))
+(require 'feature-mode)
+(add-to-list 'auto-mode-alist '("\.feature$" . feature-mode))
+
 (provide 'rails-setup)

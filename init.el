@@ -80,24 +80,10 @@ current buffer which is assumed to be *scratch*"
 ;; Pull in nxhtml
 (require 'nxhtml-setup)
 
-;; (require 'cedet-setup)
-;; (require 'ecb-setup)
 (require 'ruby-setup)
 (require 'rails-setup)
-
-;; These load as a result of rails mode...
-;; (require 'flyspell)
-;; (require 'align)
-;; (require 'find-recursive)
-;; (require 'snippet-setup)
-
-;; nxml is now part of the standard distribution.  Probably this set
-;; up needs to go away.
-;; (require 'nxml-setup)
-
-;; Probably will change with next update of emacs but currently need
-;; to point to js.el
 (require 'javascript-setup)
+
 ;; (require 'doxygen-setup)
 
 ;; Part of the html5 setup to load the html5 schema.
