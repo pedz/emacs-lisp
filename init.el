@@ -80,6 +80,8 @@ current buffer which is assumed to be *scratch*"
 ;; Pull in nxhtml
 (require 'nxhtml-setup)
 
+(require 'pedz)
+(require 'yasnippet-setup)
 (require 'ruby-setup)
 (require 'rails-setup)
 (require 'javascript-setup)
@@ -97,8 +99,6 @@ current buffer which is assumed to be *scratch*"
 (if (or (eq window-system 'mac)
 	(eq window-system 'ns))
     (require 'mac-setup))
-(require 'pedz)
-(require 'yasnippet-setup)
 ;; This gets loaded because of ido at the first find file so lets just
 ;; load it now and get it over with.
 (require 'tramp)
