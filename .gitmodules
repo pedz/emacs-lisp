@@ -22,3 +22,6 @@
 [submodule "magit"]
 	path = magit
 	url = git://github.com/magit/magit.git
+[submodule "ruby/cucumber"]
+	path = ruby/cucumber
+	url = git://github.com/michaelklishin/cucumber.el.git
