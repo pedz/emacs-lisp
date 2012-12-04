@@ -21,7 +21,11 @@
 (add-to-list 'grep-files-aliases (cons "rails" "*.rb *.erb *.js *.css *.scss"))
 
 (add-to-list 'auto-mode-alist '("\\.scss\\'"      . css-mode))
-(require 'feature-mode)
 (add-to-list 'auto-mode-alist '("\.feature$" . feature-mode))
+(add-hook 'feature-mode-hook
+	  '(lambda ()
+	     (add-to-list 'yas/root-directory "~/.emacs.d/ruby/cucumber/snippets/")
+	     (yas/reload-all)
+	     (yas/minor-mode t)))
 
 (provide 'rails-setup)

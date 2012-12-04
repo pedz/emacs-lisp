@@ -37,4 +37,4 @@ find . -type f -name '*.el' -print | \
 
 rm -f pedz/myloadsdefs.elc nxhtml-834/main/util/ourcomments-util.elc
 ( cd magit && make )
-find . -name '*.elc' -print | xargs -I files mv files elc
+# find . -name '*.elc' -print | xargs -I files mv files elc
