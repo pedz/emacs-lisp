@@ -60,7 +60,8 @@ current buffer which is assumed to be *scratch*"
  '(split-width-threshold 1600)
  '(tool-bar-mode nil)
  '(user-full-name "Perry Smith")
- '(vc-ignore-dir-regexp "\\`\\([\\/][\\/]\\|/\\.\\.\\./\\|/net/\\|/afs/\\)\\'"))
+ '(vc-ignore-dir-regexp "\\`\\([\\/][\\/]\\|/\\.\\.\\./\\|/net/\\|/afs/\\)\\'")
+ '(x-select-enable-primary t))
 
 ;; Ditto from above -- don't change by hand.
 (custom-set-faces
