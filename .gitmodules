@@ -7,9 +7,6 @@
 [submodule "ruby/rinari"]
 	path = ruby/rinari
 	url = https://github.com/eschulte/rinari.git
-[submodule "popup-el"]
-	path = popup-el
-	url = https://github.com/m2ym/popup-el.git
 [submodule "ruby/ruby-electric"]
 	path = ruby/ruby-electric
 	url = https://github.com/qoobaa/ruby-electric.git
