@@ -8,4 +8,9 @@
 ;; Added in rails-setup
 ;; (add-to-list 'auto-mode-alist '("\\.html\\.erb\\'" . eruby-nxhtml-mumamo))
 
+(add-hook 'nxml-mode-hook 
+	  (function (lambda()
+		      (require 'whattf-dt)
+		      )))
+
 (provide 'nxhtml-setup)
