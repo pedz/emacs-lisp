@@ -15,7 +15,8 @@
 	      (if (and buffer-file-name
 		       (string-match-p ".*[Ss]pec\.js" buffer-file-name))
 		  (jasmine-mode))
-	      (require 'cucumber-mode-compilation)))
+	      (require 'cucumber-mode-compilation)
+	      (require 'ruby-compilation-rspec)))
 
 ;; Used by rgrep.  Now you can say "rails" for the files prompt and
 ;; get the files with these suffixs

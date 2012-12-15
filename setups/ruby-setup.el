@@ -1,32 +1,6 @@
 ;;; Now using GNU Emacs 23.2 which ships ruby mode but rinari uses its
 ;;; own (slightly newer) ruby.el.
 
-
-;; ;; Suggestions from inf-ruby
-;; (autoload 'ruby-mode "ruby-mode"
-;;   "Mode for editing ruby source files" t)
-
-
-;; (setq auto-mode-alist
-;;       (append '(("\\.rb$" . my-ruby-mode)) auto-mode-alist))
-;; (setq interpreter-mode-alist (append '(("ruby" . ruby-mode))
-;; 				     interpreter-mode-alist))
-
-;; (autoload 'run-ruby "inf-ruby"
-;;   "Run an inferior Ruby process")
-;; (autoload 'inf-ruby-keys "inf-ruby"
-;;   "Set local key defs for inf-ruby in ruby-mode")
-;; (add-hook 'ruby-mode-hook
-;; 	  '(lambda ()
-;; 	     (inf-ruby-keys)
-;; 	     ))
-
-;; ;; Setup to autoload rdebug
-;; (autoload 'rdebug "rdebug"
-;;   "Run rdebug on program FILE in buffer *gud-FILE*.
-;; The directory containing FILE becomes the initial working directory
-;; and source-file directory for your debugger." t)
-
 ;; Setup to autoload ruby-electric
 (autoload 'ruby-electric-mode "ruby-electric"
   "Toggle Ruby Electric minor mode.
@@ -41,10 +15,6 @@ heuristicaly inserted whenever typing a word like 'module',
 auto-magically. Expansion does not occur inside comments and
 strings. Note that you must have Font Lock enabled." t)
 
-;; ;; setup to autoload ruby-style
-;; (autoload 'ruby-style-c-mode "ruby-style"
-;;   "C/C++ mode style for Ruby." t)
-
 ;; YARI everywhere!
 (define-key help-map "r" 'yari)
 
@@ -53,5 +23,5 @@ strings. Note that you must have Font Lock enabled." t)
   '(add-hook 'ruby-mode-hook (function
 			      (lambda ()
 				(ruby-electric-mode t)))))
-
+(require 'rspec-mode)
 (provide 'ruby-setup)
