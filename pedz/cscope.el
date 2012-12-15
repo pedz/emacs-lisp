@@ -191,11 +191,10 @@ spot"
   (let* ((num (cscope-get-line-number))
 	 (fname (expand-file-name (aref cscope-file-vector num)))
 	 (lnum (aref cscope-line-vector num)))
-    (save-excursion
-      (find-file fname)
-      (goto-char (point-min))
-      (forward-line (1- lnum))
-      (view-buffer (current-buffer)))))
+    (find-file fname)
+    (goto-char (point-min))
+    (forward-line (1- lnum))
+    (view-buffer (current-buffer))))
 
 ;;;
 ;;; We are very carefull to reference only the cscope-out-buffer
@@ -435,8 +434,54 @@ spot"
   (interactive)
   (cscope-bananas-are-fun "/gsa/ausgsa/projects/a/aix/aix61N"
 			  "/61N_COMPLETE" ))
+
 ;;;###autoload
-(defalias 'cscope-6100-07 'cscope-61N-process)
+(defun cscope-61Q-process ( )
+  (interactive)
+  (cscope-bananas-are-fun "/gsa/ausgsa/projects/a/aix/aix61Q"
+			  "/61Q_COMPLETE" ))
+
+;;;###autoload
+(defalias 'cscope-6100-07 'cscope-61S-process)
+
+;;;###autoload
+(defun cscope-61S-process ( )
+  (interactive)
+  (cscope-bananas-are-fun "/gsa/ausgsa/projects/a/aix/aix61S"
+                          "/61S_COMPLETE" ))
+;;;###autoload
+(defalias 'cscope-6100-07-04 'cscope-61S-process)
+
+;;;###autoload
+(defun cscope-710-process ( )
+  (interactive)
+  (cscope-bananas-are-fun "/gsa/ausgsa/projects/a/aix/aix710"
+                          "/710_SERVICE" ))
+;;;###autoload
+(defun cscope-71B-process ( )
+  (interactive)
+  (cscope-bananas-are-fun "/gsa/ausgsa/projects/a/aix/aix71B"
+                          "/71B_COMPLETE" ))
+;;;###autoload
+(defun cscope-71D-process ( )
+  (interactive)
+  (cscope-bananas-are-fun "/gsa/ausgsa/projects/a/aix/aix71D"
+                          "/71D_COMPLETE" ))
+;;;###autoload
+(defun cscope-71F-process ( )
+  (interactive)
+  (cscope-bananas-are-fun "/gsa/ausgsa/projects/a/aix/aix71F"
+                          "/71F_COMPLETE" ))
+;;;###autoload
+(defun cscope-71H-process ( )
+  (interactive)
+  (cscope-bananas-are-fun "/gsa/ausgsa/projects/a/aix/aix71H"
+                          "/71H_COMPLETE" ))
+;;;###autoload
+(defalias 'cscope-7100-00 'cscope-71B-process)
+
+;;;###autoload
+(defalias 'cscope-7100-01 'cscope-71D-process)
 
 ;;;###autoload
 (defun cscope-ipf-process ( )

@@ -1,4 +1,3 @@
-
 (defvar old-load-path load-path
   "Saved value of load-path at startup")
 
@@ -60,7 +59,8 @@ current buffer which is assumed to be *scratch*"
  '(split-width-threshold 1600)
  '(tool-bar-mode nil)
  '(user-full-name "Perry Smith")
- '(vc-ignore-dir-regexp "\\`\\([\\/][\\/]\\|/\\.\\.\\./\\|/net/\\|/afs/\\)\\'"))
+ '(vc-ignore-dir-regexp "\\`\\([\\/][\\/]\\|/\\.\\.\\./\\|/net/\\|/afs/\\)\\'")
+ '(x-select-enable-primary t))
 
 ;; Ditto from above -- don't change by hand.
 (custom-set-faces
@@ -77,8 +77,9 @@ current buffer which is assumed to be *scratch*"
 ;; The wisent-ruby stuff uses word-at-point and part of emacs-rails uses it too
 (autoload 'word-at-point "thingatpt")
 
-;; Pull in nxhtml
-(require 'nxhtml-setup)
+;; Pull in nxhtml (but not on IBM hosts... too slow)
+(if (not (string-match ".*\.austin\.ibm\.com" system-name))
+    (require 'nxhtml-setup))
 
 (require 'pedz)
 (require 'yasnippet-setup)
@@ -90,10 +91,6 @@ current buffer which is assumed to be *scratch*"
 
 ;; Part of the html5 setup to load the html5 schema.
 ;; (require 'whattf-dt)
-(add-hook 'nxml-mode-hook 
-	  (function (lambda()
-		      (require 'whattf-dt)
-		      )))
 
 ;; (require 'wisent-setup)
 (if (or (eq window-system 'mac)
