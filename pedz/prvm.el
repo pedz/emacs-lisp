@@ -2,60 +2,19 @@
 ;; Simple routines to help use prvm
 ;;
 
-;;;###autoload
-(defun delete-path-elements (regexp)
-  "Deletes elements matching REGEXP from the user's PATH
-environment variable as well as exec-path"
-  (save-match-data
-    (let ((match-func (function (lambda (path)
-				  (if (string-match regexp path)
-				      nil
-				    path)))))
-      ;; Set new PATH environment variable to...
-      (setenv "PATH"
-	      ;; the concatination of the elements separated by ":" of ...
-	      (mapconcat
-	       ;; all of the elements that remain after the delq which ...
-	       (function (lambda (x) x))
-	       ;; deletes the nil elements which are ...
-	       (delq nil
-		     ;; mappings of each car to either nil if it matches
-		     ;; the regular expression else or itself if it does not...
-		     (mapcar
-		      match-func
-		      ;; starting from the PATH environment variable split by ":"
-		      (split-string (getenv "PATH") ":")))
-	       ":"))
-      (setq exec-path
-	    ;; deletes the nil elements which are ...
-	    (delq nil
-		  ;; mappings of each car to either nil if it matches
-		  ;; the regular expression else or itself if it does not...
-		  (mapcar match-func exec-path))))))
+(defvar prvm-env-list
+  '(("GEM_HOME" . setenv)
+    ("GEM_PATH" . setenv)
+    ("PATH" . prvm-process-path))
+  "This is a list of interesting environment variables that we want to
+  pull up into emacs so it runs various commands correctly.")
 
-;;;###autoload
-(defun prepend-path (path)
-  "Prepends PATH to the user's PATH environment variable as well
-as exec-path"
-  (save-match-data
-    ; Get PATH environment variable and see if the first path is dot
-    (let* ((temp (getenv "PATH"))
-	   (had-leading-dot (string-match "^\\.:" temp)))
-      ; If first path element is dot, then remove it
-      (if had-leading-dot
-	  (setq temp (replace-match "" nil nil temp)))
-      ; prepend new path element to front
-      (setq temp (concat path ":" temp))
-      ; if first path element was dot (before), then add it back on
-      (if had-leading-dot
-	  (setq temp (concat ".:" temp)))
-      ; set this as the new PATH environment variable
-      (setenv "PATH" temp)))
-  (setq exec-path (if (string-equal (car exec-path) ".")
-		      (cons "." (cons path (cdr exec-path)))
-		    (cons path (cdr exec-path)))))
+(defun prvm-process-path ( name body )
+  "Called for the `SHELL' environment variable so that exec-path may
+  be set to match the value"
+  (setenv name body)
+  (setq exec-path (split-string body ":")))
 
-;;;###autoload
 (defun find-prvmrc (&optional dir)
   "Stolen from rinari-root"
   (or dir (setq dir default-directory))
@@ -67,26 +26,31 @@ as exec-path"
 	(unless (string-match "\\(^[[:alpha:]]:/$\\|^/[^\/]+:/?$\\|^/$\\)" dir)
 	  (find-prvmrc new-dir))))))
 
+(defun prvm-parse-line (string)
+  "Called for each foo=dog environment string.  If a match is found in
+  prvm-env-list, then the function in cdr is called"
+  (save-match-data
+    (string-match "^\\([^=]+\\)=\\(.*\\)" string)
+    (let ((name (match-string 1 string))
+	  (body (match-string 2 string)))
+      (mapcar (lambda ( cell )
+		(if (string-match-p (concat "^" (car cell) "$") name)
+		    (apply (cdr cell) (list name body))))
+	      prvm-env-list))))
+
 ;;;###autoload
 (defun prvm-activate ()
+  "Call this to find the .prvmrc file and set emacs's environment up
+  to match"
   (interactive)
   (let ((prvmrc (find-prvmrc)))
     (if (null prvmrc)
 	(message "No .prvmrc file found")
       (with-temp-buffer
-	(insert-file-contents prvmrc)
+	(call-process (getenv "SHELL") nil t nil "--login" "-c" "source .prvmrc; env")
+	(goto-char (point-min))
 	(while (< (point) (point-max))
 	  (narrow-to-region (point-at-bol) (point-at-eol))
 	  (prvm-parse-line (buffer-string))
 	  (widen)
 	  (beginning-of-line 2))))))
-
-;;;###autoload
-(defun prvm-parse-line (string)
-  (save-match-data
-    (when (string-match "^[[:blank:]]*delete-path-elements[[:blank:]]+['\"]?\\([^'\"]*\\)['\"]?$" string)
-      (message (concat "deleting-path-elements " (match-string 1 string)))
-      (delete-path-elements (match-string 1 string)))
-    (when (string-match "^[[:blank:]]*prepend-path[[:blank:]]+['\"]?\\([^'\"]*\\)['\"]?$" string)
-      (message (concat "prepend-path " (match-string 1 string)))
-      (prepend-path (match-string 1 string)))))
