@@ -23,5 +23,7 @@ strings. Note that you must have Font Lock enabled." t)
   '(add-hook 'ruby-mode-hook (function
 			      (lambda ()
 				(ruby-electric-mode t)))))
-(require 'rspec-mode)
+
+;; This boogers rgrep somehow and it doesn't seem to help anyway
+;; (require 'rspec-mode)
 (provide 'ruby-setup)

@@ -1,3 +1,9 @@
+;; Nifty for debugging
+;; (defadvice load (before load-log activate)
+;;   (message "Loading %s" (ad-get-arg 0)))
+;; (defadvice require (before load-log activate)
+;;   (message "Requiring %s" (ad-get-arg 0)))
+
 (defvar old-load-path load-path
   "Saved value of load-path at startup")
 
@@ -76,10 +82,6 @@ current buffer which is assumed to be *scratch*"
 
 ;; The wisent-ruby stuff uses word-at-point and part of emacs-rails uses it too
 (autoload 'word-at-point "thingatpt")
-
-;; Pull in nxhtml (but not on IBM hosts... too slow)
-(if (not (string-match ".*\.austin\.ibm\.com" system-name))
-    (require 'nxhtml-setup))
 
 (require 'pedz)
 (require 'yasnippet-setup)

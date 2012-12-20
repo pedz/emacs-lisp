@@ -16,6 +16,7 @@ else
 fi
 
 # First, make all the .elc files:
+find elc -name '*.elc' -print | xargs rm
 
 if ! ${EMACS} -batch -l batch-commands.el -f batch-byte-recompile-directory-all . ; then
     echo batch-byte-recompile failed
@@ -35,6 +36,8 @@ find . -type f -name '*.el' -print | \
 
 # We don't want myloaddefs.el compiled because it confuses me.
 
-rm -f pedz/myloadsdefs.elc nxhtml-834/main/util/ourcomments-util.elc
+rm -f pedz/myloaddefs.elc pedz/myloaddefs.el~ nxhtml-834/main/util/ourcomments-util.elc
 ( cd magit && make )
-# find . -name '*.elc' -print | xargs -I files mv files elc
+
+# Pull the elc files of the submodules into the elc directory
+mv $( find $( grep path .gitmodules | sed -e 's/.* = //' ) -name '*.elc' -print ) elc

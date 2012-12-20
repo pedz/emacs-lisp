@@ -15,6 +15,7 @@
 	      (if (and buffer-file-name
 		       (string-match-p ".*[Ss]pec\.js" buffer-file-name))
 		  (jasmine-mode))
+	      (require 'nxhtml-setup)
 	      (require 'cucumber-mode-compilation)
 	      (require 'ruby-compilation-rspec)))
 

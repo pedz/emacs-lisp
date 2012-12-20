@@ -47,7 +47,7 @@
     (if (null prvmrc)
 	(message "No .prvmrc file found")
       (with-temp-buffer
-	(call-process (getenv "SHELL") nil t nil "--login" "-c" "source .prvmrc; env")
+	(call-process (getenv "SHELL") nil t nil "--login" "-c" (concat "source " prvmrc "; env"))
 	(goto-char (point-min))
 	(while (< (point) (point-max))
 	  (narrow-to-region (point-at-bol) (point-at-eol))
