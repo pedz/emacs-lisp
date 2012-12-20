@@ -445,6 +445,18 @@ spot"
 (defalias 'cscope-6100-07 'cscope-61S-process)
 
 ;;;###autoload
+(defun cscope-61V-process ( )
+  (interactive)
+  (cscope-bananas-are-fun "/gsa/ausgsa/projects/a/aix/aix61V"
+			  "/61V_COMPLETE" ))
+
+;;;###autoload
+(defun cscope-61X-process ( )
+  (interactive)
+  (cscope-bananas-are-fun "/gsa/ausgsa/projects/a/aix/aix61X"
+			  "/61X_COMPLETE" ))
+
+;;;###autoload
 (defun cscope-61S-process ( )
   (interactive)
   (cscope-bananas-are-fun "/gsa/ausgsa/projects/a/aix/aix61S"
