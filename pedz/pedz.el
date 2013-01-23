@@ -194,7 +194,6 @@
 ;; (setq compilation-finish-function 'v4-build-compilation-finish)
 
 (if (or (eq window-system 'x)
-        (eq window-system 'mac)
         (eq window-system 'ns))
     (progn
       (require 'x-stuff)
