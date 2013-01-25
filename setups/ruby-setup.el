@@ -24,6 +24,8 @@ strings. Note that you must have Font Lock enabled." t)
 			      (lambda ()
 				(ruby-electric-mode t)))))
 
-;; This boogers rgrep somehow and it doesn't seem to help anyway
-;; (require 'rspec-mode)
+(add-to-list 'auto-mode-alist '("\\.rake\\'"      . ruby-mode))
+(add-to-list 'auto-mode-alist '("Rakefile"      . ruby-mode))
+(add-to-list 'auto-mode-alist '("Gemfile"      . ruby-mode))
+(add-to-list 'auto-mode-alist '("Capfile"      . ruby-mode))
 (provide 'ruby-setup)
