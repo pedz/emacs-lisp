@@ -36,6 +36,7 @@ current buffer which is assumed to be *scratch*"
  '(ansi-color-for-comint-mode t)
  '(ansi-color-names-vector ["black" "red" "green" "yellow" "blue" "magenta" "darkturquoise" "white"])
  '(case-fold-search nil)
+ '(display-buffer-reuse-frames t)
  '(display-time-mail-file (quote none))
  '(ecb-options-version "2.33beta1")
  '(ecb-primary-secondary-mouse-buttons (quote mouse-1--mouse-2))
@@ -59,6 +60,8 @@ current buffer which is assumed to be *scratch*"
  '(rails-ws:default-server-type "webrick")
  '(rng-nxml-auto-validate-flag t nil nil "Validate all the time")
  '(rng-schema-locating-files (quote ("/Users/pedzan/.emacs.d/schemas.xml" "schemas.xml" "/Applications/Emacs.app/Contents/Resources/etc/schema/schemas.xml" "/Users/pedzan/.emacs.d/rnc/html5/html5-schemas.xml")))
+ '(rspec-use-bundler-when-possible nil)
+ '(rspec-use-rake-flag nil)
  '(save-abbrevs nil)
  '(shell-prompt-pattern ".+@.+<[0-9]+> on .*
 ")
