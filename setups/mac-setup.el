@@ -2,6 +2,8 @@
 ;; Addition so that the txmt scheme is recognized.  This allows the
 ;; URLs that Merb puts in its stack trace back to work properly.
 ;;
+(require 'url)
+
 (defun mac-ae-get-url (event)
   "Open the URL specified by the Apple event EVENT.
 Currently the `mailto' and `txmt' schemes are supported."
@@ -22,10 +24,16 @@ Currently the `mailto' and `txmt' schemes are supported."
 	 (if (null file-name)
 	     (message "Bad txmt URL: %s" the-text)
 	   (find-file file-name)
-	   (goto-line (if lineno (string-to-number lineno) 0))
+	   (goto-char (point-min))
+	   (if lineno
+	       (forward-line (1- (string-to-number lineno))))
 	   (select-frame-set-input-focus (selected-frame)))))
       (t (mac-resume-apple-event ae t)))))
 
 (define-key global-map "\M-\`" 'ns-next-frame)
 (define-key global-map "\M-~" 'ns-prev-frame)
+
+(eval-after-load 'grep
+  '(setq find-program "gfind"))
+
 (provide 'mac-setup)
