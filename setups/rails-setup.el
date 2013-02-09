@@ -22,10 +22,8 @@
 		     (string-match-p ".*[Ss]pec\.js" buffer-file-name))
 		(jasmine-mode))))
 
-;; Used by rgrep.  Now you can say "rails" for the files prompt and
-;; get the files with these suffixs
-(require 'grep)
-(add-to-list 'grep-files-aliases (cons "rails" "*.rb *.erb *.js *.css *.scss"))
+(eval-after-load 'grep
+  '(add-to-list 'grep-files-aliases (cons "rails" "*.rb *.erb *.js *.css *.scss")))
 
 (add-to-list 'auto-mode-alist '("\\.scss\\'"      . css-mode))
 (add-to-list 'auto-mode-alist '("\.feature$" . feature-mode))
