@@ -34,7 +34,7 @@ current buffer which is assumed to be *scratch*"
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ansi-color-for-comint-mode t)
- '(ansi-color-names-vector ["black" "red" "green" "yellow" "blue" "magenta" "darkturquoise" "white"])
+ '(ansi-color-names-vector ["black" "red" "green" "gold" "blue" "magenta" "darkturquoise" "dark green"])
  '(case-fold-search nil)
  '(display-buffer-reuse-frames t)
  '(display-time-mail-file (quote none))
