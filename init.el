@@ -94,7 +94,6 @@ current buffer which is assumed to be *scratch*"
 (autoload 'word-at-point "thingatpt")
 
 (require 'pedz)
-(require 'yasnippet-setup)
 (require 'ruby-setup)
 (require 'rails-setup)
 (require 'javascript-setup)
