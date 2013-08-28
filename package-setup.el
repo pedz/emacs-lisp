@@ -13,7 +13,7 @@
 ;; https://github.com/timvisher/.emacs.d/blob/master/timvisher/timvisher_package.el
 
 (defvar pedz/my-packages '(yasnippet
-			   ))
+			   magit))
 (defun pedz/install-package-list (package-list)
   (dolist (p package-list)
     (when (not (package-installed-p p))

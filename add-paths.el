@@ -14,7 +14,9 @@
                         (eq (compare-strings file-name 0 nil ".svn" 0 nil) t)
                         (eq (compare-strings file-name 0 nil "test" 0 nil) t)
                         (eq (compare-strings file-name 0 nil "tests" 0 nil) t)
-                        (eq (compare-strings file-name 0 nil "CVS" 0 nil) t))))
+                        (eq (compare-strings file-name 0 nil "CVS" 0 nil) t)
+                        (eq (compare-strings file-name 0 nil "elpa" 0 nil) t)
+			)))
           (recursively-add-dir-to-load-path (concat dir "/" file-name))))))
 
 (provide 'add-paths)

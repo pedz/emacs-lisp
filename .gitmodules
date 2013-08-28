@@ -13,9 +13,6 @@
 [submodule "jquery-doc-el"]
 	path = jquery-doc-el
 	url = https://github.com/ananthakumaran/jquery-doc.el.git
-[submodule "magit"]
-	path = magit
-	url = git://github.com/magit/magit.git
 [submodule "ruby/cucumber"]
 	path = ruby/cucumber
 	url = git://github.com/michaelklishin/cucumber.el.git

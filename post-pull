@@ -25,9 +25,11 @@ fi
 
 # Now, update the myloaddefs.el file:
 
+rm -f pedz/myloaddefs.el
 find . -type f -name '*.el' -print | \
     egrep -v '/\.git' | \
     egrep -v '/nxhtml(-[0-9]+)?/' | \
+    egrep -v '/elpa/' | \
     xargs egrep -l '# *autoload' | \
     xargs ${EMACS} \
         -batch \
@@ -37,7 +39,6 @@ find . -type f -name '*.el' -print | \
 # We don't want myloaddefs.el compiled because it confuses me.
 
 rm -f pedz/myloaddefs.elc pedz/myloaddefs.el~ nxhtml-834/main/util/ourcomments-util.elc
-( cd magit && make )
 
 # Pull the elc files of the submodules into the elc directory
 mv $( find $( grep path .gitmodules | sed -e 's/.* = //' ) -name '*.elc' -print ) elc
