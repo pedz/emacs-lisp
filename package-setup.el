@@ -14,6 +14,10 @@
 
 (defvar pedz/my-packages '(yasnippet
 			   magit
+			   rinari
+			   rinari
+			   rinari
+			   rinari
 			   auto-complete))
 (defun pedz/install-package-list (package-list)
   (dolist (p package-list)
