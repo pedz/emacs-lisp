@@ -1,9 +1,6 @@
 [submodule "ruby/yari"]
 	path = ruby/yari
 	url = git@github.com:pedz/yari-with-buttons.git
-[submodule "ruby/ruby-electric"]
-	path = ruby/ruby-electric
-	url = https://github.com/qoobaa/ruby-electric.git
 [submodule "jquery-doc-el"]
 	path = jquery-doc-el
 	url = https://github.com/ananthakumaran/jquery-doc.el.git

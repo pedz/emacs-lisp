@@ -12,13 +12,13 @@
 ;; Basic concept stolen from Tim Visher
 ;; https://github.com/timvisher/.emacs.d/blob/master/timvisher/timvisher_package.el
 
-(defvar pedz/my-packages '(yasnippet
+(defvar pedz/my-packages '(
+			   auto-complete
 			   magit
 			   rinari
-			   rinari
-			   rinari
-			   rinari
-			   auto-complete))
+			   ruby-electric
+			   yasnippet
+			   ))
 (defun pedz/install-package-list (package-list)
   (dolist (p package-list)
     (when (not (package-installed-p p))
