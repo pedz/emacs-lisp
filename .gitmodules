@@ -4,9 +4,3 @@
 [submodule "jquery-doc-el"]
 	path = jquery-doc-el
 	url = https://github.com/ananthakumaran/jquery-doc.el.git
-[submodule "ruby/cucumber"]
-	path = ruby/cucumber
-	url = git://github.com/michaelklishin/cucumber.el.git
-[submodule "ruby/rspec-mode"]
-	path = ruby/rspec-mode
-	url = git://github.com/pezra/rspec-mode.git

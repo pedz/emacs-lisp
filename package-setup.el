@@ -16,6 +16,7 @@
 			   auto-complete
 			   magit
 			   rinari
+			   rspec-mode
 			   ruby-electric
 			   yasnippet
 			   ))
