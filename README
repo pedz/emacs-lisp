@@ -1,2 +1,5 @@
 This is my .emacs.d directory.  You are welcome to
 browse around in it.
+
+Note: This repository is no longer active.  I moved to a new
+repository: my.emacs.d which is based upon el-get.
